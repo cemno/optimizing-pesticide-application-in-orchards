@@ -4,22 +4,23 @@ author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Ja
 date: "6/1/2021"
 output: html_document
 ---
+\ 
 
 # Implementing automated section control sprayers for optimising pesticide application in orchards
 
 \ 
 
-### Description   
+#### Description   
 A decision analysis on optimizing pesticide application in orchards with an LiDAR sensor and an automated section controlled sprayer.
 
 \ 
 
-### Decision maker: farmer   
+#### Decision maker: farmer   
 * Farmer is the main stakeholder who makes the decision whether or not to buy a modern sprayer which is able to minimise pesticide application rates
 
 \ 
 
-### Stake holders:  
+#### Stake holders: (describe further)
 * farmers 
 * manufacturers 
 * government 
@@ -34,12 +35,46 @@ A decision analysis on optimizing pesticide application in orchards with an LiDA
 
 \ 
 
-### Problems:    
-* Some common agrochemicals will be banned in the near future for various reasons (e.g. overuse) 
-* 
+#### Problems:    
+* Some common agrochemicals will be banned in the near future for various reasons
+  + overuse causes problems 
+  + public opinion is getting worse   
 * Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
-* Agrochemicals are costly $\Rightarrow$ reduction is welcome  
+* Agrochemicals are costly supplies $\Rightarrow$ reduction is welcome  
 
+\ 
+
+#### Options:  
+* No change 
+* Spray less pesticide with existing machinery 
+* Adopt organic farming practices 
+* Use beneficiaries (beneficial organisms)
+* Spray manually 
+* Buy automatic section control sprayer
+* Buy manual section control sprayer
+
+\ 
+
+#### Allocation of resources:  
+* Money
+  + Overheads
+  + Running costs 
+* Labour 
+  + Conducting actual tasks 
+  + Acquiring know-how
+* Pollinators  
+
+\ 
+
+#### Obstacles:  
+* Costs of investment
+
+
+#### Uncertainties:  
+
+
+#### (Sources of) information:
+  
 
 
 

@@ -5,6 +5,6 @@ So far we have identified several [key aspects](http://htmlpreview.github.io/?ht
 
 <p>For a better visualisation of the automated section controlled sprayer in question we have two concept graphics:</p>
 
-![How to spray in orchards (usually two sides at once)](images/image.png)
+![How to spray in orchards](images/image.png)
 
 ![Sectioning of the sprayer that can be turned on and of](images/lidar.PNG)

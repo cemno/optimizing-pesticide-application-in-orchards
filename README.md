@@ -1,4 +1,10 @@
 # Implementing automated section control sprayers for optimising pesticide application in orchards
 We are conducting a decision analysis on optimizing pesticide application in orchards with an lidar sensor and an automated section controlled sprayer.
-The aim is to identify possible uncertainties in the decision process of a farmer to adopt such an expensive technolgy and create a template that my help either the manufacture to adjust there product the their customers wishes or the farmer himself. </p>
-So far we have identified serveral [key aspects](http://htmlpreview.github.io/?https://github.com/cemno/optimizing-pesticide-application-in-orchards/blob/dev/markdown-doc.html) of the decision.
+The aim is to identify possible uncertainties in the decision process of a farmer to adopt such an expensive technology and create a template that my help either the manufacture to adjust there product the their customers wishes or the farmer himself. </p>
+So far we have identified several [key aspects](http://htmlpreview.github.io/?https://github.com/cemno/optimizing-pesticide-application-in-orchards/blob/dev/markdown-doc.html) of the decision.
+
+For a better visualisation we also have to concept graphics:
+\
+![How to spray in orchards (usually two sides at once)](https://raw.githubusercontent.com/cemno/optimizing-pesticide-application-in-orchards/dev/images/image.png)
+\
+![Sectioning of the sprayer that can be turned on and of](https://github.com/cemno/optimizing-pesticide-application-in-orchards/blob/dev/images/lidar.PNG?raw=true)

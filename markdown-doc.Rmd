@@ -1,12 +1,9 @@
 ---
-title: "optimizing-pesticide-application-in-orchards"
+title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 output: html_document
 ---
-\ 
-
-# Implementing automated section control sprayers for optimising pesticide application in orchards
 
 \ 
 

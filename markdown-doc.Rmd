@@ -133,8 +133,8 @@ digraph boxes_and_circles {
  # Create nodes 
        
  FP [label = 'Farmers profit']
- M [label = 'Manufacturers']
  Pe [label = 'Pesticides']
+ Di [label = 'Diseases']
  GC [label = 'Government \n concerns']
  FS [label = 'Fruit sales']
  Bio [label = 'Biodiversity']
@@ -164,10 +164,6 @@ digraph boxes_and_circles {
  Ascs->Pe [label = '  -',
            fontcolor = 'red',
            color = 'red']
-           
- M->FP [label = '-',
-        fontcolor = 'red',
-        color = 'red']
          
  Bio->FS [label = '  +',
          fontcolor = 'forestgreen',
@@ -185,9 +181,17 @@ digraph boxes_and_circles {
          fontcolor = 'red',
          color = 'red']
          
- Pe->FS [label = '  +',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
+ Pe->Di [label = '  -',
+         fontcolor = 'red',
+         color = 'red']
+         
+ Bio->Di [label = '  -',
+         fontcolor = 'red',
+         color = 'red']
+         
+ Di->FS [label = '  -',
+         fontcolor = 'red',
+         color = 'red']
         
  Cu->FS [label = '+',
          fontcolor = 'forestgreen',
@@ -197,14 +201,9 @@ digraph boxes_and_circles {
          fontcolor = 'red',
          color = 'red']
          
- FP->M [label = '  +',
-        fontcolor = 'forestgreen',
-        color = 'forestgreen']
-        
- M->Ascs [label = '  +',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
+ FP->Ascs [label = '  +',
+           fontcolor = 'forestgreen',
+           color = 'forestgreen']
 }
 ")
 

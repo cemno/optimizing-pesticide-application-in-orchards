@@ -97,22 +97,32 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 #### Flow chart using diagrammeR package 
 ```{r, include=FALSE}
 library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
 ```
 
 ```{r}
-grViz("
+
+model_flow_chart <- grViz("
       
 digraph boxes_and_circles {
 
-  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
-  rankdir = 'TD'
+ # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
+ rankdir = 'TD'
 
- # add note statements
+ # Add node statements
  node [shape = box
        fontname = Helvatica
        penwidth = 1, 
        fixedsize = true, 
        width = 3]
+       
+ # Add edge statements (arrows)
+ edge [fontsize = 25
+       fontname = Arial]
+       
+ # Add graph statements 
+ graph [nodesep = 0.1]
        
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']
@@ -124,62 +134,64 @@ digraph boxes_and_circles {
  CW [label = 'Contaminated \n water']
  Cu [label = '  Customers']
  
- node [shape = box]
  
-  
- GC->FP [label = '  +',
+
+ GC->FP [label = ' -',
          fontcolor = 'red',
          color = 'red']
          
- F->FP [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Pe->CW [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- CW->GC [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- FP->Ascs [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Ascs->Pe [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
- M->FP [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
-         
- Bio->F [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Pe->Bio [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
-         
- CW->Bio [label = '  reduces',
-          fontcolor = 'red',
-          color = 'red']
-          
- Pe->Cu [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
-         
- Pe->F [label = '  increases',
+ F->FP [label = '  +',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
  
-
- # add graph statements 
- graph [nodesep = 0.1]
-
+ Pe->CW [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ CW->GC [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ FP->Ascs [label = '  +',
+           fontcolor = 'forestgreen',
+           color = 'forestgreen']
+ 
+ Ascs->Pe [label = '  -',
+           fontcolor = 'red',
+           color = 'red']
+           
+ M->FP [label = '  -',
+        fontcolor = 'red',
+        color = 'red']
+         
+ Bio->F [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ Pe->Bio [label = '  -',
+          fontcolor = 'red',
+          color = 'red']
+         
+ CW->Bio [label = '  -',
+          fontcolor = 'red',
+          color = 'red']
+          
+ Pe->Cu [label = '  -',
+         fontcolor = 'red',
+         color = 'red']
+         
+ Pe->F [label = '  +',
+        fontcolor = 'forestgreen',
+        color = 'forestgreen']
+ 
 }
 ")
+
+export_svg(model_flow_chart, file_name = "Flow chart.png", file_type = "png")
+
+model_flow_chart
+
+
 ```
 
 

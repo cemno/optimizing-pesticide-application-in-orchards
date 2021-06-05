@@ -140,7 +140,7 @@ digraph boxes_and_circles {
  Bio [label = 'Biodiversity']
  Ascs [label = 'Automated section \n control sprayer']
  WC [label = 'Water \n contamination']
- Cu [label = '  Customers']
+ Cu [label = 'Customers']
  
  
  # Interconnections 

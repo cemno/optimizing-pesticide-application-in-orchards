@@ -104,6 +104,9 @@ grViz("
       
 digraph boxes_and_circles {
 
+  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
+  rankdir = 'TD'
+
  # add note statements
  node [shape = box
        fontname = Helvatica
@@ -112,26 +115,58 @@ digraph boxes_and_circles {
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']
  Pe [label = 'Pesticides']
- GC [label = 'Government concerns']
+ GC [label = 'Government \n concerns']
  F [label = 'Fruits']
  Bio [label = 'Biodiversity']
  Ascs [label = 'Automated \n section \n controlled \n sprayer']
  CW [label = 'Contaminated \n water']
+ Cu [label = '  Customers']
  
  node [shape = box]
+ 
   
- GC->FP [label = '  reduces']
- F->FP [label = '  increases']
- Pe->CW [label = '  increases']
- CW->GC [label = '  increases']
- FP->Ascs [label = '  increases']
- Ascs->Pe [label = '  reduces']
- M->FP [label = '  reduces']
- Bio->F [label = '  increases']
- Pe->Bio [label = '  reduces']
+ GC->FP [label = '  reduces',
+         fontcolor = 'red',
+         color = 'red']
+         
+ F->FP [label = '  increases',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ Pe->CW [label = '  increases',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ CW->GC [label = '  increases',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ FP->Ascs [label = '  increases',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ Ascs->Pe [label = '  reduces',
+         fontcolor = 'red',
+         color = 'red']
+ M->FP [label = '  reduces',
+         fontcolor = 'red',
+         color = 'red']
+         
+ Bio->F [label = '  increases',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+ 
+ Pe->Bio [label = '  reduces',
+         fontcolor = 'red',
+         color = 'red']
+         
  CW->Bio [label = '  reduces',
           fontcolor = 'red',
           color = 'red']
+          
+ Pe->Cu [label = '  reduces',
+         fontcolor = 'red',
+         color = 'red']
  
 
  

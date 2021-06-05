@@ -103,10 +103,7 @@ library(rsvg)
 
 <<<<<<< HEAD
 ```{r, echo=FALSE}
-=======
-```{r}
 
->>>>>>> 434aa47af2a00423d747be3049400c4da2a2791f
 model_flow_chart <- grViz("
       
 digraph boxes_and_circles {

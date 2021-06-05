@@ -101,19 +101,32 @@ library(DiagrammeRsvg)
 library(rsvg)
 ```
 
+<<<<<<< HEAD
 ```{r, echo=FALSE}
+=======
+```{r}
+
+>>>>>>> 434aa47af2a00423d747be3049400c4da2a2791f
 model_flow_chart <- grViz("
-      digraph boxes_and_circles {
+      
+digraph boxes_and_circles {
 
-  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
-  rankdir = 'TD'
+ # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
+ rankdir = 'TD'
 
- # add note statements
+ # Add node statements
  node [shape = box
        fontname = Helvatica
        penwidth = 1, 
        fixedsize = true, 
        width = 3]
+       
+ # Add edge statements (arrows)
+ edge [fontsize = 25
+       fontname = Arial]
+       
+ # Add graph statements 
+ graph [nodesep = 0.1]
        
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']
@@ -125,53 +138,53 @@ model_flow_chart <- grViz("
  CW [label = 'Contaminated \n water']
  Cu [label = '  Customers']
  
- node [shape = box]
  
-  
- GC->FP [label = '  +',
+
+ GC->FP [label = ' -',
          fontcolor = 'red',
          color = 'red']
          
- F->FP [label = '  increases',
+ F->FP [label = '  +',
+        fontcolor = 'forestgreen',
+        color = 'forestgreen']
+ 
+ Pe->CW [label = '  +',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
  
- Pe->CW [label = '  increases',
+ CW->GC [label = '  +',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
  
- CW->GC [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
+ FP->Ascs [label = '  +',
+           fontcolor = 'forestgreen',
+           color = 'forestgreen']
  
- FP->Ascs [label = '  increases',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Ascs->Pe [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
- M->FP [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
+ Ascs->Pe [label = '  -',
+           fontcolor = 'red',
+           color = 'red']
+           
+ M->FP [label = '  -',
+        fontcolor = 'red',
+        color = 'red']
          
- Bio->F [label = '  increases',
+ Bio->F [label = '  +',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
  
- Pe->Bio [label = '  reduces',
-         fontcolor = 'red',
-         color = 'red']
+ Pe->Bio [label = '  -',
+          fontcolor = 'red',
+          color = 'red']
          
- CW->Bio [label = '  reduces',
+ CW->Bio [label = '  -',
           fontcolor = 'red',
           color = 'red']
           
- Pe->Cu [label = '  reduces',
+ Pe->Cu [label = '  -',
          fontcolor = 'red',
          color = 'red']
          
- Pe->F [label = '  increases',
+ Pe->F [label = '  +',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
         
@@ -179,15 +192,13 @@ model_flow_chart <- grViz("
         fontcolor = 'forest',
         color = 'forestgreen']
  
-
- # add graph statements 
- graph [nodesep = 0.1]
-
 }
 ")
 
 model_flow_chart
 rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
+
+
 
 ```
 

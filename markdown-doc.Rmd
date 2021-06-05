@@ -127,7 +127,7 @@ digraph boxes_and_circles {
  node [shape = box]
  
   
- GC->FP [label = '  reduces',
+ GC->FP [label = '  +',
          fontcolor = 'red',
          color = 'red']
          

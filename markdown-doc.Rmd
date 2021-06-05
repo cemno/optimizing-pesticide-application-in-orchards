@@ -101,12 +101,9 @@ library(DiagrammeRsvg)
 library(rsvg)
 ```
 
-<<<<<<< HEAD
-```{r, echo=FALSE}
-<<<<<<< HEAD
 
-=======
->>>>>>> 30659099c60b1a9d9e5bab502a65319855250bae
+```{r, echo=FALSE}
+
 model_flow_chart <- grViz("
       
 digraph boxes_and_circles {

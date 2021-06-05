@@ -110,7 +110,9 @@ digraph boxes_and_circles {
  # add note statements
  node [shape = box
        fontname = Helvatica
-       penwidth = 1, fixedsize = true, width = 3]
+       penwidth = 1, 
+       fixedsize = true, 
+       width = 3]
        
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']

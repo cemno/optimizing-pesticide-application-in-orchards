@@ -18,17 +18,61 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 \ 
 
 #### Stake holders: (describe further)
-* Farmers 
-* Manufacturers 
-* Government 
-* Consumers 
-* Society 
-* Food retailers 
-* Water suppliers 
-* Agrochemical companies 
-* NGOs 
+#### Stakeholders: (describe further)
+* Farmer
+  + importance: very high
+  + Main Decision maker
+  + Operator / User (knowledge about relevant orchards)
+  + Budget for purchasing costs
+  + profitable longterm?
+  
+* Manufacturer
+  + importance: (very) low
+  + Supplier
+  + (takes feedback into account)
+
+* Government
+  + importance: medium - high
+  + Bund/Länder - Arbeitsgemeinschaft Wasser (LAWA), Landwirtschaftskammer ...
+  + Reduction of pesticide residues and unwanted effects
+  + taking probes from products, groundwater, biodiversity (short & longterm)
+
+* Consumers
+  + importance: low - mid
+  + no residues on products
+  + inclined to buy farmers products
+
+* Food retailers
+  + same as consumers
+
+* Society  
+  + importance: low - mid
+  + no active influence / Public image <br/> $\Rightarrow$  influencing government decisions (mindset about eg. Biodiversity)
+ 
+* NGOs
+  + importance: mid
+  + Greenpeace, newspaper organizations, research centers / institutes
+  + influencing society, consumers, government
+  + newspaper, magazine article
+
+* Water suppliers
+  + importance: mid
+  + conservation of healthy water bodies
+  + food chains (plankton), fishing grounds, drinking water
+
+* Agro-chemical companies
+  + importance: low
+  + keeping residues in environment low to prevent restrictive legislation (longterm)
+  + BUT less sales of plant protection agents (shortterm)
+
 * Local biodiversity
+  + importance: high
+  + higher diversity <br/> more pollinators <br/> reduces chance of diseases
+  
 * Beekeepers
+  + importance: low - mid
+  + less potential harm to bees
+
 
 \ 
 
@@ -37,18 +81,16 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
   + Overuse causes problems 
   + Public opinion is getting worse   
 * Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
-* Agrochemicals are costly supplies $\Rightarrow$ reduction is welcome  
+* Agrochemicals are costly supplies <br/> $\Rightarrow$ reduction is welcome  
 
 \ 
 
 #### Options:  
-* No change 
-* Spray less pesticide with existing machinery 
-* Adopt organic farming practices 
-* Use beneficiaries (beneficial organisms)
-* Spray manually 
 * Buy automatic section control sprayer
-* Buy manual section control sprayer
+* keeping / buying a manual section control sprayer
+* Spray less pesticide with existing machinery 
+* Adopt organic farming practices <br/> $\Rightarrow$ Use beneficiaries (beneficial organisms)
+* Spray manually <br/> $\Rightarrow$ identify areas which need application <br/> $\Rightarrow$ application amount can be imprecise 
 
 \ 
 
@@ -82,7 +124,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 #### (Sources of) information:
 * Farmers
-  + 
+  + knowledge of the farm, knowledge of problems during application 
 * Manufacturer (Currently developing a prototype)
   + Cost and capabilities of an automatic section control sprayer
 * Landwirtschaftskammer NRW
@@ -217,83 +259,83 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 ```
 
-<!-- Not finished yet
-#### Calculating the decision model {.tabset}
-##### Input
-```{r echo = FALSE}
-# Input table for model function, adding Management_cost
+<!-- Not finished yet -->
+<!-- #### Calculating the decision model {.tabset} -->
+<!-- ##### Input -->
+<!-- ```{r echo = FALSE} -->
+<!-- # Input table for model function, adding Management_cost -->
 
-input_estimates <- data.frame(variable = c("Farmers Profit", "Automated section control", "Pesticides", "Water contamination", " Customers", "Goverment concerens", "Biodiversity", "Diseases", "Fruit sales"),
-                              lower = c(6000, 3, 500, 100),
-                              median = NA,
-                              upper = c(14000, 8, 1000, 2000),
-                              distribution = c("posnorm", "posnorm", "posnorm", "posnorm"),
-                              label = c("Yield (kg/ha)", "Price (USD/kg)", "Labor cost (USD/ha)", "Management cost (USD/ha)"),
-                              Description = c("Yield in a sweet cherry farm under normal conditions",
-                                              "Price of sweet cherry in a normal season",
-                                              "Labor costs in a normal season", 
-                                              "Management costs in a normal season"))
+<!-- input_estimates <- data.frame(variable = c("Farmers Profit", "Automated section control", "Pesticides", "Water contamination", " Customers", "Goverment concerens", "Biodiversity", "Diseases", "Fruit sales"), -->
+<!--                               lower = c(6000, 3, 500, 100), -->
+<!--                               median = NA, -->
+<!--                               upper = c(14000, 8, 1000, 2000), -->
+<!--                               distribution = c("posnorm", "posnorm", "posnorm", "posnorm"), -->
+<!--                               label = c("Yield (kg/ha)", "Price (USD/kg)", "Labor cost (USD/ha)", "Management cost (USD/ha)"), -->
+<!--                               Description = c("Yield in a sweet cherry farm under normal conditions", -->
+<!--                                               "Price of sweet cherry in a normal season", -->
+<!--                                               "Labor costs in a normal season",  -->
+<!--                                               "Management costs in a normal season")) -->
 
-## Changing some columns as they are not in the right format (addition, maybe because R-base 3.6.3?)
-input_estimates$distribution <- as.character(input_estimates$distribution)
-input_estimates$variable <- as.character(input_estimates$variable)
+<!-- ## Changing some columns as they are not in the right format (addition, maybe because R-base 3.6.3?) -->
+<!-- input_estimates$distribution <- as.character(input_estimates$distribution) -->
+<!-- input_estimates$variable <- as.character(input_estimates$variable) -->
 
-# Show input_estimates table
-input_estimates
-```
+<!-- # Show input_estimates table -->
+<!-- input_estimates -->
+<!-- ``` -->
 
-##### Model
-```{r}
-# Creating model function to describe the graphical impact pathway (Diagram done earlier)
-model_function <- function(){
-  
-  # Estimate the income in a normal season
-  income <- Yield * Market_price
-  
-  # Estimate the overall cost in a normal season
-  overall_cost <- Labor_cost + Management_cost
-  
-  # Estimate the final results from the model
-  final_result <- income - overall_cost
-  
-  # Generate the list of outputs from the Monte Carlo simulation
-  return(list(final_result = final_result))
-}
+<!-- ##### Model -->
+<!-- ```{r} -->
+<!-- # Creating model function to describe the graphical impact pathway (Diagram done earlier) -->
+<!-- model_function <- function(){ -->
 
-# Run the Monte Carlo simulation using the model function
-mc_simulation <- mcSimulation(estimate = as.estimate(input_estimates),
-                                    model_function = model_function,
-                                    numberOfModelRuns = 1000000,
-                                    functionSyntax = "plainNames")
+<!--   # Estimate the income in a normal season -->
+<!--   income <- Yield * Market_price -->
 
-# Print MonteCarlo simulation output
-# mc_simulation
+<!--   # Estimate the overall cost in a normal season -->
+<!--   overall_cost <- Labor_cost + Management_cost -->
 
-# Function for creating a random variable for a column from the input_estimates table 
-# and put it in the global Env. for test purposes (faster that running whole model)
-make_variables <- function(est,n=1)
-{ x<-random(rho=est, n=n)
-for(i in colnames(x)) assign(i,
-                             as.numeric(x[1,i]),envir=.GlobalEnv)
-}
+<!--   # Estimate the final results from the model -->
+<!--   final_result <- income - overall_cost -->
 
-# Creating random global variable from input_estimates
-make_variables(as.estimate(input_estimates))
+<!--   # Generate the list of outputs from the Monte Carlo simulation -->
+<!--   return(list(final_result = final_result)) -->
+<!-- } -->
 
-# Call function (without parameters as they are in the global environment)
-model_function()
-```
+<!-- # Run the Monte Carlo simulation using the model function -->
+<!-- mc_simulation <- mcSimulation(estimate = as.estimate(input_estimates), -->
+<!--                                     model_function = model_function, -->
+<!--                                     numberOfModelRuns = 1000000, -->
+<!--                                     functionSyntax = "plainNames") -->
 
-##### Graph {.active}
-```{r, echo=FALSE}
+<!-- # Print MonteCarlo simulation output -->
+<!-- # mc_simulation -->
 
-# Plot distributions to show outcome
-plot_distributions(mcSimulation_object = mc_simulation,
-                   vars = "final_result",
-                   method = "hist_simple_overlay",
-                   old_names = "final_result",
-                   new_names = "Outcome distribution for profits")
+<!-- # Function for creating a random variable for a column from the input_estimates table  -->
+<!-- # and put it in the global Env. for test purposes (faster that running whole model) -->
+<!-- make_variables <- function(est,n=1) -->
+<!-- { x<-random(rho=est, n=n) -->
+<!-- for(i in colnames(x)) assign(i, -->
+<!--                              as.numeric(x[1,i]),envir=.GlobalEnv) -->
+<!-- } -->
 
-```
--->
+<!-- # Creating random global variable from input_estimates -->
+<!-- make_variables(as.estimate(input_estimates)) -->
+
+<!-- # Call function (without parameters as they are in the global environment) -->
+<!-- model_function() -->
+<!-- ``` -->
+
+<!-- ##### Graph {.active} -->
+<!-- ```{r, echo=FALSE} -->
+
+<!-- # Plot distributions to show outcome -->
+<!-- plot_distributions(mcSimulation_object = mc_simulation, -->
+<!--                    vars = "final_result", -->
+<!--                    method = "hist_simple_overlay", -->
+<!--                    old_names = "final_result", -->
+<!--                    new_names = "Outcome distribution for profits") -->
+
+<!-- ``` -->
+
  

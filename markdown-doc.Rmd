@@ -41,7 +41,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Options:  
+#### Options: 
 * No change 
 * Spray less pesticide with existing machinery 
 * Adopt organic farming practices 
@@ -54,7 +54,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 #### Allocation of resources:  
 * Money
-  + Overheads
+  + Overheads        
   + Running costs 
 * Labour 
   + Conducting actual tasks 

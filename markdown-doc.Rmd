@@ -8,7 +8,7 @@ output: html_document
 \ 
 
 #### Description   
-A decision analysis on optimizing pesticide application in orchards with an LIDAR sensor and an automated section controlled sprayer.
+Reducing pesticide use: An analysis on the decision whether to implement an automated or manually operated section control sprayer in orchards.
 
 \ 
 
@@ -18,24 +18,24 @@ A decision analysis on optimizing pesticide application in orchards with an LIDA
 \ 
 
 #### Stake holders: (describe further)
-* farmers 
-* manufacturers 
-* government 
-* consumers 
-* society 
-* food retailers 
-* water suppliers 
-* agrochemical companies 
+* Farmers 
+* Manufacturers 
+* Government 
+* Consumers 
+* Society 
+* Food retailers 
+* Water suppliers 
+* Agrochemical companies 
 * NGOs 
-* local biodiversity
-* beekeepers
+* Local biodiversity
+* Beekeepers
 
 \ 
 
 #### Problems:    
 * Some common agrochemicals will be banned in the near future for various reasons
-  + overuse causes problems 
-  + public opinion is getting worse   
+  + Overuse causes problems 
+  + Public opinion is getting worse   
 * Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
 * Agrochemicals are costly supplies $\Rightarrow$ reduction is welcome  
 
@@ -65,11 +65,12 @@ A decision analysis on optimizing pesticide application in orchards with an LIDA
 
 #### Obstacles:  
 * Costs of investment
+* Learning curve for running the equipment 
 
 
 #### Uncertainties:  
 * Potential reduction of pesticides using an automatic section controlled sprayer
-  + especially the reduction of excessive pesticides
+  + Especially the reduction of excessive pesticides
 * Common application rates of pesticides in orchards
 * Potential Cost of an automatic section controlled sprayer
 * Changing climate influencing the frequency of pesticides application
@@ -83,16 +84,63 @@ A decision analysis on optimizing pesticide application in orchards with an LIDA
 * Farmers
   + 
 * Manufacturer (Currently developing a prototype)
-  + Cost and capabilities of an automatic section controlled sprayer
+  + Cost and capabilities of an automatic section control sprayer
 * Landwirtschaftskammer NRW
-  + potential subsidisation of automatic section controlled sprayer
-  + political foreshadowing of future legislations
+  + Potential subsidisation of automatic section control sprayer
+  + Political foreshadowing of future legislations
 * (commercial) Beekeepers
   + How much of an problem are pesticides
 * Consumers
-  + access the importance of an image
+  + Assess the importance/conception of reduced pesticide application to the consumer 
 
 
+#### Flow chart using diagrammeR package 
+```{r, include=FALSE}
+library(DiagrammeR)
+```
+
+```{r}
+grViz("
+      
+digraph boxes_and_circles {
+
+ # add note statements
+ node [shape = box
+       fontname = Helvatica
+       penwidth = 1]
+       
+ FP [label = 'Farmers profit']
+ M [label = 'Manufacturers']
+ Pe [label = 'Pesticides']
+ GC [label = 'Government concerns']
+ F [label = 'Fruits']
+ Bio [label = 'Biodiversity']
+ Ascs [label = 'Automated \n section \n controlled \n sprayer']
+ CW [label = 'Contaminated \n water']
+ 
+ node [shape = box]
+  
+ GC->FP [label = '  reduces']
+ F->FP [label = '  increases']
+ Pe->CW [label = '  increases']
+ CW->GC [label = '  increases']
+ FP->Ascs [label = '  increases']
+ Ascs->Pe [label = '  reduces']
+ M->FP [label = '  reduces']
+ Bio->F [label = '  increases']
+ Pe->Bio [label = '  reduces']
+ CW->Bio [label = '  reduces',
+          fontcolor = 'red',
+          color = 'red']
+ 
+
+ 
+ # add graph statements 
+ graph [nodesep = 0.1]
+
+}
+")
+```
 
 
 

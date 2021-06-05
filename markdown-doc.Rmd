@@ -66,7 +66,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 #### Obstacles:  
 * Costs of investment
 * Learning curve for running the equipment 
-
+* compatibility with current machinery
 
 #### Uncertainties:  
 * Potential reduction of pesticides using an automatic section controlled sprayer

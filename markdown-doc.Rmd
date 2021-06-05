@@ -101,7 +101,7 @@ library(DiagrammeRsvg)
 library(rsvg)
 ```
 
-```{r}
+```{r, echo=FALSE}
 model_flow_chart <- grViz("
       digraph boxes_and_circles {
 
@@ -119,7 +119,7 @@ model_flow_chart <- grViz("
  M [label = 'Manufacturers']
  Pe [label = 'Pesticides']
  GC [label = 'Government \n concerns']
- F [label = 'Fruits']
+ F [label = 'Fruit sells']
  Bio [label = 'Biodiversity']
  Ascs [label = 'Automated section \n controlled sprayer']
  CW [label = 'Contaminated \n water']
@@ -173,6 +173,10 @@ model_flow_chart <- grViz("
          
  Pe->F [label = '  increases',
         fontcolor = 'forestgreen',
+        color = 'forestgreen']
+        
+ Cu->F [lable = '  increases',
+        fontcolor = 'forest',
         color = 'forestgreen']
  
 

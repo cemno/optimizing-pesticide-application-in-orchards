@@ -97,12 +97,13 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 #### Flow chart using diagrammeR package 
 ```{r, include=FALSE}
 library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
 ```
 
 ```{r}
-grViz("
-      
-digraph boxes_and_circles {
+model_flow_chart <- grViz("
+      digraph boxes_and_circles {
 
   # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
   rankdir = 'TD'
@@ -180,6 +181,10 @@ digraph boxes_and_circles {
 
 }
 ")
+
+model_flow_chart
+rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
+
 ```
 
 

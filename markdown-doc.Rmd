@@ -110,7 +110,9 @@ digraph boxes_and_circles {
  # add note statements
  node [shape = box
        fontname = Helvatica
-       penwidth = 1]
+       penwidth = 1, 
+       fixedsize = true, 
+       width = 3]
        
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']
@@ -118,7 +120,7 @@ digraph boxes_and_circles {
  GC [label = 'Government \n concerns']
  F [label = 'Fruits']
  Bio [label = 'Biodiversity']
- Ascs [label = 'Automated \n section \n controlled \n sprayer']
+ Ascs [label = 'Automated section \n controlled sprayer']
  CW [label = 'Contaminated \n water']
  Cu [label = '  Customers']
  

@@ -196,7 +196,6 @@ digraph boxes_and_circles {
 ")
 
 model_flow_chart
-rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 
 

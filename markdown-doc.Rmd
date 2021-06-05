@@ -114,16 +114,21 @@ digraph boxes_and_circles {
  # Add node statements
  node [shape = box
        fontname = Arial
-       penwidth = 1, 
-       fixedsize = true, 
-       width = 3]
+       fontsize = 20 
+       color = gray50
+       penwidth = 1 
+       fixedsize = true 
+       width = 3
+       height = 0.7]
        
  # Add edge statements (arrows)
  edge [fontsize = 25
-       fontname = Arial]
+       fontname = Arial
+       penwidth = 1.5]
        
  # Add graph statements 
  graph [nodesep = 0.1]
+        
        
  FP [label = 'Farmers profit']
  M [label = 'Manufacturers']
@@ -131,13 +136,13 @@ digraph boxes_and_circles {
  GC [label = 'Government \n concerns']
  FS [label = 'Fruit sales']
  Bio [label = 'Biodiversity']
- Ascs [label = 'Automated section \n controlled sprayer']
- CW [label = 'Contaminated \n water']
+ Ascs [label = 'Automated section \n control sprayer']
+ WC [label = 'Water \n contamination']
  Cu [label = '  Customers']
  
  
 
- GC->FP [label = ' -',
+ GC->FP [label = '  -',
          fontcolor = 'red',
          color = 'red']
          
@@ -145,23 +150,19 @@ digraph boxes_and_circles {
         fontcolor = 'forestgreen',
         color = 'forestgreen']
  
- Pe->CW [label = '  +',
+ Pe->WC [label = '  +',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
  
- CW->GC [label = '  +',
+ WC->GC [label = '+',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
- 
- FP->Ascs [label = '  +',
-           fontcolor = 'forestgreen',
-           color = 'forestgreen']
  
  Ascs->Pe [label = '  -',
            fontcolor = 'red',
            color = 'red']
            
- M->FP [label = '  -',
+ M->FP [label = '-',
         fontcolor = 'red',
         color = 'red']
          
@@ -173,7 +174,7 @@ digraph boxes_and_circles {
           fontcolor = 'red',
           color = 'red']
          
- CW->Bio [label = '  -',
+ WC->Bio [label = '  -',
           fontcolor = 'red',
           color = 'red']
           
@@ -185,13 +186,21 @@ digraph boxes_and_circles {
          fontcolor = 'forestgreen',
          color = 'forestgreen']
         
- Cu->FS [label = '  +',
+ Cu->FS [label = '+',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
         
  Pe->FP [label = '  -',
          fontcolor = 'red',
          color = 'red']
+         
+ FP->M [label = '  +',
+        fontcolor = 'forestgreen',
+        color = 'forestgreen']
+        
+ M->Ascs [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
  
 }
 ")

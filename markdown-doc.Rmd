@@ -1,17 +1,14 @@
 ---
-title: "optimizing-pesticide-application-in-orchards"
+title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 output: html_document
 ---
-\ 
-
-# Implementing automated section control sprayers for optimising pesticide application in orchards
 
 \ 
 
 #### Description   
-A decision analysis on optimizing pesticide application in orchards with an LiDAR sensor and an automated section controlled sprayer.
+A decision analysis on optimizing pesticide application in orchards with an LIDAR sensor and an automated section controlled sprayer.
 
 \ 
 
@@ -71,10 +68,30 @@ A decision analysis on optimizing pesticide application in orchards with an LiDA
 
 
 #### Uncertainties:  
-
+* Potential reduction of pesticides using an automatic section controlled sprayer
+  + especially the reduction of excessive pesticides
+* Common application rates of pesticides in orchards
+* Potential Cost of an automatic section controlled sprayer
+* Changing climate influencing the frequency of pesticides application
+* Increased bee survival rate (as there still are pesticides, just less)
+* Added value through increased bee survival and thus increasing pollination
+* Governmental interest in pesticides reduction
+* Image of a farmer trying to reduce pesticides but still using them
+* Maintenance cost of an more complicated and sensitive system
 
 #### (Sources of) information:
-  
+* Farmers
+  + 
+* Manufacturer (Currently developing a prototype)
+  + Cost and capabilities of an automatic section controlled sprayer
+* Landwirtschaftskammer NRW
+  + potential subsidisation of automatic section controlled sprayer
+  + political foreshadowing of future legislations
+* (commercial) Beekeepers
+  + How much of an problem are pesticides
+* Consumers
+  + access the importance of an image
+
 
 
 

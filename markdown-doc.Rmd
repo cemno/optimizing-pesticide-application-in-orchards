@@ -167,6 +167,10 @@ digraph boxes_and_circles {
  Pe->Cu [label = '  reduces',
          fontcolor = 'red',
          color = 'red']
+         
+ Pe->F [label = '  increases',
+        fontcolor = 'forestgreen',
+        color = 'forestgreen']
  
 
  

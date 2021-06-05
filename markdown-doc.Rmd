@@ -175,7 +175,6 @@ digraph boxes_and_circles {
         color = 'forestgreen']
  
 
- 
  # add graph statements 
  graph [nodesep = 0.1]
 

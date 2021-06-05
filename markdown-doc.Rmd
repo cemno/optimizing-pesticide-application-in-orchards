@@ -116,7 +116,7 @@ digraph boxes_and_circles {
 
  # Add node statements
  node [shape = box
-       fontname = Helvatica
+       fontname = Arial
        penwidth = 1, 
        fixedsize = true, 
        width = 3]
@@ -132,7 +132,7 @@ digraph boxes_and_circles {
  M [label = 'Manufacturers']
  Pe [label = 'Pesticides']
  GC [label = 'Government \n concerns']
- F [label = 'Fruit sell']
+ FS [label = 'Fruit sales']
  Bio [label = 'Biodiversity']
  Ascs [label = 'Automated section \n controlled sprayer']
  CW [label = 'Contaminated \n water']
@@ -144,7 +144,7 @@ digraph boxes_and_circles {
          fontcolor = 'red',
          color = 'red']
          
- F->FP [label = '  +',
+ FS->FP [label = '  +',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
  
@@ -168,7 +168,7 @@ digraph boxes_and_circles {
         fontcolor = 'red',
         color = 'red']
          
- Bio->F [label = '  +',
+ Bio->FS [label = '  +',
          fontcolor = 'forestgreen',
          color = 'forestgreen']
  
@@ -184,13 +184,17 @@ digraph boxes_and_circles {
          fontcolor = 'red',
          color = 'red']
          
- Pe->F [label = '  +',
-        fontcolor = 'forestgreen',
-        color = 'forestgreen']
+ Pe->FS [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
         
- Cu->F [lable = '  increases',
-        fontcolor = 'forest',
-        color = 'forestgreen']
+ Cu->FS [label = '  +',
+         fontcolor = 'forestgreen',
+         color = 'forestgreen']
+        
+ Pe->FP [label = '  -',
+         fontcolor = 'red',
+         color = 'red']
  
 }
 ")

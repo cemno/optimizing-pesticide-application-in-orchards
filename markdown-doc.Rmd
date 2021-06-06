@@ -85,7 +85,9 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
+<<<<<<< HEAD
 #### Options:  
+=======
 * Buy automatic section control sprayer
 * keeping / buying a manual section control sprayer
 * Spray less pesticide with existing machinery 
@@ -97,6 +99,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 #### Allocation of resources:  
 * Money
   + Overheads
+  + Overheads        
   + Running costs 
 * Labour 
   + Conducting actual tasks 

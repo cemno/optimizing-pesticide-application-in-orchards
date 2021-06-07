@@ -150,115 +150,105 @@ library(rsvg)
 ```{r, echo=FALSE}
 
 model_flow_chart <- grViz("
-      
-digraph boxes_and_circles {
 
- # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
- rankdir = 'TD'
+digraph {
+  
+  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
+  rankdir = 'LR'
+  
+  # Add graph statements 
+  graph [layout=dot,
+         label = 'Initial Model\n\n',
+         labelloc = t,
+         headlabel ='1',
+         fontsize = 45,
+         nodesep = .5,
+         ranksep = 1]
+  
+  # Add node statements
+  node [shape = box,
+        fontname = Arial,
+        fontsize = 20,
+        fontcolor = black,
+        color = darkslategray,
+        penwidth = 1,
+        fixedsize = true,
+        width = 3,
+        height = 0.7]
+  
+  edge [fontsize=30,
+        penwidth=2,
+        fontname=Arial]
+  
+  # Create nodes
+  
+  subgraph {
+    rank = same;
+    Ascs [label = 'Automated section \n control sprayer',
+          fontsize = 30,
+          fixedsize = true,
+          width = 7,
+          height = 2]
+    
+    Al1 [label = 'Alternative1',
+         fontsize = 30,
+         fixedsize = true,
+         width = 7,
+         height = 2]
+    Al2 [label = 'Alternative2',
+         fontsize = 30,
+         fixedsize = true,
+         width = 7,
+         height = 2]
+  }
+  
+  Pe [label = 'Pesticides']
+  
+  subgraph {
+    rank = same;
+    Di [label = 'Diseases'];
+    Bio [label = 'Biodiversity'];
+    WC [label = 'Water \n contamination'];
+    Cu [label = 'Customers']
+  }
+  
+  FP [label = 'Farmers profit']
+  GC [label = 'Government \n concerns']
+  FS [label = 'Fruit sales']
+  
+  
+  
+  # Add edge statements for negative connection (arrows)
+  edge [label = '-',
+        fontcolor = 'red',
+        color = 'red']
+  {Ascs Al1 Al2}->Pe
+  Pe->{Bio Cu Di FP} 
+  GC->FP
+  WC->Bio
+  Bio->Di
+  Di->FS
+  
 
- # Add node statements
- node [shape = box
-       fontname = Arial
-       fontsize = 20 
-       color = gray50
-       penwidth = 1 
-       fixedsize = true 
-       width = 3
-       height = 0.7]
-       
- # Add edge statements (arrows)
- edge [fontsize = 25
-       fontname = Arial
-       penwidth = 1.5]
-       
- # Add graph statements 
- graph [nodesep = 0.1]
-        
- 
- # Create nodes 
-       
- FP [label = 'Farmers profit']
- Pe [label = 'Pesticides']
- Di [label = 'Diseases']
- GC [label = 'Government \n concerns']
- FS [label = 'Fruit sales']
- Bio [label = 'Biodiversity']
- Ascs [label = 'Automated section \n control sprayer']
- WC [label = 'Water \n contamination']
- Cu [label = 'Customers']
- 
- 
- # Interconnections 
-
- GC->FP [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-         
- FS->FP [label = '  +',
+  # Add edge statements for positive connection (arrows)
+  edge [label = '+',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
- 
- Pe->WC [label = '  +',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- WC->GC [label = '+',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Ascs->Pe [label = '  -',
-           fontcolor = 'red',
-           color = 'red']
-         
- Bio->FS [label = '  +',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
- 
- Pe->Bio [label = '  -',
-          fontcolor = 'red',
-          color = 'red']
-         
- WC->Bio [label = '  -',
-          fontcolor = 'red',
-          color = 'red']
-          
- Pe->Cu [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-         
- Pe->Di [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-         
- Bio->Di [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-         
- Di->FS [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-        
- Cu->FS [label = '+',
-         fontcolor = 'forestgreen',
-         color = 'forestgreen']
-        
- Pe->FP [label = '  -',
-         fontcolor = 'red',
-         color = 'red']
-         
- FP->Ascs [label = '  +',
-           fontcolor = 'forestgreen',
-           color = 'forestgreen']
-}
-")
+  Pe->WC 
+  FS->FP 
+  WC->GC 
+  Bio->FS
+  Cu->FS
+  
+}")
+
+
 
 # Plot flow chart 
 model_flow_chart
 
 # Export flow chart as .png files; save in "images" folder 
 rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png") 
-
-
 
 ```
 

@@ -165,7 +165,7 @@ digraph {
          nodesep=1]
   
   # Add node statements
-  node [fontname = Arial
+  node [fontname = Arial,
         fontcolor = black,
         color = darkslategray,
         penwidth = 1]
@@ -234,8 +234,7 @@ digraph {
         color = 'red']
   Ascs->Co
   {Ascs Al1 Al2}->Pe
-  Pe->{Bio Di Cu}
-  Pe->Co
+  Pe->{Bio Di Cu Co}
   GC->FP
   WC->Bio
   Bio->Di
@@ -274,6 +273,18 @@ digraph {
   
   {
     rank3 -> WC -> Bio -> Di -> Cu [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    rank4 -> GC -> FS [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+
+  {
+    rank5 -> FS [style=invis];
     rank=same;
     rankdir=TD;
   }

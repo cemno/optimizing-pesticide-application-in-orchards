@@ -158,71 +158,72 @@ digraph {
   rankdir = 'LR'
   
   # Add graph statements 
-  graph [label = 'Initial Model\n\n',
+  graph [label = 'Initial Model',
          labelloc = t,
-         headlabel ='1',
          fontsize = 45,
-         # nodesep = 1,
-         ranksep = 1.5]
-         
+         ranksep=2,
+         nodesep=1]
+  
   # Add node statements
-  node [shape = box,
-        fontname = Arial
+  node [fontname = Arial
         fontcolor = black,
         color = darkslategray,
         penwidth = 1]
-        
+  
   # Add edge statements
   edge [fontsize=30,
         penwidth=2,
         fontname=Arial]
   # ---------  
   
-  # Add node group {Intervention & Alternatives} specific statements and group the nodes
-  # ---------
-  node [fontsize = 20,
-        fixedsize = true,
-        width = 3,
-        height = 1] 
+  # ---------  
+  # create 'ranks' (basically nodes) for arranging nodes later on
+  rank1 [style=invis]
+  rank2 [style=invis]
+  rank3 [style=invis]
+  rank4 [style=invis]
+  rank5 [style=invis]
   
-  subgraph {
-    rank = same;
-    
+  # make invisible (white) links between them
+  rank1->rank2->rank3->rank4->rank5 [color=white]
+  # ---------  
+  
+  # ---------  
+  # Add specific statements for node group {Intervention & Alternatives} 
+  node [shape = diamond,
+        fontsize = 23,
+        fixedsize = true,
+        width = 3.5,
+        height = 2.5] 
+
     Ascs [label = 'Automated section \n control sprayer'];
     Al1 [label = 'Alternative1'];
     Al2 [label = 'Alternative2']
-  }
   # ---------
   
-  # Add node group {Pesticides & Cost} specific statements and group the nodes
+  
+  
+  # Add specific statements for node group {Pesticides & Cost} 
   # --------- 
-  node [fontsize = 20,
+  node [shape = box,
+        fontsize = 20,
         fixedsize = true,
         width = 3,
         height = .7]
   
-  subgraph {
-    rank = same;
-    
-    label = '';
-    Pe [label = 'Pesticides'];
-    Co [label = 'Cost']
-  }
-  # ---------  
+  Pe [label = 'Pesticides'];
+  Co [label = 'Cost']
   
-  # ---------  
-  subgraph {
-    rank = same;
-    
-    Di [label = 'Diseases'];
-    Bio [label = 'Biodiversity'];
-    WC [label = 'Water \n contamination'];
-    Cu [label = 'Customers']
-  } [color = crimson]
+  Cu [label = 'Customers'];          
+  Di [label = 'Diseases'];
+  Bio [label = 'Biodiversity'];
+  WC [label = 'Water \n contamination'];
+  
+  FS [label = 'Fruit sales'];
+  GC [label = 'Government \n concerns'];
   
   FP [label = 'Farmers profit']
-  GC [label = 'Government \n concerns']
-  FS [label = 'Fruit sales']
+  
   # ---------  
   
   
@@ -233,8 +234,8 @@ digraph {
         color = 'red']
   Ascs->Co
   {Ascs Al1 Al2}->Pe
-  Pe->{Bio Di FP}
-  Pe->Cu
+  Pe->{Bio Di Cu}
+  Pe->Co
   GC->FP
   WC->Bio
   Bio->Di
@@ -247,13 +248,36 @@ digraph {
   edge [label = '+',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
-        
+  
   {Al1 Al2}->Co
   Pe->WC 
   FS->FP 
   WC->GC 
-  Bio->FS
+  Bio->{FS GC}
   Cu->FS
+  # ---------  
+  
+  # ---------  
+  # sorting the nodes per rank
+  
+  {
+    rank1 -> Ascs -> Al1 -> Al2 [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    rank2 -> Co -> Pe [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    rank3 -> WC -> Bio -> Di -> Cu [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
   # ---------  
   
 }")

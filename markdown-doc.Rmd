@@ -17,7 +17,6 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Stake holders: (describe further)
 #### Stakeholders: (describe further)
 * Farmer
   + importance: very high

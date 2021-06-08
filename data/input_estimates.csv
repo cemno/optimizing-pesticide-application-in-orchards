@@ -1,6 +1,7 @@
 variable;lower;median;upper;distribution;label;Description
-Farmers Profit;;;;;;
 Automated section control sprayer;;;;;;
+Manual section control sprayer;;;;;;
+Farmers Profit;;;;;;
 Pesticides;;;;;;
 Water contamination;;;;;;
 Customers;;;;;;

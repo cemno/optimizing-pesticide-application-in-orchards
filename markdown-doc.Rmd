@@ -85,9 +85,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-<<<<<<< HEAD
 #### Options:  
-=======
 * Buy automatic section control sprayer
 * keeping / buying a manual section control sprayer
 * Spray less pesticide with existing machinery 
@@ -182,10 +180,10 @@ digraph {
   
   # Add node group {Intervention & Alternatives} specific statements and group the nodes
   # ---------
-  node [fontsize = 30,
+  node [fontsize = 20,
         fixedsize = true,
-        width = 7,
-        height = 2] 
+        width = 3,
+        height = 1] 
   
   subgraph {
     rank = same;
@@ -236,7 +234,7 @@ digraph {
   Ascs->Co
   {Ascs Al1 Al2}->Pe
   Pe->{Bio Di FP}
-#  Pe->Cu
+  Pe->Cu
   GC->FP
   WC->Bio
   Bio->Di

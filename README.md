@@ -5,15 +5,12 @@ So far we have identified several [key aspects](http://htmlpreview.github.io/?ht
 
 We have also established a first model to visualise the expected dynamic of the decision and including the most important factors.
 
-/
-
 ![Model of the decision to buy a new, pesticides reducing sprayer.](images/flow-chart.png) 
 
-/
+  
 
 <p>For a better visualisation of the automated section controlled sprayer in question we have two concept graphics:</p>
 
-/
 
 ![How to spray in orchards](images/image.png)
 

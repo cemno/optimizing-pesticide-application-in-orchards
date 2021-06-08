@@ -153,92 +153,110 @@ model_flow_chart <- grViz("
 
 digraph {
   
+  # Add general information which counts for everything!!!
+  
+  # ---------
   # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
   rankdir = 'LR'
   
   # Add graph statements 
-  graph [layout=dot,
-         label = 'Initial Model\n\n',
+  graph [label = 'Initial Model\n\n',
          labelloc = t,
          headlabel ='1',
          fontsize = 45,
-         nodesep = .5,
-         ranksep = 1]
-  
+         # nodesep = 1,
+         ranksep = 1.5]
+         
   # Add node statements
   node [shape = box,
-        fontname = Arial,
-        fontsize = 20,
+        fontname = Arial
         fontcolor = black,
         color = darkslategray,
-        penwidth = 1,
-        fixedsize = true,
-        width = 3,
-        height = 0.7]
-  
+        penwidth = 1]
+        
+  # Add edge statements
   edge [fontsize=30,
         penwidth=2,
         fontname=Arial]
+  # ---------  
   
-  # Create nodes
+  # Add node group {Intervention & Alternatives} specific statements and group the nodes
+  # ---------
+  node [fontsize = 30,
+        fixedsize = true,
+        width = 7,
+        height = 2] 
   
   subgraph {
     rank = same;
-    Ascs [label = 'Automated section \n control sprayer',
-          fontsize = 30,
-          fixedsize = true,
-          width = 7,
-          height = 2]
     
-    Al1 [label = 'Alternative1',
-         fontsize = 30,
-         fixedsize = true,
-         width = 7,
-         height = 2]
-    Al2 [label = 'Alternative2',
-         fontsize = 30,
-         fixedsize = true,
-         width = 7,
-         height = 2]
+    Ascs [label = 'Automated section \n control sprayer'];
+    Al1 [label = 'Alternative1'];
+    Al2 [label = 'Alternative2']
   }
+  # ---------
   
-  Pe [label = 'Pesticides']
+  # Add node group {Pesticides & Cost} specific statements and group the nodes
+  # --------- 
+  node [fontsize = 20,
+        fixedsize = true,
+        width = 3,
+        height = .7]
   
   subgraph {
     rank = same;
+    
+    label = '';
+    Pe [label = 'Pesticides'];
+    Co [label = 'Cost']
+  }
+  # ---------  
+  
+  # ---------  
+  subgraph {
+    rank = same;
+    
     Di [label = 'Diseases'];
     Bio [label = 'Biodiversity'];
     WC [label = 'Water \n contamination'];
     Cu [label = 'Customers']
-  }
+  } [color = crimson]
   
   FP [label = 'Farmers profit']
   GC [label = 'Government \n concerns']
   FS [label = 'Fruit sales']
+  # ---------  
   
   
-  
-  # Add edge statements for negative connection (arrows)
+  # Add edge statements for negative connection (arrows) and add the connections
+  # ---------  
   edge [label = '-',
         fontcolor = 'red',
         color = 'red']
+  Ascs->Co
   {Ascs Al1 Al2}->Pe
-  Pe->{Bio Cu Di FP} 
+  Pe->{Bio Di FP}
+#  Pe->Cu
   GC->FP
   WC->Bio
   Bio->Di
   Di->FS
+  Co->FP
+  # ---------  
   
-
-  # Add edge statements for positive connection (arrows)
+  # Add edge statements for positive connection (arrows) and add the connections
+  # ---------  
   edge [label = '+',
         fontcolor = 'forestgreen',
         color = 'forestgreen']
+        
+  {Al1 Al2}->Co
   Pe->WC 
   FS->FP 
   WC->GC 
   Bio->FS
   Cu->FS
+  # ---------  
   
 }")
 

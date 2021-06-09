@@ -136,7 +136,8 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
   + Assess the importance/conception of reduced pesticide application to the consumer 
 
 
-#### Flow chart using diagrammeR package 
+
+#### Flow chart using diagrammeR package ----  
 ```{r, include=FALSE}
 library(DiagrammeR)
 library(DiagrammeRsvg)
@@ -383,4 +384,11 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 <!-- ``` -->
 
+
+#### Notes for improvement from the seminar  
+*
+*
+*
+*
+* 
  

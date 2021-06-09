@@ -17,7 +17,6 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Stake holders: (describe further)
 #### Stakeholders: (describe further)
 * Farmer
   + importance: very high
@@ -158,7 +157,7 @@ digraph {
   rankdir = 'LR'
   
   # Add graph statements 
-  graph [label = 'Initial Model',
+  graph [#label = 'Initial Model',
          labelloc = t,
          fontsize = 45,
          ranksep=2,
@@ -190,15 +189,15 @@ digraph {
   
   # ---------  
   # Add specific statements for node group {Intervention & Alternatives} 
-  node [shape = diamond,
-        fontsize = 23,
+  node [shape = box,
+        fontsize = 30,
         fixedsize = true,
-        width = 3.5,
-        height = 2.5] 
+        width = 3.6,
+        height = 1.5]
 
     Ascs [label = 'Automated section \n control sprayer'];
-    Al1 [label = 'Alternative1'];
-    Al2 [label = 'Alternative2']
+    Al1 [label = 'Manual section \n control sprayer'];
+#    Al2 [label = 'Trittleiter']
   # ---------
   
   
@@ -206,10 +205,10 @@ digraph {
   # Add specific statements for node group {Pesticides & Cost} 
   # --------- 
   node [shape = box,
-        fontsize = 20,
+        fontsize = 28,
         fixedsize = true,
-        width = 3,
-        height = .7]
+        width = 2.8,
+        height = 0.9]
   
   Pe [label = 'Pesticides'];
   Co [label = 'Cost']
@@ -229,15 +228,15 @@ digraph {
   
   # Add edge statements for negative connection (arrows) and add the connections
   # ---------  
-  edge [label = '-',
+  edge [label = '-    ',
         fontcolor = 'red',
         color = 'red']
-  Ascs->Co
-  {Ascs Al1 Al2}->Pe
-  Pe->{Bio Di Cu Co}
+  {Ascs Al1}->Pe
+#  Al2->Pe
+  Pe->{Bio Di Cu}
   GC->FP
   WC->Bio
-  Bio->Di
+  Bio->{Di GC}
   Di->FS
   Co->FP
   # ---------  
@@ -248,11 +247,12 @@ digraph {
         fontcolor = 'forestgreen',
         color = 'forestgreen']
   
-  {Al1 Al2}->Co
-  Pe->WC 
+  {Ascs Al1}->Co
+#  Al2->Co
+  Pe->{WC Co} 
   FS->FP 
   WC->GC 
-  Bio->{FS GC}
+  Bio->FS
   Cu->FS
   # ---------  
   
@@ -260,35 +260,36 @@ digraph {
   # sorting the nodes per rank
   
   {
-    rank1 -> Ascs -> Al1 -> Al2 [style=invis];
+    rank1 -> Ascs -> Al1 [style=invis];
+    # rank1 -> Ascs -> Al1 -> Al2 [style=invis];
     rank=same;
-    rankdir=TD;
+    rankdir=DT;
   }
   
   {
     rank2 -> Co -> Pe [style=invis];
     rank=same;
-    rankdir=TD;
+    rankdir=DT;
   }
   
   {
-    rank3 -> WC -> Bio -> Di -> Cu [style=invis];
+    rank3 -> Di -> Cu -> Bio -> WC [style=invis];
     rank=same;
-    rankdir=TD;
+    rankdir=DT;
   }
   
-  {
-    rank4 -> GC -> FS [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-
-  {
-    rank5 -> FS [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
+  # {
+  #   rank4 -> FS -> GC [style=invis];
+  #   rank=same;
+  #   rankdir=DT;
+  # }
+# 
+#   {
+#     rank5 -> FS [style=invis];
+#     rank=same;
+#     rankdir=DT;
+#   }
+#   
   # ---------  
   
 }")

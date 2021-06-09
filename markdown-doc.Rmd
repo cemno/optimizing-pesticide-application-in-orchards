@@ -385,10 +385,23 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 <!-- ``` -->
 
 
-#### Notes for improvement from the seminar  
-*
-*
-*
-*
-* 
+
+
+#### Notes for improvement from the seminar 
+
+
+**Inspiration from other presentations**  
+
+* Implement "interception" aspect at the base of the model  
+* End model with "Overall value"/"NPV" instead of "Farmer's profit" 
+* Add legend to the model visualisation  
+
+
+**Suggestions to improve our model**  
+* Orchard size:
+  + Keep applicability to many different situations in minds 
+  + Create a number of realistic scenarios 
+* Estimate maximum area one unit can work on $\Rightarrow$ Set maximum workload as upper boundary 
+  + Consider max. speed, max. uninterrupted working hours 
+ 
  

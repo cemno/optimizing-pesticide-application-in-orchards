@@ -311,7 +311,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 <!-- ```{r echo = FALSE} -->
 <!-- # Input table for model function, adding Management_cost -->
 
-<!-- input_estimates <- data.frame(variable = c("Farmers Profit", "Automated section control", "Pesticides", "Water contamination", " Customers", "Goverment concerens", "Biodiversity", "Diseases", "Fruit sales"), -->
+<!-- input_estimates <- data.frame(variable = c("Farmers Profit", "Automated section control", "Pesticides", "Water contamination", " Customers", "Government concerns", "Biodiversity", "Diseases", "Fruit sales"), -->
 <!--                               lower = c(6000, 3, 500, 100), -->
 <!--                               median = NA, -->
 <!--                               upper = c(14000, 8, 1000, 2000), -->

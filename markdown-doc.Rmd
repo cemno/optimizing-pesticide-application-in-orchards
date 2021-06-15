@@ -421,10 +421,32 @@ library(dplyr)
 library(igraph)
 ```
 
-```{r, echo = FALSE}
 ### Seminar 08
+Model Framework
+* Runs for 10 years (Time to be financially feasible)
+* One sprayer can handle 15 ha
 
 
+Assigning model variables to variable type
+
+* Event (`chance_event()`, simulate occurrence of random events), either happens or not
+  + Governments concern triggers intervention, which results in the end of the model (less chance to occur for the automated one)
+  + Disease infection, chance might be reduced with better biodiversity. Different severities.
+
+* Fix variables
+  + Cost of the machines are given (distribution)
+  + Pesticides is a yearly necessity (distribution of mean over many years)
+
+* Time-dependent variables (`vv()`, value varier function), variables that change with every iteration
+  + Water contamination
+  + Customers
+  + Biodiversity (maybe using a logistic function?)
+  + Fruit sales
+
+* Combined variables
+  + Both events are also time dependent, as higher water contamination rises goverments concern and thus an intervention
+
+```{r, echo = FALSE}
 ## Building a decision model as an R function 
 
 example_decision_function <- function(x, varnames){
@@ -578,7 +600,7 @@ input_table <- read.csv("data/example_input_table.csv")
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = decisionSupport::estimate_read_csv("data/example_input_table.csv"),
   model_function = example_decision_function,
-  numberOfModelRuns = 200,
+  numberOfModelRuns = 20000,
   functionSyntax = "plainNames"
 )
 

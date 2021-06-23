@@ -6,6 +6,12 @@
 
 ascs_decision_function <- function(x, varnames){
 
+pesticide_quantity_aut_min <- vv(pesticide_application_quantity_aut, var_CV, n_years) # minimum application quantity (automated) to get no plant damage, will be influenced by (?)
+pesticide_quantity_man_min <- vv(pesticide_application_quantity_man, var_CV, n_years) # minimum application quantity (not automated) to get no plant damage, will be influenced by (?)
+
+government_pest_event_factor_aut <- pesticide_quantity_aut_min/pesticide_quantity_gov
+government_pest_event_factor_man <- pesticide_quantity_man_min/pesticide_quantity_gov  
+  
 government_pest_event_aut <-
   chance_event( chance = c(government_pest_event,rep(government_pest_event*government_pest_event_factor_aut,4), rep(0, 6)),
                 1, # pesticide_quantity_gov, 
@@ -13,17 +19,29 @@ government_pest_event_aut <-
                 n = 10 )
 
 government_pest_event_man <-
-  chance_event( chance = c(government_pest_event,rep(government_pest_event*government_pest_event_factor_man,4), rep(0, 5)),
+  chance_event( chance = c(government_pest_event, rep(government_pest_event*government_pest_event_factor_man,4), rep(0, 5)),
                 1, # pesticide_quantity_gov, 
                 0, # pesticide_quantity_man,
                 n = 10 )
+# n_years = 10
+# government_pest_event_aut <- c(0,0,0,1,1,0,0,0,0,0)
+# government_pest_event_man <- c(0,0,0,0,1,0,0,0,0,0)
 
-pesticide_quantity_aut_min <- vv(pesticide_application_quantity_aut, var_CV, n_years) # minimum application quantity (automated) to get no plant damage, will be influenced by (?)
-pesticide_quantity_man_min <- vv(pesticide_application_quantity_man, var_CV, n_years) # minimum application quantity (not automated) to get no plant damage, will be influenced by (?)
+years_without_gi_aut <- if ((is.numeric(min(which(c(government_pest_event_aut == 1)))))&(is.finite(min(which(c(government_pest_event_aut == 1)))))) {
+  min(which(government_pest_event_aut == 1))+3
+  }else (n_years-1)
 
-government_pest_event_factor_aut <- pesticide_quantity_aut_min/pesticide_quantity_gov
-government_pest_event_factor_man <- pesticide_quantity_man_min/pesticide_quantity_gov
+years_with_gi_aut <- if ((is.numeric(min(which(c(government_pest_event_aut == 1)))))&(is.finite(min(which(c(government_pest_event_aut == 1)))))) {
+  (n_years-1) - (min(which(government_pest_event_aut == 1))+3)
+  }else 0
 
+years_without_gi_man <- if ((is.numeric(min(which(c(government_pest_event_man == 1)))))&(is.finite(min(which(c(government_pest_event_man == 1)))))) {
+  min(which(government_pest_event_man == 1))+3
+  }else (n_years-1)
+
+years_with_gi_man <- if ((is.numeric(min(which(c(government_pest_event_man == 1)))))&(is.finite(min(which(c(government_pest_event_man == 1)))))) {
+  (n_years-1) - (min(which(government_pest_event_man == 1))+3)
+  }else 0
 
 
 rel_water_cont_dec <- vv(rel_water_contamination,
@@ -95,27 +113,32 @@ for (decision_intervention_machine in c(FALSE,TRUE))
     
   # government intervention influence on automated system
   if ( (government_pest_event_aut)&(decision_intervention_machine) ) {
-    pesticide_quantity_aut_min <- vv(c(rep(pesticide_application_quantity_aut,5), rep(pesticide_quantity_gov, 5)), # if it occured only in the 4th year it would not count for the second half of our n_years but only for the 9th and 10th (the 5 must be a variable determined by the first occurance of the chance event)
-                                   var_CV = 0, # varies for the years without gov. intervention but will be capped at max (pesticide_quantity_gov) for the rest
+    pesticide_quantity_aut_min <- vv(c(rep(pesticide_application_quantity_aut,years_without_gi_aut), rep(pesticide_quantity_gov, years_with_gi_aut)), 
+                                   var_CV = 0, # varies for the years without gov. intervention but will be capped at max (pesticide_quantity_gov) for the rest 
                                    n = 10)
-    water_cont <- c( rep((rel_water_cont_dec + ((pesticide_quantity_aut_min - pesticide_quantity_gov)*0.1)),5), rep(rel_water_contamination,5))  
-    biodiversity_increase <- TRUE # yes but it could change a little after the implementation of the government guideline ( the automated one reduces the application quantity but might still be a little above the guideline)
+    water_cont <- vv(c( rel_water_contamination, rep((rel_water_cont_dec + ((pesticide_quantity_aut_min - pesticide_quantity_gov)*0.1)),years_without_gi_aut), rep(rel_water_contamination,years_with_gi_aut )),
+                     var_CV = 0,
+                     n = 10)  
+    biodiversity <- vv( c(rel_biodiversity, rep((rel_biodiversity_inc - (pesticide_quantity_aut_min*0.1)),years_without_gi_man), rep(rel_water_contamination,years_with_gi_man)),
+                        var_CV = 0,
+                        n = 10)
     plant_damage <- TRUE # not for the years without the guideline. yes, if the the automated application quantity (the quantity to have 0 plant damage) was above the government application quantity
     factor_government_concern <- TRUE
   }
   
   # government intervention influence on non automated system
   if ( (government_pest_event_man)&(!decision_intervention_machine) ) {
-    pesticide_quantity_man_min <- vv(c(rep(pesticide_application_quantity_man,5), rep(pesticide_quantity_gov, 5)), # if it occured only in the 4th year it would not count for the second half of our n_years but only for the 9th and 10th (the 5 must be a variable determined by the first occurance of the chance event)
+    pesticide_quantity_man_min <- vv(c(rep(pesticide_application_quantity_man,years_without_gi_man), rep(pesticide_quantity_gov, years_with_gi_man)), 
                                    var_CV = 0, # varies for the years without gov. intervention but will be capped at max (pesticide_quantity_gov) for the rest
                                    n = 10)
-    water_cont <- c( rep((rel_water_cont_dec + ((pesticide_quantity_man_min - pesticide_quantity_gov)*0.1)),5), rep(rel_water_contamination,5))
+    water_cont <- c( rep((rel_water_cont_dec + ((pesticide_quantity_man_min - pesticide_quantity_gov)*0.1)),years_without_gi_man), rep(rel_water_contamination,years_with_gi_man))
                          rel_biodiversity_inc - (pesticide_quantity_man_min*0.1) # same assumptions and problems as above
-    biodiversity <- c( rep((rel_biodiversity_inc - (pesticide_quantity_man_min*0.1)),5), rep(rel_water_contamination,5))  # but only after the implementation of the government guideline ( first occurrence of chance event +5 )
+    biodiversity <- c(rel_biodiversity, rep((rel_biodiversity_inc - (pesticide_quantity_man_min*0.1)),years_without_gi_man), rep(rel_water_contamination,years_with_gi_man))  # but only after the implementation of the government guideline ( first occurrence of chance event +5 )
     plant_damage <- TRUE # not for the years without the guideline, but for the years where the manual application quantity (the quantity to have 0 plant damage) was above the government application quantity
   }
 
 }
+
 cost_aut = pesticide_quantity_aut_min * pesticide_cost + machine_cost
 cost_man = pesticide_quantity_man_min * pesticide_cost
 

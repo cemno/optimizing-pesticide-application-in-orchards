@@ -1,11 +1,11 @@
 variable;lower;median;upper;distribution;label;description
 initial_upg_cost;5000;;8000;posnorm;Euro;upgreat costs to automate a manual section controled sprayer (Euro)
-initial_int_cost;14000;;47000;posnorm;Euro;investmant costs for a automated section controled sprayer (Euro)
+initial_auto_cost;14000;;47000;posnorm;Euro;investmant costs for a automated section controled sprayer (Euro)
 initial_man_cost;10000;;40000;posnorm;Euro;investmant costs for a manual section controled sprayer (Euro)
-pesticide_cost;500;;900;posnorm;Euro/ha;cpsts of pesticides (Euro/ha)
-pesticide_quantity_int;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
-pesticide_quantity_man;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the automates section controle sprayer
-potential_plant_damage;;;;;;potential damage the plants could take if no spraying is done, influenced by weather biodiversity, etc
+pesticide_cost;717;;717;const;Euro/ha;cpsts of pesticides (Euro/ha)
+pesticide_quantity;0,7;;1,3;posnorm;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
+pesticide_reduction_auto;0,05;;0,25;posnorm;;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
+potential_plant_damage;0,7;;1,3;posnorm;;potential damage the plants could take if no spraying is done, influenced by weather, pests, diseases, biodiversity, etc
 plant_damage;;;;;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
 biodiversity;;;;;;
 water_contamination ;;;;;;

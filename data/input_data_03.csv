@@ -6,6 +6,7 @@ pesticide_cost;500;;900;posnorm;Euro/ha;cpsts of pesticides (Euro/ha)
 pesticide_quantity_int;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
 pesticide_quantity_man;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the automates section controle sprayer
 potential_plant_damage;;;;;;potential damage the plants could take if no spraying is done, influenced by weather biodiversity, etc
+plant_damage;;;;;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
 biodiversity;;;;;;
 water_contamination ;;;;;;
 government_concern;;;;;;

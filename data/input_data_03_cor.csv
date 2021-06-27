@@ -1,4 +1,4 @@
 X;potential_plant_damage;biodiversity;pesticide_quantity
-potential_plant_damage;1;-0,1;-0,2
+potential_plant_damage;1;-0,1;0,2
 biodiversity;-0,1;1;-0,25
-pesticide_quantity;-0,2;-0,25;1
+pesticide_quantity;0,2;-0,25;1

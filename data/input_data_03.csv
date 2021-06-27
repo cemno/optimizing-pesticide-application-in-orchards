@@ -1,0 +1,16 @@
+variable;lower;median;upper;distribution;label;description
+initial_upg_cost;5000;;8000;posnorm;Euro;upgreat costs to automate a manual section controled sprayer (Euro)
+initial_int_cost;14000;;47000;posnorm;Euro;investmant costs for a automated section controled sprayer (Euro)
+initial_man_cost;10000;;40000;posnorm;Euro;investmant costs for a manual section controled sprayer (Euro)
+pesticide_cost;500;;900;posnorm;Euro/ha;cpsts of pesticides (Euro/ha)
+pesticide_quantity_int;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
+pesticide_quantity_man;;;;;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the automates section controle sprayer
+potential_plant_damage;;;;;;potential damage the plants could take if no spraying is done, influenced by weather biodiversity, etc
+biodiversity;;;;;;
+water_contamination ;;;;;;
+government_concern;;;;;;
+yield;20;;60;posnorm;t/ha;yield (t/ha)
+market_price;500;;800;posnorm;Euro/t;fruit price (Euro/t)
+sprayer_lifetime;;;;;;the estimated lifetime of a new sprayer in years
+n_years;10;;10;const;years;timespan of the model 
+var_CV;5;;25;posnorm;;

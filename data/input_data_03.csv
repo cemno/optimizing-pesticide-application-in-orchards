@@ -6,11 +6,11 @@ pesticide_cost;717;;717;const;Euro/ha;cpsts of pesticides (Euro/ha)
 pesticide_quantity;0,7;;1,3;posnorm;;relarive quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
 pesticide_reduction_auto;0,05;;0,25;posnorm;;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
 potential_plant_damage;0,7;;1,3;posnorm;;potential damage the plants could take if no spraying is done, influenced by weather, pests, diseases, biodiversity, etc
-plant_damage;1;;1;const;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
-biodiversity;1;;1;const;;
-water_contamination ;1;;1;const;;
-government_concern;1;;1;const;;
-customer;1;;1;const ;;
+plant_damage;;;;;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
+biodiversity;;;;;;
+water_contamination ;;;;;;
+government_concern;;;;;;
+customer;;;;;;
 yield;20;;60;posnorm;t/ha;yield (t/ha)
 market_price;500;;800;posnorm;Euro/t;fruit price (Euro/t)
 sprayer_lifetime;;;;;;the estimated lifetime of a new sprayer in years

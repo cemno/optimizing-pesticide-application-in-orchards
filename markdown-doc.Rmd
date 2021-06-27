@@ -338,8 +338,8 @@ ascs_decision_model <- function(x, varnames){
   fruit_sales_e_ha <- yield_t_ha * market_price_e_t
   
   #  --- profit   
-  farmers_profit_aut = fruit_sales_e_ha - pesticide_cost_ha_aut - machine_cost
-  farmers_profit_man = fruit_sales_e_ha - pesticide_cost_ha_man
+  farmers_profit_aut = fruit_sales_e_ha - pest_cost_ha_aut - machine_upg_cost
+  farmers_profit_man = fruit_sales_e_ha - pest_cost_ha_man
 
   #  --- NPV   
   NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
@@ -357,17 +357,36 @@ ascs_decision_model <- function(x, varnames){
 
 
 ## Importing input table 
-input_table <- read.csv("data/input_data_03.csv", sep = ";")
+input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
+input_table <- drop_na(input_table, c("lower","upper"))
+write.csv(input_table, "data/final/inputs.csv")
+input_table <- read.csv("data/final/inputs.csv")
 
+input_table_cor1 <- read.csv("data/input_data_03_cor.csv", sep = ";", dec = ",")
+#input_table <- drop_na(input_table, c("lower","upper"))
+write.csv(input_table_cor1, "data/final/inputs_cor.csv")
+
+
+estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
+                  potential_plant_damage,                      1,               0.9
+                  pesticide_quantity,                        0.9,                1"
+
+input_table <- as.estimate(input_table, correlation_matrix = data.matrix(read.csv(text=estimateTextCor, 
+                                                                  row.names=1,
+                                                                  strip.white=TRUE)))
+input_table
+#write.csv(input_table, "data/final/inputs.csv")
+
+#test_estimate$
 
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
-  estimate = decisionSupport::estimate_read_csv("data/input_data_03.csv"),
+#  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
+  estimate = input_table,
   model_function = ascs_decision_model,
-  numberOfModelRuns = 200,
+  numberOfModelRuns = 2000,
   functionSyntax = "plainNames"
 )
-
 
 ## Plot Net Present Value (NPV) distributions 
 decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
@@ -409,7 +428,7 @@ plot_evpi(evpi, decision_vars = "NPV_decision_do")
 compound_figure(mcSimulation_object = mcSimulation_results, 
                 input_table = input_table, plsrResults = pls_result, 
                 EVPIresults = evpi, decision_var_name = "NPV_decision_do", 
-                xcashflow_var_name = "Cashflow_decision_do", 
+                cashflow_var_name = "Cashflow_decision_do", 
                 base_size = 7)
 
 

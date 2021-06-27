@@ -10,8 +10,10 @@ plant_damage;;;;;;damage to the plants after pesticide aplication and influenced
 biodiversity;;;;;;
 water_contamination ;;;;;;
 government_concern;;;;;;
+customer;;;;;;
 yield;20;;60;posnorm;t/ha;yield (t/ha)
 market_price;500;;800;posnorm;Euro/t;fruit price (Euro/t)
 sprayer_lifetime;;;;;;the estimated lifetime of a new sprayer in years
 n_years;10;;10;const;years;timespan of the model 
 var_CV;5;;25;posnorm;;
+discount_rate;2;;5;posnorm;%;discount rate, reducing future costs and benefits to their present value (%)

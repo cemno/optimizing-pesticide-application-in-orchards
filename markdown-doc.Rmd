@@ -312,7 +312,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 ascs_decision_model <- function(x, varnames){
   
   # machine costs are applied only once so n = 1
-  machine_upg_cost <- c( initial_upg_cost, rep(0, (n_years-1)) )
+  machine_upg_cost <- c( initial_upg_cost, rep(0,(n_years-1)) )
 
   # application efficiency (tree distance and how much it saves to not spray inbetween)
   # the efficiency is fix over the years per model run 
@@ -360,24 +360,26 @@ ascs_decision_model <- function(x, varnames){
 input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
 input_table <- drop_na(input_table, c("lower","upper"))
 write.csv(input_table, "data/final/inputs.csv")
-input_table <- read.csv("data/final/inputs.csv")
 
-input_table_cor1 <- read.csv("data/input_data_03_cor.csv", sep = ";", dec = ",")
-#input_table <- drop_na(input_table, c("lower","upper"))
-write.csv(input_table_cor1, "data/final/inputs_cor.csv")
+# input_table <- read.csv("data/final/inputs.csv")
+
+as.estimate(input_table)
+# input_table <- as.estimate(input_table, correlation_matrix = input_table_cor1)
+
+# input_table_cor1 <- read.csv("data/input_data_03_cor.csv", sep = ";", dec = ",")
+# write.csv(input_table_cor1, "data/final/inputs_cor.csv")
 
 
 estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
                   potential_plant_damage,                      1,               0.9
                   pesticide_quantity,                        0.9,                1"
 
-input_table <- as.estimate(input_table, correlation_matrix = data.matrix(read.csv(text=estimateTextCor, 
-                                                                  row.names=1,
-                                                                  strip.white=TRUE)))
-input_table
-#write.csv(input_table, "data/final/inputs.csv")
+correlation_matrix <- data.matrix( read.csv( text=estimateTextCor, row.names=1, strip.white=TRUE))
+# correlation_matrix
+# write.csv(correlation_matrix, "data/final/inputs_cor.csv")
+# input_table_cor <- read.csv("data/final/inputs_cor.csv")
 
-#test_estimate$
+input_table <- as.estimate(input_table, correlation_matrix = correlation_matrix)
 
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(

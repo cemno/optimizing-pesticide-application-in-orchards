@@ -198,7 +198,6 @@ digraph {
 
     Ascs [label = 'Automated section \n control sprayer'];
     Al1 [label = 'Manual section \n control sprayer'];
-#    Al2 [label = 'Trittleiter']
   # ---------
   
   
@@ -232,8 +231,8 @@ digraph {
   edge [label = '-    ',
         fontcolor = 'red',
         color = 'red']
-  {Ascs Al1 GC}->Pe
-#  Al2->Pe
+  {Ascs Al1} -> Pe #[headport = w, tailport = e]
+  GC -> Pe
   Pe->Bio #[headport = w]
   Pe-> Di 
   Bio->{Di GC}
@@ -248,13 +247,13 @@ digraph {
         fontcolor = 'forestgreen',
         color = 'forestgreen']
   
-  {Ascs Al1}->Co
-#  Al2->Co
+  {Ascs Al1}->Co #[headport = w, tailport = s]
   Pe-> WC  #[headport = w, tailport = n]
   Pe-> Co
   FS->FP 
   WC->GC 
   Bio-> Cu
+#  Di -> Pe
   Cu->FS
   # ---------  
   
@@ -262,30 +261,29 @@ digraph {
   # sorting the nodes per rank
   
   {
-    rank1 -> Ascs -> Al1 [style=invis];
-    # rank1 -> Ascs -> Al1 -> Al2 [style=invis];
+    Ascs -> Al1 -> rank1 [style=invis];
     rank=same;
-    rankdir=DT;
+    rankdir=TD;
   }
   
   {
-    rank2 -> Co -> Pe -> GC [style=invis];
+    Co -> Pe -> GC -> rank2 [style=invis];
     rank=same;
-    rankdir=DT;
+    rankdir=TD;
   }
   
   {
-    rank3 -> Di -> Bio -> WC [style=invis];
+    Di -> Bio -> WC -> rank3 [style=invis];
     rank=same;
-    rankdir=DT;
+    rankdir=TD;
   }
   
   {
-    rank4 -> Cu -> FS [style=invis];
+    Cu -> FS -> rank4 [style=invis];
     rank=same;
-    rankdir=DT;
+    rankdir=TD;
   }
-# 
+ 
 #   {
 #     rank5 -> FS [style=invis];
 #     rank=same;
@@ -310,39 +308,89 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 #### First model 
 ```{r}
 
+input_table <- read_csv("data/final/inputs.csv")
+
 ascs_decision_model <- function(x, varnames){
   
-  # machine costs are applied only once so n = 1
-  machine_upg_cost <- c( initial_upg_cost, rep(0,(n_years-1)) )
-
-  # application efficiency (tree distance and how much it saves to not spray inbetween)
+  # application efficiency (tree distance and how much it saves to not spray in between)
   # the efficiency is fix over the years per model run 
   pest_red_fact <- rep( pesticide_reduction_auto, n_years )
-
-  # potential plant damage
-  pot_plant_damage <- vv( potential_plant_damage, var_CV, n_years ) # 0.7 - 1.7
-  
-  # costs for pesticides per ha can vary over the years
-  pest_cost_ha_man <- vv( pesticide_cost, var_CV, n_years )
-  pest_cost_ha_aut <- pest_cost_ha_man * pest_red_fact
-  
-  # the amount of used pesticides can vary depending on weather forcasts (factor from 0.7 - 1.3)
+  # the amount of used pesticides can vary depending on weather forecasts (factor from 0.7 - 1.3)
   # and infestation/disease levels but this is integrated through a correlation with plant_damage
-  # quantity varies for manuell and automated sprayer 
-  
+  # quantity varies for manual and automated sprayer 
   pest_quant_man <- vv( pesticide_quantity, var_CV, n_years )
   pest_quant_aut <- pest_quant_man * pest_red_fact 
 
-  yield_t_ha <- vv(yield, var_CV, n_years)
-  market_price_e_t <- vv(market_price, var_CV, n_years)
   
-  fruit_sales_e_ha <- yield_t_ha * market_price_e_t
+  # chance_event() government
+  # pest_quant_gov <- vv(government_pesticide_quantity, 10, n_years)
   
-  #  --- profit   
-  farmers_profit_aut = fruit_sales_e_ha - pest_cost_ha_aut - machine_upg_cost
-  farmers_profit_man = fruit_sales_e_ha - pest_cost_ha_man
+  # we assume the water contamination decreases every year by 5% without any influence
+  rel_water_cont_dec <- vv(rel_water_contamination,
+                           5, #var_CV,
+                           n_years,
+                           relative_trend = -5, 
+                           lower_limit = 0)
+  
+  rel_water_cont_man <- rel_water_cont_dec + ((pest_quant_aut - government_pesticide_quantity)*0.1)
+  rel_water_cont_aut <- rel_water_cont_dec + ((pest_quant_man - government_pesticide_quantity)*0.1)
+  
+  
+  for () {
+    
+    if () {
+      
+    }else
 
-  #  --- NPV   
+  }  
+  
+  
+  
+  
+  
+  # # calculating the theoretic pest quantity 
+  # plant_dmg_boundary <- inputs[inputs_table$variable=="potential_plant_damage",c("lower","upper")]
+  # perfect_pest_quantity <- (plant_dmg_boundary$upper - plant_dmg_boundary$lower)
+  # 
+  # theoretic_pest_quantity <- plant_damage_pot * perfect_pest_quantity 
+
+  # potential plant damage
+  plant_damage_pot <- vv( potential_plant_damage, var_CV, n_years ) # 0.7 - 1.7
+  
+  ####### plant damage pot changes depending on biodiversity
+  
+  # actual plant damage after applying pesticides 
+  actual_plant_dmg_man <- plant_damage_pot - pest_quant_man
+  actual_plant_dmg_man <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
+  actual_plant_dmg_aut <- plant_damage_pot - pest_quant_aut / pest_red_fact
+  actual_plant_dmg_aut <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
+  
+  # yields prizes are varying depending on the years and the plant damage
+  yield_t_ha <- vv(yield, var_CV, n_years)
+  yield_t_ha_man <- yield_t_ha * (1 - actual_plant_dmg_man)
+  yield_t_ha_aut <- yield_t_ha * (1 - actual_plant_dmg_aut)
+  # market prizes are varying over the years
+  market_price_e_t <- vv(market_price, var_CV, n_years)
+  # fruit sales depend on yield and market price
+  fruit_sales_e_ha_man <- yield_t_ha_man * market_price_e_t
+  fruit_sales_e_ha_aut <- yield_t_ha_aut * market_price_e_t
+  
+  # costs for pesticides per ha and decision
+  pest_cost_ha_const <- vv( pesticide_cost, var_CV, n_years )
+  pest_cost_ha_man <- pest_cost_ha_const * pest_quant_man
+  pest_cost_ha_aut <- pest_cost_ha_const * pest_quant_aut
+  # machine costs are applied only once so n = 1
+  machine_upg_cost <- c( initial_upg_cost, rep(0,(n_years-1)) )
+
+  
+  ##### profit - depends an the fruit sales and the pesticide costs per hectare 
+  # resulting profit gets multiplied by the number of hectares
+  # for the automated option the machine upgrade cost get substracted 
+  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine
+  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_upg_cost
+
+  ##### NPV - the value of money in the future gets discounted
+  # 2 - 5 % since our farmers are likely to invest
   NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
   NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
 

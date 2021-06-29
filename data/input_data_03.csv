@@ -7,9 +7,10 @@ pesticide_quantity;0,7;;1,3;norm;;relative quantity of pesticide usage (1=717 (E
 pesticide_reduction_auto;0,05;;0,25;posnorm;;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
 potential_plant_damage;0,7;;1,3;norm;;potential damage the plants could take if no spraying is done, influenced by weather, pests, diseases, biodiversity, etc
 plant_damage;;;;;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
-biodiversity;;;;;;
-water_contamination ;;;;;;
+rel_biodiversity;1;;1;const;constant;relative biodiversity prone to changes
+rel_water_contamination ;1;;1;const;constant;relative water contamination prone to changes
 government_concern;;;;;;
+government_pesticide_quantity;1;;1;const;guideline;governmental guideline to only spray less (mean of pest_quantity)
 customer;;;;;;
 yield;20;;60;posnorm;t/ha;yield (t/ha)
 market_price;500;;800;posnorm;Euro/t;fruit price (Euro/t)

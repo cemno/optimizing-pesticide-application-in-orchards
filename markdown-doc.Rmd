@@ -331,23 +331,20 @@ ascs_decision_model <- function(x, varnames){
                            n_years,
                            relative_trend = -5, 
                            lower_limit = 0)
+  # assuming that the amount that we spray more then the government guideline influences the water contamination by 10%
+  rel_water_cont_man <- rel_water_cont_dec + ((pest_quant_man - government_pesticide_quantity)*0.1)
+  rel_water_cont_aut <- rel_water_cont_dec + ((pest_quant_aut - government_pesticide_quantity)*0.1)
   
-  rel_water_cont_man <- rel_water_cont_dec + ((pest_quant_aut - government_pesticide_quantity)*0.1)
-  rel_water_cont_aut <- rel_water_cont_dec + ((pest_quant_man - government_pesticide_quantity)*0.1)
-  
-  
-  for () {
-    
-    if () {
-      
-    }else
+  # we would have a natural increase in biodiversity if we did not spray
+  rel_biodiversity_inc <- vv(rel_biodiversity,
+                             5, #var_CV,
+                             n_years,
+                             relative_trend = 15)
+  # assuming that the amount that we spray influences the biodiversity by 10%
+  rel_bio_man <- rel_biodiversity_inc - ((pest_quant_aut - government_pesticide_quantity)*0.1)
+  rel_bio_aut <- rel_biodiversity_inc - ((pest_quant_man - government_pesticide_quantity)*0.1)
 
-  }  
-  
-  
-  
-  
-  
+
   # # calculating the theoretic pest quantity 
   # plant_dmg_boundary <- inputs[inputs_table$variable=="potential_plant_damage",c("lower","upper")]
   # perfect_pest_quantity <- (plant_dmg_boundary$upper - plant_dmg_boundary$lower)

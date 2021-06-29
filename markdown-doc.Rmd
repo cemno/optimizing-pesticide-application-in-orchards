@@ -215,7 +215,7 @@ digraph {
   Co [label = 'Cost']
   
   Cu [label = 'Customers'];          
-  Di [label = 'Diseases'];
+  Di [label = 'Plant damage'];
   Bio [label = 'Biodiversity'];
   WC [label = 'Water \n contamination'];
   
@@ -232,12 +232,12 @@ digraph {
   edge [label = '-    ',
         fontcolor = 'red',
         color = 'red']
-  {Ascs Al1}->Pe
+  {Ascs Al1 GC}->Pe
 #  Al2->Pe
-  Pe->{Bio Di Cu}
-  GC->FP
-  WC->Bio
+  Pe->Bio #[headport = w]
+  Pe-> Di 
   Bio->{Di GC}
+  WC->{Bio Cu}
   Di->FS
   Co->FP
   # ---------  
@@ -250,10 +250,11 @@ digraph {
   
   {Ascs Al1}->Co
 #  Al2->Co
-  Pe->{WC Co} 
+  Pe-> WC  #[headport = w, tailport = n]
+  Pe-> Co
   FS->FP 
   WC->GC 
-  Bio->FS
+  Bio-> Cu
   Cu->FS
   # ---------  
   
@@ -268,22 +269,22 @@ digraph {
   }
   
   {
-    rank2 -> Co -> Pe [style=invis];
+    rank2 -> Co -> Pe -> GC [style=invis];
     rank=same;
     rankdir=DT;
   }
   
   {
-    rank3 -> Di -> Cu -> Bio -> WC [style=invis];
+    rank3 -> Di -> Bio -> WC [style=invis];
     rank=same;
     rankdir=DT;
   }
   
-  # {
-  #   rank4 -> FS -> GC [style=invis];
-  #   rank=same;
-  #   rankdir=DT;
-  # }
+  {
+    rank4 -> Cu -> FS [style=invis];
+    rank=same;
+    rankdir=DT;
+  }
 # 
 #   {
 #     rank5 -> FS [style=invis];

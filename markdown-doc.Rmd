@@ -142,6 +142,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 library(DiagrammeR)
 library(DiagrammeRsvg)
 library(rsvg)
+library(tidyverse)
 ```
 
 
@@ -312,16 +313,44 @@ input_table <- read_csv("data/final/inputs.csv")
 
 ascs_decision_model <- function(x, varnames){
   
-  # application efficiency (tree distance and how much it saves to not spray in between)
-  # the efficiency is fix over the years per model run 
-  pest_red_fact <- rep( pesticide_reduction_auto, n_years )
+
   # the amount of used pesticides can vary depending on weather forecasts (factor from 0.7 - 1.3)
   # and infestation/disease levels but this is integrated through a correlation with plant_damage
   # quantity varies for manual and automated sprayer 
   pest_quant_man <- vv( pesticide_quantity, var_CV, n_years )
-  pest_quant_aut <- pest_quant_man * pest_red_fact 
+  pest_quant_aut <- pest_quant_man * pesticide_reduction_auto 
+  # application efficiency (tree distance and how much it saves to not spray in between)
+  # the efficiency is fix over the years per model run 
 
-  
+  for (y in 1:n_years) {
+    if (y == 1) {
+      rel_water_cont_man <- c(1)
+      rel_water_cont_aut <- c(1)
+      rel_bio_man <- c(1)
+      rel_bio_aut <- c(1)
+      
+      plant_dmg_pot_man <- vv( potential_plant_damage, var_CV, 1 )
+      plant_dmg_pot_aut <- plant_dmg_pot_man
+      
+      actual_plant_dmg_man <- plant_damage_pot - pest_quant_man
+      actual_plant_dmg_aut <- plant_damage_pot - pest_quant_aut / pest_red_fact
+      
+    } else {
+      rel_water_cont_man <- rel_water_cont_man + ((1 - pest_quant_man)*0.1)
+      rel_water_cont_aut <- rel_water_cont_aut + ((1 - pest_quant_aut)*0.1)
+      rel_bio_man <- rel_biodiversity_man + ((1 - pest_quant_man)*0.1)
+      rel_bio_aut <- rel_biodiversity_aut + ((1 - pest_quant_aut)*0.1)
+      
+      plant_dmg_pot_man <- (vv(potential_plant_damage,var_CV,1)) + (rel_water_cont_man + rel_bio_man)
+      plant_dmg_pot_aut <- plant_dmg_pot_man + (rel_water_cont_aut + rel_bio_aut)
+      
+      actual_plant_dmg_man <- plant_damage_pot_man - pest_quant_man
+      actual_plant_dmg_man <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
+      actual_plant_dmg_aut <- plant_damage_pot_aut - pest_quant_aut / pest_red_fact
+      actual_plant_dmg_aut <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
+      }
+    
+  }
   # chance_event() government
   # pest_quant_gov <- vv(government_pesticide_quantity, 10, n_years)
   
@@ -329,20 +358,22 @@ ascs_decision_model <- function(x, varnames){
   rel_water_cont_dec <- vv(rel_water_contamination,
                            5, #var_CV,
                            n_years,
-                           relative_trend = -5, 
-                           lower_limit = 0)
+                           # relative_trend = -5 
+                           # lower_limit = 0
+                           )
   # assuming that the amount that we spray more then the government guideline influences the water contamination by 10%
-  rel_water_cont_man <- rel_water_cont_dec + ((pest_quant_man - government_pesticide_quantity)*0.1)
-  rel_water_cont_aut <- rel_water_cont_dec + ((pest_quant_aut - government_pesticide_quantity)*0.1)
+  rel_water_cont_man <- rel_water_cont_dec + ((1 - pest_quant_man)*0.1)
+  rel_water_cont_aut <- rel_water_cont_dec + ((1 - pest_quant_aut)*0.1)
   
   # we would have a natural increase in biodiversity if we did not spray
   rel_biodiversity_inc <- vv(rel_biodiversity,
                              5, #var_CV,
-                             n_years,
-                             relative_trend = 15)
+                             n_years
+                             # relative_trend = 15
+                             )
   # assuming that the amount that we spray influences the biodiversity by 10%
-  rel_bio_man <- rel_biodiversity_inc - ((pest_quant_aut - government_pesticide_quantity)*0.1)
-  rel_bio_aut <- rel_biodiversity_inc - ((pest_quant_man - government_pesticide_quantity)*0.1)
+  rel_bio_man <- rel_biodiversity_inc + ((1 - pest_quant_aut)*0.1)
+  rel_bio_aut <- rel_biodiversity_inc + ((1 - pest_quant_man)*0.1)
 
 
   # # calculating the theoretic pest quantity 
@@ -401,10 +432,10 @@ ascs_decision_model <- function(x, varnames){
 
 ## Importing input table 
 input_table <- read.csv("data/final/inputs.csv")
-
-# input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
-# input_table <- drop_na(input_table, c("lower","upper"))
-# write.csv(input_table, "data/final/inputs.csv")
+ 
+#  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
+#  input_table <- drop_na(input_table, c("lower","upper"))
+#  write.csv(input_table, "data/final/inputs.csv")
 
 ## creating Correlation matrix 
 estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
@@ -498,7 +529,6 @@ compound_figure(mcSimulation_object = mcSimulation_results,
 ```{r, include = FALSE}
 library(decisionSupport)
 library(readr)
-library(tidyverse)
 library(ggplot2)
 library(plyr)
 library(dplyr)

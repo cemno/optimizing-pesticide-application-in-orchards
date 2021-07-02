@@ -323,64 +323,67 @@ ascs_decision_model <- function(x, varnames){
 
   # application efficiency (tree distance and how much it saves to not spray in between)
   # the efficiency is fix over the years per model run 
-  test <- data.frame(year = integer(),
-                     pest_quant_man = double(),
-                     pest_quant_aut = double(),
-                     rel_water_cont_man = double(),
-                     rel_water_cont_aut = double(),
-                     rel_bio_man = double(),
-                     rel_bio_aut = double(),
-                     potential_plant_dmg_man = double(),
-                     potential_plant_dmg_aut = double(),
-                     actual_plant_dmg_man = double(),
-                     actual_plant_dmg_aut = double()
-                     )
-  n_years = c(1:10)
-  test$year <- n_years
-  test[,pest_quant_man] <- vv( pesticide_quantity, var_CV, n_years)
-  test[,pest_quant_aut] <- (vv( pesticide_quantity, var_CV, n_years) * pesticide_reduction_auto) 
   
-  test[,rel_water_cont_man] <- rep(1, n_years)
-  test[,rel_water_cont_aut] <- rep(1, n_years)
-  test[,rel_bio_man] <- rep(1, n_years)
-  test[,rel_bio_aut] <- rep(1, n_years)
+  # test <- data.frame(year = integer(),
+  #                    pest_quant_man = double(),
+  #                    pest_quant_aut = double(),
+  #                    rel_water_cont_man = double(),
+  #                    rel_water_cont_aut = double(),
+  #                    rel_bio_man = double(),
+  #                    rel_bio_aut = double(),
+  #                    potential_plant_dmg_man = double(),
+  #                    potential_plant_dmg_aut = double(),
+  #                    actual_plant_dmg_man = double(),
+  #                    actual_plant_dmg_aut = double()
+  #                    )
+  test <- data.frame(year = rep(1:10),
+                     pest_quant_man = rep(0,10),
+                     pest_quant_aut = rep(0,10),
+                     rel_water_cont_man = rep(0,10),
+                     rel_water_cont_aut = rep(0,10),
+                     rel_bio_man = rep(0,10),
+                     rel_bio_aut = rep(0,10),
+                     potential_plant_dmg_man = rep(0,10),
+                     potential_plant_dmg_aut = rep(0,10),
+                     actual_plant_dmg_man = rep(0,10),
+                     actual_plant_dmg_aut = rep(0,10))
+  rel_water_cont_man = 5000
+  test[year == 1,rel_water_cont_man] <- rel_water_cont_man
+  test[2,rel_water_cont_man] <- test[1,rel_water_cont_man] + ((1 - test[1,rel_water_cont_man])*0.1)
+    
+  test$pest_quant_man <- vv( pesticide_quantity, var_CV, n_years)
+  test$pest_quant_aut <- vv( pesticide_quantity, var_CV, n_years) * pesticide_reduction_auto 
   
-  test[,plant_dmg_pot_man] <- vv( potential_plant_damage, var_CV, n_years)
-  test[,plant_dmg_pot_aut] <- vv( potential_plant_damage, var_CV, n_years)
+  test$rel_water_cont_man <- rep(1, n_years)
+  test$rel_water_cont_aut <- rep(1, n_years)
+  test$rel_bio_man <- rep(1, n_years)
+  test$rel_bio_aut <- rep(1, n_years)
+  
+  test$plant_dmg_pot_man <- vv( potential_plant_damage, var_CV, n_years)
+  test$plant_dmg_pot_aut <- vv( potential_plant_damage, var_CV, n_years)
 
+#  test$actual_plant_dmg_man <- plant_damage_pot - pest_quant_man           ############# noch fertig machen [y-1] berücksichtigen
+#  test$actual_plant_dmg_aut <- plant_damage_pot - pest_quant_aut / pest_red_fact
+  
     
   for (y in 1:n_years) {
     
     test[y, "year"] <- y
     
-    # if (y == 1) {
-    #
-    #   test[y,rel_water_cont_man] <- 1
-    #   test[y,rel_water_cont_aut] <- 1
-    #   test[y,rel_bio_man] <- 1
-    #   test[y,rel_bio_aut] <- 1
-    #   
-    #   test[y,plant_dmg_pot_man] <- vv( potential_plant_damage, var_CV, n_years)
-    #   test[y,plant_dmg_pot_aut] <- vv( potential_plant_damage, var_CV, n_years)
-    #   
-    #   test[y,actual_plant_dmg_man] <- plant_damage_pot - pest_quant_man
-    #   test[y,actual_plant_dmg_aut] <- plant_damage_pot - pest_quant_aut / pest_red_fact
-    #   
-    # } else {
       if (y > 1) {
       
-      test[y,rel_water_cont_man] <- test[(y-1),rel_water_cont_man] + ((1 - test[(y-1),pest_quant_man])*0.1)
-      test[y,rel_water_cont_aut] <- test[(y-1),rel_water_cont_aut] + ((1 - test[(y-1),pest_quant_aut])*0.1)
-      test[y,rel_bio_man] <- test[(y-1),rel_biodiversity_man] + ((1 - test[(y-1),pest_quant_man])*0.1)
-      test[y,rel_bio_aut] <- test[(y-1),rel_biodiversity_aut] + ((1 - test[(y-1),pest_quant_aut])*0.1)
+      test$rel_water_cont_man[y] <- test$rel_water_cont_man[y-1] + ((1 - test$pest_quant_man[y-1])*0.1)
+      test$rel_water_cont_aut[y] <- test$rel_water_cont_aut[y-1] + ((1 - test$pest_quant_aut[y-1])*0.1)
+      test$rel_bio_man[y] <- test$rel_biodiversity_man[y-1] + ((1 - test$pest_quant_man[y-1])*0.1)
+      test$rel_bio_aut[y] <- test$rel_biodiversity_aut[y-1] + ((1 - test$pest_quant_aut[y-1])*0.1)
       
-      test[y,plant_dmg_pot_man] <- test[(y-1),plant_dmg_pot_man] + (rel_water_cont_man + rel_bio_man)
-      test[y,plant_dmg_pot_aut] <- test[(y-1),plant_dmg_pot_aut] + (rel_water_cont_aut + rel_bio_aut)
+      test$plant_dmg_pot_man[y] <- test$plant_dmg_pot_man[y-1] + (rel_water_cont_man + rel_bio_man)
+      test$plant_dmg_pot_aut[y] <- test$plant_dmg_pot_aut[y-1] + (rel_water_cont_aut + rel_bio_aut)
       
-      actual_plant_dmg_man <- test[(y-1),plant_damage_pot_man] - test[(y-1),pest_quant_man]
-      test[y,actual_plant_dmg_man] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
-      actual_plant_dmg_aut <- test[(y-1),plant_damage_pot_aut] - test[(y-1),pest_quant_aut] / pest_red_fact
-      test[y,actual_plant_dmg_aut] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
+      actual_plant_dmg_man <- test$plant_damage_pot_man[y-1] - test$pest_quant_man[y-1]
+      test$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
+      actual_plant_dmg_aut <- test$plant_damage_pot_aut[y-1] - test$pest_quant_aut[y-1] / pest_red_fact
+      test$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
       }
     
   }

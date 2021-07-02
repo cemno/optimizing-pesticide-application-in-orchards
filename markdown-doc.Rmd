@@ -337,20 +337,17 @@ ascs_decision_model <- function(x, varnames){
   #                    actual_plant_dmg_aut = double()
   #                    )
   test <- data.frame(year = rep(1:10),
-                     pest_quant_man = rep(0,10),
-                     pest_quant_aut = rep(0,10),
-                     rel_water_cont_man = rep(0,10),
-                     rel_water_cont_aut = rep(0,10),
-                     rel_bio_man = rep(0,10),
-                     rel_bio_aut = rep(0,10),
-                     potential_plant_dmg_man = rep(0,10),
-                     potential_plant_dmg_aut = rep(0,10),
-                     actual_plant_dmg_man = rep(0,10),
-                     actual_plant_dmg_aut = rep(0,10))
-  rel_water_cont_man = 5000
-  test[year == 1,rel_water_cont_man] <- rel_water_cont_man
-  test[2,rel_water_cont_man] <- test[1,rel_water_cont_man] + ((1 - test[1,rel_water_cont_man])*0.1)
-    
+                     pest_quant_man = rep(0.,10),
+                     pest_quant_aut = rep(0.,10),
+                     rel_water_cont_man = rep(0.,10),
+                     rel_water_cont_aut = rep(0.,10),
+                     rel_bio_man = rep(0.,10),
+                     rel_bio_aut = rep(0.,10),
+                     potential_plant_dmg_man = rep(0.,10),
+                     potential_plant_dmg_aut = rep(0.,10),
+                     actual_plant_dmg_man = rep(0.,10),
+                     actual_plant_dmg_aut = rep(0.,10))
+  
   test$pest_quant_man <- vv( pesticide_quantity, var_CV, n_years)
   test$pest_quant_aut <- vv( pesticide_quantity, var_CV, n_years) * pesticide_reduction_auto 
   

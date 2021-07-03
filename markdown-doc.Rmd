@@ -336,21 +336,25 @@ ascs_decision_model <- function(x, varnames){
                                plant_dmg_pot_aut = rep(0.,n_years),
                                actual_plant_dmg_man = rep(0.,n_years),
                                actual_plant_dmg_aut = rep(0.,n_years),
-                               gov_inter_chance = rep(0.,n_years)
-                               )
+                               gov_inter_chance = rep(0.,n_years),
+                               gov_inter_happened = rep(0,n_years))
   
 
   for (y in 1:n_years) {
     
     if (y == 1) {
+      # general chance that government intervenes
+      auxilary_table$gov_inter_chance_man[y] <- government_intervention_chance 
+      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_man[y]
+      auxilary_table$gov_inter_happened_man[y] <- chance_event(auxilary_table$gov_inter_chance_man[y], 1, 0, 1)
+      auxilary_table$gov_inter_happened_aut[y] <- chance_event(auxilary_table$gov_inter_chance_aut[y], 1, 0, 1)
+
       # pesticide on water contamination influence factor ## fix per run
       pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
       # pesticide on biodiversity influence factor ## fix per run
       pest_bio_fac <- vv(pesticide_on_biodiversity_factor, var_CV, 1)
       # water contamination on biodiversity factor ## fix per run
       cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
-      # general chance that government intervenes
-      gov_inter_chance <- vv(government_intervention_chance, var_CV, 1) 
       # pestizide reduction factor
       pest_red_fac <- pesticide_reduction_auto
       # potential plant damage 
@@ -367,6 +371,17 @@ ascs_decision_model <- function(x, varnames){
       # biodiversity
       auxilary_table$rel_bio_man[y] <- 1 # rep(1, n_years)
       auxilary_table$rel_bio_aut[y] <- 1 # rep(1, n_years)
+      auxilary_table$pest_quant_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
+                                                 auxilary_table$pest_quant_man[y],
+                                                 ifelse(auxilary_table$pest_quant_man[y] > government_pesticide_quantity,
+                                                        government_pesticide_quantity,
+                                                        auxilary_table$pest_quant_man[y]))
+      
+      auxilary_table$pest_quant_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
+                                                 auxilary_table$pest_quant_aut[y],
+                                                 ifelse(auxilary_table$pest_quant_aut[y] > government_pesticide_quantity,
+                                                        government_pesticide_quantity,
+                                                        auxilary_table$pest_quant_aut[y]))
       # actual plant damage         
       actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
       ### auxilary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
@@ -375,7 +390,33 @@ ascs_decision_model <- function(x, varnames){
       ### auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
       auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
       
-    }else  {
+      }else  {
+      # general chance affected by biodiversity and water contamination that government intervenes
+      auxilary_table$gov_inter_chance_man[y] <- auxilary_table$gov_inter_chance_man[y-1] +
+        ( ((1 - auxilary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxilary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
+      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
+        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
+
+      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
+        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
+      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
+        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
+      # chance for government intervention.
+      # government intervention instantaneous but calculated on values government_reaction_time years before.
+      intervention_delay <- ifelse(government_reaction_time <= y,
+                                   0,
+                                   y - government_reaction_time)
+      auxilary_table$gov_inter_happened_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y-1] == 0,
+                                                     chance_event(auxilary_table$gov_inter_chance_man[intervention_delay],1, 0, 1),
+                                                     1)
+      auxilary_table$gov_inter_happened_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y-1] == 0,
+                                                     chance_event(auxilary_table$gov_inter_chance_aut[intervention_delay],1, 0, 1),
+                                                     1)
+      
       # potential plant damagex
       auxilary_table$plant_dmg_pot_man[y] <- potential_plant_damage
       auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_man[y]
@@ -405,6 +446,19 @@ ascs_decision_model <- function(x, varnames){
         auxilary_table$pest_quant_man[y] * (1 - auxilary_table$rel_bio_man[y])
       auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_aut[y] +
         auxilary_table$pest_quant_aut[y] * (1 - auxilary_table$rel_bio_aut[y])
+      
+      auxilary_table$pest_quant_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
+                                                 auxilary_table$pest_quant_man[y],
+                                                 ifelse(auxilary_table$pest_quant_man[y] > government_pesticide_quantity,
+                                                        government_pesticide_quantity,
+                                                        auxilary_table$pest_quant_man[y]))
+      
+      auxilary_table$pest_quant_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
+                                                 auxilary_table$pest_quant_aut[y],
+                                                 ifelse(auxilary_table$pest_quant_aut[y] > government_pesticide_quantity,
+                                                        government_pesticide_quantity,
+                                                        auxilary_table$pest_quant_aut[y]))
+      
       # actual plant damage ## potential plant damage - pesticide quantity 
       actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
       auxilary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0, 0, actual_plant_dmg_man)

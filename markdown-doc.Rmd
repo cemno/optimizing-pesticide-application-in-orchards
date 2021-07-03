@@ -332,8 +332,8 @@ ascs_decision_model <- function(x, varnames){
                                rel_water_cont_aut = rep(0.,n_years),
                                rel_bio_man = rep(0.,n_years),
                                rel_bio_aut = rep(0.,n_years),
-                               potential_plant_dmg_man = rep(0.,n_years),
-                               potential_plant_dmg_aut = rep(0.,n_years),
+                               plant_dmg_pot_man = rep(0.,n_years),
+                               plant_dmg_pot_aut = rep(0.,n_years),
                                actual_plant_dmg_man = rep(0.,n_years),
                                actual_plant_dmg_aut = rep(0.,n_years),
                                gov_inter_chance = rep(0.,n_years)
@@ -353,37 +353,48 @@ ascs_decision_model <- function(x, varnames){
       gov_inter_chance <- vv(government_intervention_chance, var_CV, 1) 
       # pestizide reduction factor
       pest_red_fac <- pesticide_reduction_auto
-      # pesticide quantity
-      auxilary_table$pest_quant_man <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
-      auxilary_table$pest_quant_aut <- auxilary_table$pest_quant_man * pest_red_fac
-      # water contamination 
-      auxilary_table$rel_water_cont_man <- rep(1, n_years)
-      auxilary_table$rel_water_cont_aut <- rep(1, n_years)
-      # biodiversity
-      auxilary_table$rel_bio_man <- rep(1, n_years)
-      auxilary_table$rel_bio_aut <- rep(1, n_years)
       # potential plant damage 
-      auxilary_table$plant_dmg_pot_man <- potential_plant_damage    # vv( potential_plant_damage, 0, n_years)
-      auxilary_table$plant_dmg_pot_aut <- auxilary_table$potential_plant_dmg_man
+      auxilary_table$plant_dmg_pot_man[y] <- potential_plant_damage
+      # vv(potential_plant_damage, var_CV, n_years, lower_limit = 0.7,upper_limit = 1.3)   
+      # vv( potential_plant_damage, 0, n_years)
+      auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_man[y]
+      # pesticide quantity
+      auxilary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
+      auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_man[y] * pest_red_fac
+      # water contamination 
+      auxilary_table$rel_water_cont_man[y] <- 1 # rep(1, n_years)
+      auxilary_table$rel_water_cont_aut[y] <- 1 # rep(1, n_years)
+      # biodiversity
+      auxilary_table$rel_bio_man[y] <- 1 # rep(1, n_years)
+      auxilary_table$rel_bio_aut[y] <- 1 # rep(1, n_years)
       # actual plant damage         
-      actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man - auxilary_table$pest_quant_man
-      auxilary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
-      ### auxilary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
-      actual_plant_dmg_aut <- auxilary_table$plant_dmg_pot_aut - auxilary_table$pest_quant_aut / pest_red_fac
-      auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
-      ### auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
+      actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
+      ### auxilary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
+      auxilary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
+      actual_plant_dmg_aut <- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
+      ### auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
+      auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
       
     }else  {
+      # potential plant damagex
+      auxilary_table$plant_dmg_pot_man[y] <- potential_plant_damage
+      auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_man[y]
+      # pesticide quantity
+      auxilary_table$pest_quant_man[y] <- pesticide_quantity
+      auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_man[y] * pest_red_fac
       # water contamination ## assuming that the pesticide quantity influences the water contamination by 10%
       auxilary_table$rel_water_cont_man[y] <- auxilary_table$rel_water_cont_man[y-1] +
         ((1 - auxilary_table$pest_quant_man[y-1]) * pest_cont_fac)
       auxilary_table$rel_water_cont_aut[y] <- auxilary_table$rel_water_cont_aut[y-1] +
         ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_cont_fac)
+      
       # biodiversity ## assuming that the water contamination influences the biodiversity by 10%
       auxilary_table$rel_bio_man[y] <- auxilary_table$rel_bio_man[y-1] +
         ((1 - auxilary_table$pest_quant_man[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
+      
       auxilary_table$rel_bio_aut[y] <- auxilary_table$rel_bio_aut[y-1] +
         ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
+      
       # potential plant damage ## effected by biodiversity
       auxilary_table$plant_dmg_pot_man[y] <- auxilary_table$plant_dmg_pot_man[y-1] +
         auxilary_table$plant_dmg_pot_man[y-1] * (1 -  auxilary_table$rel_bio_man[y-1])
@@ -401,10 +412,10 @@ ascs_decision_model <- function(x, varnames){
       actual_plant_dmg_aut <- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
       auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0, 0, actual_plant_dmg_aut)
       ### auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
-      print(auxilary_table)
     }
     
   }
+  print(auxilary_table)
 
   
   # chance_event() government
@@ -469,11 +480,11 @@ mcSimulation_results <- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
   estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 1000,
+  numberOfModelRuns = 10,
   functionSyntax = "plainNames"
 )
-```
-```
+
+
 ## Plot Net Present Value (NPV) distributions 
 decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV", "NO_Interv_NPV"),

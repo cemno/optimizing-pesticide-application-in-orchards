@@ -20,8 +20,8 @@ var_CV;5;;25;posnorm;;
 discount_rate;2;;5;posnorm;%;discount rate, reducing future costs and benefits to their present value (%)
 area_per_machine;15;;15;const;ha;area one sprayer can effectivly manage
 pesticide_on_water_contamination_factor;0;;0,15;norm;factor;influence percentage from pesticide usage of the previous year on water contamination 
-pesticide_on_biodiversity_factor;0;;0,15;norm;factor;influence percentage from pesticide usage of the previous year on biodiversity
-water_contamination_on_biodiversity_factor;0;;0,15;norm;factor;influence percentage from water contamination on biodiversity
+pesticide_on_biodiversity_factor;0;;0,05;norm;factor;influence percentage from pesticide usage of the previous year on biodiversity
+water_contamination_on_biodiversity_factor;0;;0,05;norm;factor;influence percentage from water contamination on biodiversity
 government_intervention_chance;0,05;;0,15;norm;%;gerneral chance that government intervenes
 water_contamination_on_gov_concern;0,15;;0,3;norm;%;influence form water contamination on government concern
 biodiversity_on_gov_concern;0,05;;0,15;norm;%;influence form biodiversity on government concern

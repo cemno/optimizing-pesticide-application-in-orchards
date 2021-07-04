@@ -590,9 +590,9 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # water contamination ## assuming that the pesticide quantity influences the water contamination by 10%
       auxiliary_table$rel_water_cont_man[y] <- auxiliary_table$rel_water_cont_man[y-1] +
-        ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_cont_fac)
+        ((auxiliary_table$pest_quant_man[y-1] - 1) * pest_cont_fac)
       auxiliary_table$rel_water_cont_aut[y] <- auxiliary_table$rel_water_cont_aut[y-1] +
-        ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_cont_fac)
+        ((auxiliary_table$pest_quant_aut[y-1] - 1) * pest_cont_fac)
       
       # biodiversity ## assuming that the water contamination influences the biodiversity by 10%
       auxiliary_table$rel_bio_man[y] <- auxiliary_table$rel_bio_man[y-1] +
@@ -698,7 +698,7 @@ mcSimulation_results <- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
   estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 5,
+  numberOfModelRuns = 100,
   functionSyntax = "plainNames"
 )
 ```

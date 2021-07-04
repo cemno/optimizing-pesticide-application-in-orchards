@@ -7,6 +7,11 @@ bibliography:
   - bib/references.bib
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results = 'hide', message = FALSE, eval = FALSE)
+```
+
+
 ## Abstract (Lucas)
 
 In this project we are looking a prototype of an automated section-control blower 

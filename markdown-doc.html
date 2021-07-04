@@ -57,28 +57,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-/* for pandoc --citeproc since 2.11 */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 
 
@@ -193,31 +171,65 @@ pre code {
 </div>
 
 
-<p>Test: Referencing literature Read Do et al. <span class="citation">(Do, Luedeling, and Whitney 2020)</span></p>
-<div id="introduction" class="section level4">
-<h4>Introduction</h4>
-<p><strong>Decision Analysis</strong><br />
-* Forecasting the performance of an intervention with the help of models can aid management decisions * New practices and the systems they are planned to be implemented in need to be analysed realistically and holistically<br />
-* It is important to openly disclose and discuss uncertainties <span class="math inline">\(\rightarrow\)</span> use distributions instead of fixed input values * Decision analysis in agricultural development + How will decisions influence future sustainability? + Goal: Offer support in decision making under uncertainty + Approach: Making use of existing knowledge to build forecasts * What is a decision in this context? + Logical choice between two different interventions options + Irrevocable allocation of resources * Impact pathways + Helpful to think the consequences of a decision through beforehand <span class="math inline">\(\rightarrow\)</span> identify weak links</p>
-<p><strong>Automated section control sprayer</strong> * Traditional sprayers cannot easily adapt application rates to changing requirements + <span class="math inline">\(\rightarrow\)</span> More pesticide than necessary is applied<br />
-* In order to reduce pesticide application rates, farmers can upgrade to section control-enabled sprayers<br />
-* Current innovation for orchards: Automated vertical section control sprayers promise superior performance compared to manually operated units and those with fixed application rates</p>
+<div id="abstract-lucas" class="section level2">
+<h2>Abstract (Lucas)</h2>
+<p>In this project we are looking a prototype of an automated section-control blower sprayer (ASCS) which is currently being tested at Competence Centre for Fruit Production Lake Constance (Kompetenzzentrum Obstbau Bodensee, KOB) in its first season. It is compared on a monetary background to a manual section-control blower sprayer (MSCS) which is the current standard technology for spraying pesticides in orchards.</p>
+<p>The most basic decision to make is whether the reduction of running-costs of the ASCS through lower pesticide usage compared to the MSCS are higher than the increased initial investment for the more expensive sprayer.</p>
+<p>Other factors taken into consideration are the influence the reduction of pesticide application has on the biodiversity and water contamination. These factors influence the likelihood of the government setting a restriction on the maximum amount of pesticide allowed to be applied. In addition, these factors influence the customer behavior.</p>
+<p>The output of the model generated in this project will be a monetary value for the farmer’s profit per hectare, calculated based on the investment costs, running costs, damage to the fruits (apples) - calculated by combining applied pesticides (with a potential limit) and influences of the increased or decreased biodiversity - and the customer behavior.</p>
 <p> </p>
 </div>
-<div id="description--" class="section level4">
-<h4>Description —-</h4>
+<div id="introduction-jasper" class="section level2">
+<h2>Introduction (Jasper)</h2>
+<p>Reducing the use of pesticides in agricultural and horticultural production has been an important concern of policymakers, NGO, and also farmers for years. Not only is a reduction economically favourable on a farm level, but more and more negative impacts of the liberal use of agrochemicals on ecosystems have been reported recently. In orcharding, efforts have been made to make pesticide application more efficient in order to bring down the overall amount applied while still securing fruit quality and stable yields. This led to the advent of blower sprayers capable of section control. This feature allows the operator to reduce or completely turn off the application of pesticides on a part of the total working width when it is appropriate. For instance, if a shorter tree comes up in a row of taller trees, the operator will manually turn off the topmost section of the blower sprayer to prevent pesticide being sprayed past the treetop into the environment.</p>
+<p>While the manually-operated section control sprayer (MSCS) is generally able to reduce pesticide application rates while maintaining the effectiveness of the agent where it is needed, the strain it puts on the operator is exhausting and requires properly trained and experienced personnel. This limits the overall work capacity of one unit. Furthermore, because of the complex handling, errors are likely to occur which diminishes the potential to reduce the ingress of agrochemicals into the environment.</p>
+<p>Therefore, a novel technology is currently under development to automate the modulation of the section control feature of orchard sprayers. Light detection and ranging (LiDAR) sensors are mounted to the sprayer to allow a computer to assess the structure of the upcoming trees. This, in turn, enables the machine to appropriately adapt the individual sections to the current requirements. Besides the immediate relief for the tractor driver, this technology also allows less experienced workers to safely spray pesticide in orchards. Therefore, an automatically-controlled section control sprayer (ASCS) has a higher work capacity than a MSCS, i.e. a larger area can be sprayed in a given amount of time. Apart from that, pesticide reduction can be improved due to the higher precision in modulating the application rate following the principle of “as little as possible, as much as necessary.”</p>
+<p>All in all, the ASCS promises to a more efficient application of pesticide and higher work capacity per sprayer, as well as less contamination of the environment while maintaining full effectiveness in terms of plant protection.</p>
+<p> </p>
+</div>
+<div id="data-acquistion-christoph" class="section level2">
+<h2>Data acquistion (Christoph)</h2>
+<div id="expert-knowledge-nils" class="section level3">
+<h3>Expert knowledge (Nils)</h3>
+<p>For the decision-relevant questions, we consulted various stakeholders as experts for our model. We consulted several experimental managers from different apple growing regions in Germany, Leaders and technical assistants from the area of plant health, plant protection and production technology of the Competence Centre for Fruit Production Lake Constance, as well as fruit grower from the Lake Constance region.</p>
+<p> </p>
+<div id="calibration-training-christoph" class="section level4">
+<h4>Calibration training (Christoph)</h4>
+<p>For a decision analysis it is important to known how valuable the given estimates are because it need to be based on comprehensive and reliable data. Therefore, calibration training is applied.</p>
+<p>Calibration is a process to find out and document how the deviation of measuring device is. Due to Calibration training the affective answering behavior is reduced and it helps to improve the given estimates. It can also help to know your uncertainties and to train to give good estimates.</p>
+<p>In this case experts are used as measuring device for good estimates. The answers are normally linked to various cognitive biases and normally lead to an overconfidence of the experts about their estimates.</p>
+<p>To reduce this, a series of basic questions is used. In the first part of the calibration training the persons to be calibrated need to answer questions where the correct answer must be within a range. In the second part they need to answer yes or no questions and they need to estimate their confidence about the given answers. after answering the basic questions, they get the feedback about the given answers. This led to a reduction of overconfidence.</p>
+<p>After the calibration training, they were asked about estimates to all inputs for the model with a 90% confidence interval.</p>
+<p><strong>The two alternatives</strong></p>
+<p><em>Decision alternative 1</em>: Buying an automated section control sprayer for orchards</p>
+<ul>
+<li><p>This decision alternative has one main cost and some advantages for the future and the environment.</p></li>
+<li><p>The main cost incurred when buying the automated section control sprayer, because of the sensors which enable the section control sprayer to regulate the application of the pesticides automatically when they are needed.</p></li>
+<li><p>This option can have the advantage to decrease the needed plant protection which result in some positive effects on the environment like increasing the biodiversity, decreasing the water contamination and decrease the pests and diseases of the apple trees.</p></li>
+<li><p>The benefits were derived from possibly having a bigger harvest and less losses due to pest and diseases. They can also derive from not getting sanctioned by governmental restrictions concerning about too much application of pesticides.</p></li>
+</ul>
+<p><em>Decision alternative 2</em>: Buying a manual section control sprayer for orchards.</p>
+<ul>
+<li><p>Within this decision alternative the farmer buys a manual section control sprayer where the implementation cost incurred, but less than for the first alternative. The farmer must control the application of plant protection by hand and can have the disadvantage of applying more pesticide than needed.</p></li>
+<li><p>The benefits are derived from the harvest and selling price, but the advantages of not getting sanctioned or increasing the biodiversity and the harvest can`t took place.</p></li>
+</ul>
+<p> </p>
+</div>
+</div>
+<div id="description" class="section level3">
+<h3>Description</h3>
 <p>Reducing pesticide use: An analysis on the decision whether to implement an automated or manually operated section control sprayer in orchards.</p>
 <p> </p>
 </div>
-<div id="decision-maker-farmer--" class="section level4">
-<h4>Decision maker: farmer —-</h4>
+<div id="decision-maker-farmer" class="section level3">
+<h3>Decision maker: farmer</h3>
 <ul>
 <li>Farmer is the main stakeholder who makes the decision whether or not to buy a modern sprayer which is able to minimise pesticide application rates</li>
 </ul>
 <p> </p>
 </div>
-<div id="stakeholders-describe-further--" class="section level4">
-<h4>Stakeholders: (describe further) —-</h4>
+<div id="stakeholders-describe-further" class="section level3">
+<h3>Stakeholders: (describe further)</h3>
 <ul>
 <li>Farmer
 <ul>
@@ -287,8 +299,8 @@ pre code {
 </ul>
 <p> </p>
 </div>
-<div id="problems--" class="section level4">
-<h4>Problems —-</h4>
+<div id="problems" class="section level3">
+<h3>Problems:</h3>
 <ul>
 <li>Some common agrochemicals will be banned in the near future for various reasons
 <ul>
@@ -302,8 +314,8 @@ pre code {
 </ul>
 <p> </p>
 </div>
-<div id="options--" class="section level4">
-<h4>Options —-</h4>
+<div id="options" class="section level3">
+<h3>Options:</h3>
 <ul>
 <li>Buy automatic section control sprayer</li>
 <li>keeping / buying a manual section control sprayer</li>
@@ -313,8 +325,8 @@ pre code {
 </ul>
 <p> </p>
 </div>
-<div id="allocation-of-resources--" class="section level4">
-<h4>Allocation of resources —-</h4>
+<div id="allocation-of-resources" class="section level3">
+<h3>Allocation of resources:</h3>
 <ul>
 <li>Money
 <ul>
@@ -332,16 +344,16 @@ pre code {
 </ul>
 <p> </p>
 </div>
-<div id="obstacles--" class="section level4">
-<h4>Obstacles —-</h4>
+<div id="obstacles" class="section level3">
+<h3>Obstacles:</h3>
 <ul>
 <li>Costs of investment</li>
 <li>Learning curve for running the equipment</li>
 <li>compatibility with current machinery</li>
 </ul>
 </div>
-<div id="uncertainties--" class="section level4">
-<h4>Uncertainties —-</h4>
+<div id="uncertainties" class="section level3">
+<h3>Uncertainties:</h3>
 <ul>
 <li>Potential reduction of pesticides using an automatic section controlled sprayer
 <ul>
@@ -357,8 +369,8 @@ pre code {
 <li>Maintenance cost of an more complicated and sensitive system</li>
 </ul>
 </div>
-<div id="sources-of-information--" class="section level4">
-<h4>(Sources of) information —-</h4>
+<div id="sources-of-information" class="section level3">
+<h3>(Sources of) information:</h3>
 <ul>
 <li>Farmers
 <ul>
@@ -382,267 +394,11 @@ pre code {
 <li>Assess the importance/conception of reduced pesticide application to the consumer</li>
 </ul></li>
 </ul>
-</div>
 <div id="flow-chart-using-diagrammer-package--" class="section level4">
 <h4>Flow chart using diagrammeR package —-</h4>
-<pre class="r"><code>library(decisionSupport)
-library(DiagrammeR)
-library(DiagrammeRsvg)
-library(rsvg)
-library(tidyverse)</code></pre>
-<pre class="r"><code>model_flow_chart &lt;- grViz(&quot;
-
-digraph {
-  
-  # Add general information which counts for everything!!!
-  
-  # ---------
-  # Change flow chart orientation (top down: &#39;TD&#39;; left to right: &#39;LR&#39; 
-  rankdir = &#39;LR&#39;
-  
-  # Add graph statements 
-  graph [#label = &#39;Initial Model&#39;,
-         labelloc = t,
-         fontsize = 45,
-         ranksep=2,
-         nodesep=1]
-  
-  # Add node statements
-  node [fontname = Arial,
-        fontcolor = black,
-        color = darkslategray,
-        penwidth = 1]
-  
-  # Add edge statements
-  edge [fontsize=30,
-        penwidth=2,
-        fontname=Arial]
-  # ---------  
-  
-  # ---------  
-  # create &#39;ranks&#39; (basically nodes) for arranging nodes later on
-  rank1 [style=invis]
-  rank2 [style=invis]
-  rank3 [style=invis]
-  rank4 [style=invis]
-  rank5 [style=invis]
-  
-  # make invisible (white) links between them
-  rank1-&gt;rank2-&gt;rank3-&gt;rank4-&gt;rank5 [color=white]
-  # ---------  
-  
-  # ---------  
-  # Add specific statements for node group {Intervention &amp; Alternatives} 
-  node [shape = box,
-        fontsize = 30,
-        fixedsize = true,
-        width = 3.6,
-        height = 1.5]
-
-    Ascs [label = &#39;Automated section \n control sprayer&#39;];
-    Al1 [label = &#39;Manual section \n control sprayer&#39;];
-  # ---------
-  
-  
-  
-  # Add specific statements for node group {Pesticides &amp; Cost} 
-  # --------- 
-  node [shape = box,
-        fontsize = 28,
-        fixedsize = true,
-        width = 2.8,
-        height = 0.9]
-  
-  Pe [label = &#39;Pesticides&#39;];
-  Co [label = &#39;Cost&#39;]
-  
-  Cu [label = &#39;Customers&#39;];          
-  Di [label = &#39;Plant damage&#39;];
-  Bio [label = &#39;Biodiversity&#39;];
-  WC [label = &#39;Water \n contamination&#39;];
-  
-  FS [label = &#39;Fruit sales&#39;];
-  GC [label = &#39;Government \n concerns&#39;];
-  
-  FP [label = &#39;Farmers profit&#39;]
-  
-  # ---------  
-  
-  
-  # Add edge statements for negative connection (arrows) and add the connections
-  # ---------  
-  edge [label = &#39;-    &#39;,
-        fontcolor = &#39;red&#39;,
-        color = &#39;red&#39;]
-  {Ascs Al1} -&gt; Pe #[headport = w, tailport = e]
-  GC -&gt; Pe
-  Pe-&gt;Bio #[headport = w]
-  Pe-&gt; Di 
-  Bio-&gt;{Di GC}
-  WC-&gt;{Bio Cu}
-  Di-&gt;FS
-  Co-&gt;FP
-  # ---------  
-  
-  # Add edge statements for positive connection (arrows) and add the connections
-  # ---------  
-  edge [label = &#39;+&#39;,
-        fontcolor = &#39;forestgreen&#39;,
-        color = &#39;forestgreen&#39;]
-  
-  {Ascs Al1}-&gt;Co #[headport = w, tailport = s]
-  Pe-&gt; WC  #[headport = w, tailport = n]
-  Pe-&gt; Co
-  FS-&gt;FP 
-  WC-&gt;GC 
-  Bio-&gt; Cu
-#  Di -&gt; Pe
-  Cu-&gt;FS
-  # ---------  
-  
-  # ---------  
-  # sorting the nodes per rank
-  
-  {
-    Ascs -&gt; Al1 -&gt; rank1 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Co -&gt; Pe -&gt; GC -&gt; rank2 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Di -&gt; Bio -&gt; WC -&gt; rank3 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Cu -&gt; FS -&gt; rank4 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
- 
-#   {
-#     rank5 -&gt; FS [style=invis];
-#     rank=same;
-#     rankdir=DT;
-#   }
-#   
-  # ---------  
-  
-}&quot;)
-
-
-
-# Plot flow chart 
-model_flow_chart
-
-# Export flow chart as .png files; save in &quot;images&quot; folder 
-rsvg_png(charToRaw(export_svg(model_flow_chart)), &quot;images/flow-chart.png&quot;) </code></pre>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD #### First model —-</p>
-<!-- Not finished yet -->
-<!-- #### Calculating the decision model {.tabset} -->
-<!-- ##### Input -->
-<!-- ```{r echo = FALSE} -->
-<!-- # Input table for model function, adding Management_cost -->
-<!-- input_estimates <- data.frame(variable = c("Farmers Profit", "Automated section control", "Pesticides", "Water contamination", " Customers", "Government concerns", "Biodiversity", "Diseases", "Fruit sales"), -->
-<!--                               lower = c(6000, 3, 500, 100), -->
-<!--                               median = NA, -->
-<!--                               upper = c(14000, 8, 1000, 2000), -->
-<!--                               distribution = c("posnorm", "posnorm", "posnorm", "posnorm"), -->
-<!--                               label = c("Yield (kg/ha)", "Price (USD/kg)", "Labor cost (USD/ha)", "Management cost (USD/ha)"), -->
-<!--                               Description = c("Yield in a sweet cherry farm under normal conditions", -->
-<!--                                               "Price of sweet cherry in a normal season", -->
-<!--                                               "Labor costs in a normal season",  -->
-<!--                                               "Management costs in a normal season")) -->
-<!-- ## Changing some columns as they are not in the right format (addition, maybe because R-base 3.6.3?) -->
-<!-- input_estimates$distribution <- as.character(input_estimates$distribution) -->
-<!-- input_estimates$variable <- as.character(input_estimates$variable) -->
-<!-- # Show input_estimates table -->
-<!-- input_estimates -->
-<!-- ``` -->
-<!-- ##### Model -->
-<!-- ```{r} -->
-<!-- # Creating model function to describe the graphical impact pathway (Diagram done earlier) -->
-<!-- model_function <- function(){ -->
-<!--   # Estimate the income in a normal season -->
-<!--   income <- Yield * Market_price -->
-<!--   # Estimate the overall cost in a normal season -->
-<!--   overall_cost <- Labor_cost + Management_cost -->
-<!--   # Estimate the final results from the model -->
-<!--   final_result <- income - overall_cost -->
-<!--   # Generate the list of outputs from the Monte Carlo simulation -->
-<!--   return(list(final_result = final_result)) -->
-<!-- } -->
-<!-- # Run the Monte Carlo simulation using the model function -->
-<!-- mc_simulation <- mcSimulation(estimate = as.estimate(input_estimates), -->
-<!--                                     model_function = model_function, -->
-<!--                                     numberOfModelRuns = 1000000, -->
-<!--                                     functionSyntax = "plainNames") -->
-<!-- # Print MonteCarlo simulation output -->
-<!-- # mc_simulation -->
-<!-- # Function for creating a random variable for a column from the input_estimates table  -->
-<!-- # and put it in the global Env. for test purposes (faster that running whole model) -->
-<!-- make_variables <- function(est,n=1) -->
-<!-- { x<-random(rho=est, n=n) -->
-<!-- for(i in colnames(x)) assign(i, -->
-<!--                              as.numeric(x[1,i]),envir=.GlobalEnv) -->
-<!-- } -->
-<!-- # Creating random global variable from input_estimates -->
-<!-- make_variables(as.estimate(input_estimates)) -->
-<!-- # Call function (without parameters as they are in the global environment) -->
-<!-- model_function() -->
-<!-- ``` -->
-<!-- ##### Graph {.active} -->
-<!-- ```{r, echo=FALSE} -->
-<!-- # Plot distributions to show outcome -->
-<!-- plot_distributions(mcSimulation_object = mc_simulation, -->
-<!--                    vars = "final_result", -->
-<!--                    method = "hist_simple_overlay", -->
-<!--                    old_names = "final_result", -->
-<!--                    new_names = "Outcome distribution for profits") -->
-<!-- ``` -->
 </div>
-<div id="notes-for-improvement-from-the-seminar--" class="section level4">
-<h4>Notes for improvement from the seminar —-</h4>
-<p><strong>Inspiration from other presentations</strong></p>
-<ul>
-<li>Implement “interception” aspect at the base of the model<br />
-</li>
-<li>End model with “Overall value”/“NPV” instead of “Farmer’s profit”</li>
-<li>Add legend to the model visualisation</li>
-</ul>
-<p><strong>Suggestions to improve our model</strong><br />
-* Orchard size: + Keep applicability to many different situations in minds + Create a number of realistic scenarios * Estimate maximum area one unit can work on <span class="math inline">\(\Rightarrow\)</span> Set maximum workload as upper boundary + Consider max. speed, max. uninterrupted working hours</p>
-</div>
-<div id="example-code-from-seminar-08-and-seminar-09--" class="section level4">
-<h4>Example code from Seminar 08 and Seminar 09 —-</h4>
-<pre class="r"><code>library(decisionSupport)
-library(readr)
-library(tidyverse)
-library(ggplot2)
-library(plyr)
-library(dplyr)
-library(igraph)</code></pre>
-<pre class="r"><code>### Seminar 08
-
-
-## Building a decision model as an R function 
-
-example_decision_function &lt;- function(x, varnames){
-  
-  # calculate ex-ante risks: impact the implementation of interventions ####
-  intervention_NonPopInvolvEvent &lt;-
-    chance_event(intervention_NonPopInvolv, 1, 0, n = 1)
-  
-  # pre-calculate common random draws for all intervention model runs ####
-=======
-#### First model </code></pre>
+<div id="first-model" class="section level4">
+<h4>First model</h4>
 <pre class="r"><code>ascs_decision_model &lt;- function(x, varnames){
   
 
@@ -658,7 +414,7 @@ example_decision_function &lt;- function(x, varnames){
   
   
   # iterative pesticide impact
-  auxilary_table &lt;- data.frame(year = c(1:n_years),
+  auxiliary_table &lt;- data.frame(year = c(1:n_years),
                                pest_quant_man = rep(0.,n_years),
                                pest_quant_aut = rep(0.,n_years),
                                rel_water_cont_man = rep(0.,n_years),
@@ -669,19 +425,30 @@ example_decision_function &lt;- function(x, varnames){
                                plant_dmg_pot_aut = rep(0.,n_years),
                                actual_plant_dmg_man = rep(0.,n_years),
                                actual_plant_dmg_aut = rep(0.,n_years),
-                               gov_inter_chance = rep(0.,n_years),
-                               gov_inter_happened = rep(0,n_years))
+                               gov_inter_chance_man = rep(0.,n_years),
+                               gov_inter_chance_aut = rep(0.,n_years),
+                               gov_inter_happened_man = rep(0,n_years),
+                               gov_inter_happened_aut = rep(0,n_years),
+                               gov_reaction = rep(0,n_years)
+                               )
   
-
+    
   for (y in 1:n_years) {
     
     if (y == 1) {
+      # fix for one run
+      lower &lt;- input_table[input_table$variable == &quot;government_reaction_time&quot;, &quot;lower&quot;]
+      upper &lt;- input_table[input_table$variable == &quot;government_reaction_time&quot;, &quot;upper&quot;]
+      auxiliary_table$gov_reaction &lt;- round(runif(n_years,lower,upper))
       # general chance that government intervenes
-      auxilary_table$gov_inter_chance_man[y] &lt;- government_intervention_chance 
-      auxilary_table$gov_inter_chance_aut[y] &lt;- auxilary_table$gov_inter_chance_man[y]
-      auxilary_table$gov_inter_happened_man[y] &lt;- chance_event(auxilary_table$gov_inter_chance_man[y], 1, 0, 1)
-      auxilary_table$gov_inter_happened_aut[y] &lt;- chance_event(auxilary_table$gov_inter_chance_aut[y], 1, 0, 1)
-
+      auxiliary_table$gov_inter_chance_man[y] &lt;- government_intervention_chance 
+      auxiliary_table$gov_inter_chance_aut[y] &lt;- auxiliary_table$gov_inter_chance_man[y]
+      # because chance that the government intervention has an influence in year 1 is 0
+      # is covered by (pre-)assumptions
+      if ((y + auxiliary_table$gov_reaction[y]) &lt;= n_years) {
+        auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] &lt;- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0, 1)
+        auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] &lt;- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0, 1)
+      }
       # pesticide on water contamination influence factor ## fix per run
       pest_cont_fac &lt;- vv(pesticide_on_water_contamination_factor, var_CV, 1)
       # pesticide on biodiversity influence factor ## fix per run
@@ -691,120 +458,127 @@ example_decision_function &lt;- function(x, varnames){
       # pestizide reduction factor
       pest_red_fac &lt;- pesticide_reduction_auto
       # potential plant damage 
-      auxilary_table$plant_dmg_pot_man[y] &lt;- potential_plant_damage
+      auxiliary_table$plant_dmg_pot_man[y] &lt;- potential_plant_damage
       # vv(potential_plant_damage, var_CV, n_years, lower_limit = 0.7,upper_limit = 1.3)   
       # vv( potential_plant_damage, 0, n_years)
-      auxilary_table$plant_dmg_pot_aut[y] &lt;- auxilary_table$plant_dmg_pot_man[y]
+      auxiliary_table$plant_dmg_pot_aut[y] &lt;- auxiliary_table$plant_dmg_pot_man[y]
       # pesticide quantity
-      auxilary_table$pest_quant_man[y] &lt;- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
-      auxilary_table$pest_quant_aut[y] &lt;- auxilary_table$pest_quant_man[y] * pest_red_fac
+      auxiliary_table$pest_quant_man[y] &lt;- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
+      auxiliary_table$pest_quant_aut[y] &lt;- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # water contamination 
-      auxilary_table$rel_water_cont_man[y] &lt;- 1 # rep(1, n_years)
-      auxilary_table$rel_water_cont_aut[y] &lt;- 1 # rep(1, n_years)
+      auxiliary_table$rel_water_cont_man[y] &lt;- 1 # rep(1, n_years)
+      auxiliary_table$rel_water_cont_aut[y] &lt;- 1 # rep(1, n_years)
       # biodiversity
-      auxilary_table$rel_bio_man[y] &lt;- 1 # rep(1, n_years)
-      auxilary_table$rel_bio_aut[y] &lt;- 1 # rep(1, n_years)
-      auxilary_table$pest_quant_man[y] &lt;- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
-                                                 auxilary_table$pest_quant_man[y],
-                                                 ifelse(auxilary_table$pest_quant_man[y] &gt; government_pesticide_quantity,
-                                                        government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_man[y]))
+      auxiliary_table$rel_bio_man[y] &lt;- 1 # rep(1, n_years)
+      auxiliary_table$rel_bio_aut[y] &lt;- 1 # rep(1, n_years)
       
-      auxilary_table$pest_quant_aut[y] &lt;- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
-                                                 auxilary_table$pest_quant_aut[y],
-                                                 ifelse(auxilary_table$pest_quant_aut[y] &gt; government_pesticide_quantity,
-                                                        government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_aut[y]))
+      # auxiliary_table$pest_quant_man[y] &lt;- ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
+      #                                            auxiliary_table$pest_quant_man[y],
+      #                                            ifelse(auxiliary_table$pest_quant_man[y] &gt; government_pesticide_quantity,
+      #                                                   government_pesticide_quantity,
+      #                                                   auxiliary_table$pest_quant_man[y]))
+      # 
+      # auxiliary_table$pest_quant_aut[y] &lt;- ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
+      #                                            auxiliary_table$pest_quant_aut[y],
+      #                                            ifelse(auxiliary_table$pest_quant_aut[y] &gt; government_pesticide_quantity,
+      #                                                   government_pesticide_quantity,
+      #                                                   auxiliary_table$pest_quant_aut[y]))
+
       # actual plant damage         
-      actual_plant_dmg_man &lt;- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
-      ### auxilary_table$actual_plant_dmg_man[y] &lt;- actual_plant_dmg_man
-      auxilary_table$actual_plant_dmg_man[y] &lt;- ifelse(actual_plant_dmg_man&lt;0,0,actual_plant_dmg_man)
-      actual_plant_dmg_aut &lt;- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
-      ### auxilary_table$actual_plant_dmg_aut[y] &lt;- actual_plant_dmg_aut
-      auxilary_table$actual_plant_dmg_aut[y] &lt;- ifelse(actual_plant_dmg_aut&lt;0,0,actual_plant_dmg_aut)
+      actual_plant_dmg_man &lt;- auxiliary_table$plant_dmg_pot_man[y] - auxiliary_table$pest_quant_man[y]
+      ### auxiliary_table$actual_plant_dmg_man[y] &lt;- actual_plant_dmg_man
+      auxiliary_table$actual_plant_dmg_man[y] &lt;- ifelse(actual_plant_dmg_man&lt;0,0,actual_plant_dmg_man)
+      
+      actual_plant_dmg_aut &lt;- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
+      auxiliary_table$actual_plant_dmg_aut[y] &lt;- ifelse(actual_plant_dmg_aut&lt;0,0,actual_plant_dmg_aut)
       
       }else  {
       # general chance affected by biodiversity and water contamination that government intervenes
-      auxilary_table$gov_inter_chance_man[y] &lt;- auxilary_table$gov_inter_chance_man[y-1] +
-        ( ((1 - auxilary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
-      auxilary_table$gov_inter_chance_aut[y] &lt;- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
+      auxiliary_table$gov_inter_chance_man[y] &lt;- auxiliary_table$gov_inter_chance_man[y-1] +
+        ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxiliary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
+      auxiliary_table$gov_inter_chance_aut[y] &lt;- auxiliary_table$gov_inter_chance_aut[y-1] +
+        ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
 
-      auxilary_table$gov_inter_chance_aut[y] &lt;- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
-      auxilary_table$gov_inter_chance_aut[y] &lt;- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
       # chance for government intervention.
       # government intervention instantaneous but calculated on values government_reaction_time years before.
-      intervention_delay &lt;- ifelse(government_reaction_time &lt;= y,
-                                   0,
-                                   y - government_reaction_time)
-      auxilary_table$gov_inter_happened_man[y] &lt;- ifelse(auxilary_table$gov_inter_happened_man[y-1] == 0,
-                                                     chance_event(auxilary_table$gov_inter_chance_man[intervention_delay],1, 0, 1),
-                                                     1)
-      auxilary_table$gov_inter_happened_aut[y] &lt;- ifelse(auxilary_table$gov_inter_happened_aut[y-1] == 0,
-                                                     chance_event(auxilary_table$gov_inter_chance_aut[intervention_delay],1, 0, 1),
-                                                     1)
+      # intervention_delay &lt;- ifelse(round(government_reaction_time) &lt;= y,
+      #                              1,
+      #                              y - round(government_reaction_time))
+       
+      if(auxiliary_table$gov_inter_happened_man[y-1] == 0) {
+        if ( (y + auxiliary_table$gov_reaction[y] &lt;= n_years) &amp; 
+             (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
+          {
+          auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction] &lt;- chance_event(auxiliary_table$gov_inter_chance_man[y],
+                                                                                                   1, 0, 1)
+        }
+      }else {auxiliary_table$gov_inter_happened_man[y] &lt;- 1}
+      
+      if (auxiliary_table$gov_inter_happened_aut[y-1] == 0) {
+        if ( (y + auxiliary_table$gov_reaction[y] &lt;= n_years) &amp; 
+             (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
+        {
+          auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction] &lt;- chance_event(auxiliary_table$gov_inter_chance_aut[y],
+                                                                                                   1, 0, 1)
+        }
+      }else {auxiliary_table$gov_inter_happened_aut[y] &lt;- 1} 
+      
       
       # potential plant damagex
-      auxilary_table$plant_dmg_pot_man[y] &lt;- potential_plant_damage
-      auxilary_table$plant_dmg_pot_aut[y] &lt;- auxilary_table$plant_dmg_pot_man[y]
+      auxiliary_table$plant_dmg_pot_man[y] &lt;- potential_plant_damage
+      auxiliary_table$plant_dmg_pot_aut[y] &lt;- auxiliary_table$plant_dmg_pot_man[y]
       # pesticide quantity
-      auxilary_table$pest_quant_man[y] &lt;- pesticide_quantity
-      auxilary_table$pest_quant_aut[y] &lt;- auxilary_table$pest_quant_man[y] * pest_red_fac
+      auxiliary_table$pest_quant_man[y] &lt;- pesticide_quantity
+      auxiliary_table$pest_quant_aut[y] &lt;- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # water contamination ## assuming that the pesticide quantity influences the water contamination by 10%
-      auxilary_table$rel_water_cont_man[y] &lt;- auxilary_table$rel_water_cont_man[y-1] +
-        ((1 - auxilary_table$pest_quant_man[y-1]) * pest_cont_fac)
-      auxilary_table$rel_water_cont_aut[y] &lt;- auxilary_table$rel_water_cont_aut[y-1] +
-        ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_cont_fac)
+      auxiliary_table$rel_water_cont_man[y] &lt;- auxiliary_table$rel_water_cont_man[y-1] +
+        ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_cont_fac)
+      auxiliary_table$rel_water_cont_aut[y] &lt;- auxiliary_table$rel_water_cont_aut[y-1] +
+        ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_cont_fac)
       
       # biodiversity ## assuming that the water contamination influences the biodiversity by 10%
-      auxilary_table$rel_bio_man[y] &lt;- auxilary_table$rel_bio_man[y-1] +
-        ((1 - auxilary_table$pest_quant_man[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
+      auxiliary_table$rel_bio_man[y] &lt;- auxiliary_table$rel_bio_man[y-1] +
+        ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_bio_fac) + ((1 - auxiliary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
       
-      auxilary_table$rel_bio_aut[y] &lt;- auxilary_table$rel_bio_aut[y-1] +
-        ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
+      auxiliary_table$rel_bio_aut[y] &lt;- auxiliary_table$rel_bio_aut[y-1] +
+        ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxiliary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
       
       # potential plant damage ## effected by biodiversity
-      auxilary_table$plant_dmg_pot_man[y] &lt;- auxilary_table$plant_dmg_pot_man[y-1] +
-        auxilary_table$plant_dmg_pot_man[y-1] * (1 -  auxilary_table$rel_bio_man[y-1])
-      auxilary_table$plant_dmg_pot_aut[y] &lt;- auxilary_table$plant_dmg_pot_aut[y-1] +
-        auxilary_table$plant_dmg_pot_aut[y-1] * (1 -  auxilary_table$rel_bio_aut[y-1])
+      auxiliary_table$plant_dmg_pot_man[y] &lt;- auxiliary_table$plant_dmg_pot_man[y-1] +
+        auxiliary_table$plant_dmg_pot_man[y-1] * (1 -  auxiliary_table$rel_bio_man[y-1])
+      auxiliary_table$plant_dmg_pot_aut[y] &lt;- auxiliary_table$plant_dmg_pot_aut[y-1] +
+        auxiliary_table$plant_dmg_pot_aut[y-1] * (1 -  auxiliary_table$rel_bio_aut[y-1])
       # pesticide quantity ## effected by biodiversity
-      auxilary_table$pest_quant_man[y] &lt;- auxilary_table$pest_quant_man[y] +
-        auxilary_table$pest_quant_man[y] * (1 - auxilary_table$rel_bio_man[y])
-      auxilary_table$pest_quant_aut[y] &lt;- auxilary_table$pest_quant_aut[y] +
-        auxilary_table$pest_quant_aut[y] * (1 - auxilary_table$rel_bio_aut[y])
+      auxiliary_table$pest_quant_man[y] &lt;- auxiliary_table$pest_quant_man[y] +
+        auxiliary_table$pest_quant_man[y] * (1 - auxiliary_table$rel_bio_man[y])
+      auxiliary_table$pest_quant_aut[y] &lt;- auxiliary_table$pest_quant_aut[y] +
+        auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y])
       
-      auxilary_table$pest_quant_man[y] &lt;- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
-                                                 auxilary_table$pest_quant_man[y],
-                                                 ifelse(auxilary_table$pest_quant_man[y] &gt; government_pesticide_quantity,
+      auxiliary_table$pest_quant_man[y] &lt;- ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
+                                                 auxiliary_table$pest_quant_man[y],
+                                                 ifelse(auxiliary_table$pest_quant_man[y] &gt; government_pesticide_quantity,
                                                         government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_man[y]))
+                                                        auxiliary_table$pest_quant_man[y]))
       
-      auxilary_table$pest_quant_aut[y] &lt;- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
-                                                 auxilary_table$pest_quant_aut[y],
-                                                 ifelse(auxilary_table$pest_quant_aut[y] &gt; government_pesticide_quantity,
+      auxiliary_table$pest_quant_aut[y] &lt;- ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
+                                                 auxiliary_table$pest_quant_aut[y],
+                                                 ifelse(auxiliary_table$pest_quant_aut[y] &gt; government_pesticide_quantity,
                                                         government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_aut[y]))
+                                                        auxiliary_table$pest_quant_aut[y]))
       
       # actual plant damage ## potential plant damage - pesticide quantity 
-      actual_plant_dmg_man &lt;- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
-      auxilary_table$actual_plant_dmg_man[y] &lt;- ifelse(actual_plant_dmg_man &lt; 0, 0, actual_plant_dmg_man)
-      ### auxilary_table$actual_plant_dmg_man[y] &lt;- actual_plant_dmg_man
-      actual_plant_dmg_aut &lt;- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
-      auxilary_table$actual_plant_dmg_aut[y] &lt;- ifelse(actual_plant_dmg_aut &lt; 0, 0, actual_plant_dmg_aut)
-      ### auxilary_table$actual_plant_dmg_aut[y] &lt;- actual_plant_dmg_aut
+      actual_plant_dmg_man &lt;- auxiliary_table$plant_dmg_pot_man[y] - auxiliary_table$pest_quant_man[y]
+      auxiliary_table$actual_plant_dmg_man[y] &lt;- ifelse(actual_plant_dmg_man &lt; 0, 0, actual_plant_dmg_man)
+      ### auxiliary_table$actual_plant_dmg_man[y] &lt;- actual_plant_dmg_man
+      actual_plant_dmg_aut &lt;- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
+      auxiliary_table$actual_plant_dmg_aut[y] &lt;- ifelse(actual_plant_dmg_aut &lt; 0, 0, actual_plant_dmg_aut)
+      ### auxiliary_table$actual_plant_dmg_aut[y] &lt;- actual_plant_dmg_aut
     }
     
   }
-  print(auxilary_table)
-
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 250aa3616f416275080e82c7a85c8f95143bcdce
+  print(auxiliary_table)
   
   # chance_event() government
   # pest_quant_gov &lt;- vv(government_pesticide_quantity, 10, n_years)
@@ -812,8 +586,8 @@ example_decision_function &lt;- function(x, varnames){
   
   # yields prizes are varying depending on the years and the plant damage
   yield_t_ha &lt;- vv(yield, var_CV, n_years)
-  yield_t_ha_man &lt;- yield_t_ha * (1 - auxilary_table$actual_plant_dmg_man)
-  yield_t_ha_aut &lt;- yield_t_ha * (1 - auxilary_table$actual_plant_dmg_aut)
+  yield_t_ha_man &lt;- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_man)
+  yield_t_ha_aut &lt;- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_aut)
   # market prizes are varying over the years
   market_price_e_t &lt;- vv(market_price, var_CV, n_years)
   # fruit sales depend on yield and market price
@@ -822,8 +596,8 @@ example_decision_function &lt;- function(x, varnames){
   
   # costs for pesticides per ha and decision
   pest_cost_ha_const &lt;- vv( pesticide_cost, var_CV, n_years )
-  pest_cost_ha_man &lt;- pest_cost_ha_const * auxilary_table$pest_quant_man
-  pest_cost_ha_aut &lt;- pest_cost_ha_const * auxilary_table$pest_quant_aut
+  pest_cost_ha_man &lt;- pest_cost_ha_const * auxiliary_table$pest_quant_man
+  pest_cost_ha_aut &lt;- pest_cost_ha_const * auxiliary_table$pest_quant_aut
   # machine costs are applied only once so n = 1
   machine_upg_cost &lt;- c( initial_upg_cost, rep(0,(n_years-1)) )
 
@@ -868,12 +642,10 @@ mcSimulation_results &lt;- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv(&quot;data/final/inputs.csv&quot;),
   estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 10,
+  numberOfModelRuns = 5,
   functionSyntax = &quot;plainNames&quot;
-)
-
-
-## Plot Net Present Value (NPV) distributions 
+)</code></pre>
+<pre class="r"><code>## Plot Net Present Value (NPV) distributions 
 decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c(&quot;Interv_NPV&quot;, &quot;NO_Interv_NPV&quot;),
                                     method = &#39;smooth_simple_overlay&#39;, 
@@ -915,119 +687,22 @@ compound_figure(mcSimulation_object = mcSimulation_results,
                 EVPIresults = evpi, decision_var_name = &quot;NPV_decision_do&quot;, 
                 cashflow_var_name = &quot;Cashflow_decision_do&quot;, 
                 base_size = 7)</code></pre>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<pre class="r"><code>### Seminar 09
-
-
-## Plot impact pathway
-hail_path &lt;- graph.formula(HailNet -+ Yield, 
-                           HailNet -+ Cost, 
-                           HailEvent -+ Yield,
-                           Yield -+ MarketPrice, 
-                           MarketPrice -+ NPV,
-                           Cost -+ NPV)
-plot(hail_path)
-
-
-## Building the model 
-hail_estimates &lt;- data.frame(variable = c(&quot;yield&quot;, 
-                                          &quot;var_CV&quot;, 
-                                          &quot;initial_investment&quot;, 
-                                          &quot;price&quot;, 
-                                          &quot;p_hail&quot;),
-                    lower = c(6000, 20, 500, 5, 0.02),
-                    median = NA,
-                    upper = c(14000, 20, 1000, 80, 0.2),
-                    distribution = c(&quot;posnorm&quot;, 
-                                     &quot;const&quot;, 
-                                     &quot;posnorm&quot;, 
-                                     &quot;posnorm&quot;,
-                                     &quot;posnorm&quot;),
-                    label = c(&quot;Yield (kg/ha)&quot;, 
-                              &quot;Coefficient of variation&quot;, 
-                              &quot;Investment cost (USD)&quot;, 
-                              &quot;Market price (EUR/kg)&quot;, 
-                              &quot;% chance hail&quot;),
-                    Description = c(&quot;Yield under normal conditions&quot;,
-                                    &quot;Coefficient of variation (measure of relativevariability)&quot;,
-                                    &quot;Investment cost&quot;, 
-                                    &quot;Market price achieved for yields (EUR/kg)&quot;, 
-                                    &quot;Probability of a hail storm&quot;))
-hail_estimates
-
-
-## Create a function following the graphical impact pathway and using the inputs above to calculate the Net Present Value for the investment
-
-hail_function &lt;- function(){
-  
-# use vv() to add variability to the random draws of yield and of price over a 20 year simulation 
-yields &lt;- vv(var_mean = yield, 
-             var_CV = var_CV, 
-             n = 20)
-
-prices &lt;- vv(var_mean = price, 
-             var_CV = var_CV, 
-             n = 20)
-
-# use rep() to simulate the initial_investment 
-# only in the first year (assuming the net lasts 20 years)
-invest_costs &lt;- c(initial_investment, rep(0, 19))
-
-# use p_hail in the chance_event() 
-# to adjust yield for probability of hail
-# assuming no yield at all in the event of hail
-hail_adjusted_yield &lt;- chance_event(chance = p_hail, 
-                                    value_if = 0,
-                                    value_if_not = yield,
-                                    n = 20)
-
-# calculate profit without net
-profit_no_net &lt;- hail_adjusted_yield*prices
-
-# calculate profit with the net
-profit_with_net &lt;- (yields*prices)-invest_costs
-
-# use &#39;discount&#39; to calculate net present value 
-# &#39;discount_rate&#39; is expressed in percent
-NPV_no_net &lt;- discount(profit_no_net, discount_rate = 5, calculate_NPV = TRUE)
-NPV_net &lt;- discount(profit_with_net, discount_rate = 5, calculate_NPV = TRUE)
-
-# calculate the overall NPV of the decision (do - don&#39;t do)
-NPV_decision &lt;- NPV_net-NPV_no_net
-
-return(list(NPV_no_net =  NPV_no_net,
-            NPV_net =  NPV_net, 
-            NPV_decision = NPV_decision))
-}
-=======
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 250aa3616f416275080e82c7a85c8f95143bcdce
-
-
-
-#### Notes for improvement from the seminar 
-
-
-**Inspiration from other presentations**  
-
-* Implement &quot;interception&quot; aspect at the base of the model  
-* End model with &quot;Overall value&quot;/&quot;NPV&quot; instead of &quot;Farmer&#39;s profit&quot; 
-* Add legend to the model visualisation  
-
-
-**Suggestions to improve our model**  
-* Orchard size:
-  + Keep applicability to many different situations in minds 
-  + Create a number of realistic scenarios 
-* Estimate maximum area one unit can work on $\Rightarrow$ Set maximum workload as upper boundary 
-  + Consider max. speed, max. uninterrupted working hours </code></pre>
+</div>
+<div id="notes-for-improvement-from-the-seminar" class="section level4">
+<h4>Notes for improvement from the seminar</h4>
+<p><strong>Inspiration from other presentations</strong></p>
+<ul>
+<li>Implement “interception” aspect at the base of the model<br />
+</li>
+<li>End model with “Overall value”/“NPV” instead of “Farmer’s profit”</li>
+<li>Add legend to the model visualisation</li>
+</ul>
+<p><strong>Suggestions to improve our model</strong><br />
+* Orchard size: + Keep applicability to many different situations in minds + Create a number of realistic scenarios * Estimate maximum area one unit can work on <span class="math inline">\(\Rightarrow\)</span> Set maximum workload as upper boundary + Consider max. speed, max. uninterrupted working hours</p>
 </div>
 <div id="example-code-from-seminar-08-and-seminar-09" class="section level4">
 <h4>Example code from Seminar 08 and Seminar 09</h4>
-<pre class="r"><code>library(readr)
-library(ggplot2)
-library(plyr)
-library(dplyr)
-library(igraph)</code></pre>
+</div>
 </div>
 <div id="seminar-08" class="section level3">
 <h3>Seminar 08</h3>
@@ -1056,10 +731,6 @@ library(igraph)</code></pre>
 <li>Both events are also time dependent, as higher water contamination rises goverments concern and thus an intervention</li>
 </ul></li>
 </ul>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-do_decision_2020" class="csl-entry">
-Do, Hoa, Eike Luedeling, and Cory Whitney. 2020. <span>“Decision Analysis of Agroforestry Options Reveals Adoption Risks for Resource-Poor Farmers.”</span> <em>Agronomy for Sustainable Development</em> 40: 1–12.
-</div>
 </div>
 </div>
 

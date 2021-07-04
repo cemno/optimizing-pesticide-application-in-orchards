@@ -455,6 +455,14 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 #### First model 
 ```{r}
 
+## Importing input table 
+  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
+  input_table <- drop_na(input_table, c("lower","upper"))
+  write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
+  input_table <- read.csv("data/final/inputs.csv")
+  # as.estimate(input_table) 
+
+
 ascs_decision_model <- function(x, varnames){
   
 
@@ -513,14 +521,18 @@ ascs_decision_model <- function(x, varnames){
       cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
       # pestizide reduction factor
       pest_red_fac <- pesticide_reduction_auto
+      
       # potential plant damage 
-      auxiliary_table$plant_dmg_pot_man[y] <- potential_plant_damage
-      # vv(potential_plant_damage, var_CV, n_years, lower_limit = 0.7,upper_limit = 1.3)   
-      # vv( potential_plant_damage, 0, n_years)
-      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_man[y]
+      auxiliary_table$plant_dmg_pot_man <- vv(potential_plant_damage, potential_plant_damage_CV, n_years)
+      auxiliary_table$plant_dmg_pot_aut <- auxiliary_table$plant_dmg_pot_man
       # pesticide quantity
-      auxiliary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
-      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
+      ## auxiliary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
+      ## auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
+      # manuell correlation between pesticide quantity and potential plant damage
+      auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rnorm(n_years, 1, 0.1) 
+      auxiliary_table$pest_quant_aut <- auxiliary_table$pest_quant_man * pest_red_fac
+      
+      
       # water contamination 
       auxiliary_table$rel_water_cont_man[y] <- 1 # rep(1, n_years)
       auxiliary_table$rel_water_cont_aut[y] <- 1 # rep(1, n_years)
@@ -553,6 +565,7 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$gov_inter_chance_man[y] <- auxiliary_table$gov_inter_chance_man[y-1] +
         ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
+      
       auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_aut[y-1] +
         ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
@@ -582,12 +595,14 @@ ascs_decision_model <- function(x, varnames){
       }else {auxiliary_table$gov_inter_happened_aut[y] <- 1} 
       
       
-      # potential plant damagex
-      auxiliary_table$plant_dmg_pot_man[y] <- potential_plant_damage
-      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_man[y]
+      # potential plant damage
+      # auxiliary_table$plant_dmg_pot_man[y] <- potential_plant_damage
+      # auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_man[y]
+      
       # pesticide quantity
-      auxiliary_table$pest_quant_man[y] <- pesticide_quantity
-      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
+      # auxiliary_table$pest_quant_man[y] <- pesticide_quantity
+      # auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
+      
       # water contamination ## assuming that the pesticide quantity influences the water contamination by 10%
       auxiliary_table$rel_water_cont_man[y] <- auxiliary_table$rel_water_cont_man[y-1] +
         ((auxiliary_table$pest_quant_man[y-1] - 1) * pest_cont_fac)
@@ -602,9 +617,9 @@ ascs_decision_model <- function(x, varnames){
         ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxiliary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
       
       # potential plant damage ## effected by biodiversity
-      auxiliary_table$plant_dmg_pot_man[y] <- auxiliary_table$plant_dmg_pot_man[y-1] +
+      auxiliary_table$plant_dmg_pot_man[y] <- auxiliary_table$plant_dmg_pot_man[y] +
         auxiliary_table$plant_dmg_pot_man[y-1] * (1 -  auxiliary_table$rel_bio_man[y-1])
-      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_aut[y-1] +
+      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_aut[y] +
         auxiliary_table$plant_dmg_pot_aut[y-1] * (1 -  auxiliary_table$rel_bio_aut[y-1])
       # pesticide quantity ## effected by biodiversity
       auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
@@ -634,7 +649,7 @@ ascs_decision_model <- function(x, varnames){
     }
     
   }
-  # print(auxiliary_table)
+  
   
   # chance_event() government
   # pest_quant_gov <- vv(government_pesticide_quantity, 10, n_years)
@@ -669,6 +684,7 @@ ascs_decision_model <- function(x, varnames){
   NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
   NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
 
+  print(auxiliary_table)
   
   return(list(Interv_NPV = NPV_aut,
               NO_Interv_NPV = NPV_man,
@@ -676,22 +692,19 @@ ascs_decision_model <- function(x, varnames){
               Cashflow_decision_do = farmers_profit_aut - farmers_profit_man))
 }
 
+
 ```
 
 
 ```{r}
-## Importing input table 
-  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
-  input_table <- drop_na(input_table, c("lower","upper"))
-  write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
-  input_table <- read.csv("data/final/inputs.csv")
-  # as.estimate(input_table) 
 
 ## creating Correlation matrix 
-estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
-                  potential_plant_damage,                      1,               0.9
-                  pesticide_quantity,                        0.9,                1"
-correlation_matrix <- data.matrix( read.csv( text=estimateTextCor, row.names=1, strip.white=TRUE))
+# estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
+#                   potential_plant_damage,                      1,               0.9
+#                   pesticide_quantity,                        0.9,                1"
+# correlation_matrix <- data.matrix( read.csv( text=estimateTextCor, row.names=1, strip.white=TRUE))
+
+
 
 ## adding the input table and the correlation matrix to the estimate object
 #inputs <- as.estimate(input_table, correlation_matrix = correlation_matrix)
@@ -699,9 +712,10 @@ correlation_matrix <- data.matrix( read.csv( text=estimateTextCor, row.names=1, 
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
-  estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
+#  estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
+  estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 1000,
+  numberOfModelRuns = 100,
   functionSyntax = "plainNames"
 )
 ```

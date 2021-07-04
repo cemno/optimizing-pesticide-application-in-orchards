@@ -684,7 +684,7 @@ ascs_decision_model <- function(x, varnames){
   NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
   NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
 
-  print(auxiliary_table)
+  # print(auxiliary_table)
   
   return(list(Interv_NPV = NPV_aut,
               NO_Interv_NPV = NPV_man,

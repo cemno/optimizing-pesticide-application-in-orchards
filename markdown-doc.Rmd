@@ -634,7 +634,7 @@ ascs_decision_model <- function(x, varnames){
     }
     
   }
-  print(auxiliary_table)
+  # print(auxiliary_table)
   
   # chance_event() government
   # pest_quant_gov <- vv(government_pesticide_quantity, 10, n_years)
@@ -676,7 +676,10 @@ ascs_decision_model <- function(x, varnames){
               Cashflow_decision_do = farmers_profit_aut - farmers_profit_man))
 }
 
+```
 
+
+```{r}
 ## Importing input table 
   input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
   input_table <- drop_na(input_table, c("lower","upper"))
@@ -698,7 +701,7 @@ mcSimulation_results <- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
   estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 100,
+  numberOfModelRuns = 1000,
   functionSyntax = "plainNames"
 )
 ```

@@ -3,9 +3,16 @@ title: "Implementing automated section control sprayers for optimising pesticide
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 output: html_document
+bibliography: 
+  - bib/references.bib
 ---
 
-#### Introduction ----
+Test: Referencing literature
+Read Do et al. [@do_decision_2020]
+
+
+
+#### Introduction ####
 
 **Decision Analysis**  
 * Forecasting the performance of an intervention with the help of models can aid management decisions * New practices and the systems they are planned to be implemented in need to be analysed realistically and holistically  
@@ -161,7 +168,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 
 #### Flow chart using diagrammeR package ----  
-```{r, include=FALSE}
+```{r, eval=FALSE}
 library(decisionSupport)
 library(DiagrammeR)
 library(DiagrammeRsvg)
@@ -170,7 +177,7 @@ library(tidyverse)
 ```
 
 
-```{r, echo=FALSE}
+```{r, eval=FALSE}
 
 model_flow_chart <- grViz("
 
@@ -436,7 +443,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
  
 #### Example code from Seminar 08 and Seminar 09 ---- 
 
-```{r, include = FALSE}
+```{r, eval = FALSE}
 library(decisionSupport)
 library(readr)
 library(tidyverse)
@@ -446,7 +453,7 @@ library(dplyr)
 library(igraph)
 ```
 
-```{r, echo = FALSE}
+```{r, eval = FALSE}
 ### Seminar 08
 
 
@@ -461,7 +468,10 @@ example_decision_function <- function(x, varnames){
   # pre-calculate common random draws for all intervention model runs ####
 =======
 #### First model 
-```{r}
+  
+```
+
+```{r, eval = FALSE}
 
 ascs_decision_model <- function(x, varnames){
   
@@ -741,7 +751,7 @@ compound_figure(mcSimulation_object = mcSimulation_results,
 
 
 <<<<<<< HEAD
-```{r, echo = FALSE}
+```{r, eval = FALSE}
 ### Seminar 09
 
 
@@ -848,10 +858,11 @@ return(list(NPV_no_net =  NPV_no_net,
   + Consider max. speed, max. uninterrupted working hours 
  
  
- 
+```
+
 #### Example code from Seminar 08 and Seminar 09 
 
-```{r, include = FALSE}
+```{r, eval = FALSE}
 library(readr)
 library(ggplot2)
 library(plyr)

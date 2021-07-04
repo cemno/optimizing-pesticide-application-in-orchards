@@ -325,7 +325,7 @@ ascs_decision_model <- function(x, varnames){
   
   
   # iterative pesticide impact
-  auxilary_table <- data.frame(year = c(1:n_years),
+  auxiliary_table <- data.frame(year = c(1:n_years),
                                pest_quant_man = rep(0.,n_years),
                                pest_quant_aut = rep(0.,n_years),
                                rel_water_cont_man = rep(0.,n_years),
@@ -336,19 +336,30 @@ ascs_decision_model <- function(x, varnames){
                                plant_dmg_pot_aut = rep(0.,n_years),
                                actual_plant_dmg_man = rep(0.,n_years),
                                actual_plant_dmg_aut = rep(0.,n_years),
-                               gov_inter_chance = rep(0.,n_years),
-                               gov_inter_happened = rep(0,n_years))
+                               gov_inter_chance_man = rep(0.,n_years),
+                               gov_inter_chance_aut = rep(0.,n_years),
+                               gov_inter_happened_man = rep(0,n_years),
+                               gov_inter_happened_aut = rep(0,n_years),
+                               gov_reaction = rep(0,n_years)
+                               )
   
-
+    
   for (y in 1:n_years) {
     
     if (y == 1) {
+      # fix for one run
+      lower <- input_table[input_table$variable == "government_reaction_time", "lower"]
+      upper <- input_table[input_table$variable == "government_reaction_time", "upper"]
+      auxiliary_table$gov_reaction <- round(runif(n_years,lower,upper))
       # general chance that government intervenes
-      auxilary_table$gov_inter_chance_man[y] <- government_intervention_chance 
-      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_man[y]
-      auxilary_table$gov_inter_happened_man[y] <- chance_event(auxilary_table$gov_inter_chance_man[y], 1, 0, 1)
-      auxilary_table$gov_inter_happened_aut[y] <- chance_event(auxilary_table$gov_inter_chance_aut[y], 1, 0, 1)
-
+      auxiliary_table$gov_inter_chance_man[y] <- government_intervention_chance 
+      auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_man[y]
+      # because chance that the government intervention has an influence in year 1 is 0
+      # is covered by (pre-)assumptions
+      if ((y + auxiliary_table$gov_reaction[y]) <= n_years) {
+        auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0, 1)
+        auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0, 1)
+      }
       # pesticide on water contamination influence factor ## fix per run
       pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
       # pesticide on biodiversity influence factor ## fix per run
@@ -358,119 +369,127 @@ ascs_decision_model <- function(x, varnames){
       # pestizide reduction factor
       pest_red_fac <- pesticide_reduction_auto
       # potential plant damage 
-      auxilary_table$plant_dmg_pot_man[y] <- potential_plant_damage
+      auxiliary_table$plant_dmg_pot_man[y] <- potential_plant_damage
       # vv(potential_plant_damage, var_CV, n_years, lower_limit = 0.7,upper_limit = 1.3)   
       # vv( potential_plant_damage, 0, n_years)
-      auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_man[y]
+      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_man[y]
       # pesticide quantity
-      auxilary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
-      auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_man[y] * pest_red_fac
+      auxiliary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
+      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # water contamination 
-      auxilary_table$rel_water_cont_man[y] <- 1 # rep(1, n_years)
-      auxilary_table$rel_water_cont_aut[y] <- 1 # rep(1, n_years)
+      auxiliary_table$rel_water_cont_man[y] <- 1 # rep(1, n_years)
+      auxiliary_table$rel_water_cont_aut[y] <- 1 # rep(1, n_years)
       # biodiversity
-      auxilary_table$rel_bio_man[y] <- 1 # rep(1, n_years)
-      auxilary_table$rel_bio_aut[y] <- 1 # rep(1, n_years)
-      auxilary_table$pest_quant_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
-                                                 auxilary_table$pest_quant_man[y],
-                                                 ifelse(auxilary_table$pest_quant_man[y] > government_pesticide_quantity,
-                                                        government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_man[y]))
+      auxiliary_table$rel_bio_man[y] <- 1 # rep(1, n_years)
+      auxiliary_table$rel_bio_aut[y] <- 1 # rep(1, n_years)
       
-      auxilary_table$pest_quant_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
-                                                 auxilary_table$pest_quant_aut[y],
-                                                 ifelse(auxilary_table$pest_quant_aut[y] > government_pesticide_quantity,
-                                                        government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_aut[y]))
+      # auxiliary_table$pest_quant_man[y] <- ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
+      #                                            auxiliary_table$pest_quant_man[y],
+      #                                            ifelse(auxiliary_table$pest_quant_man[y] > government_pesticide_quantity,
+      #                                                   government_pesticide_quantity,
+      #                                                   auxiliary_table$pest_quant_man[y]))
+      # 
+      # auxiliary_table$pest_quant_aut[y] <- ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
+      #                                            auxiliary_table$pest_quant_aut[y],
+      #                                            ifelse(auxiliary_table$pest_quant_aut[y] > government_pesticide_quantity,
+      #                                                   government_pesticide_quantity,
+      #                                                   auxiliary_table$pest_quant_aut[y]))
+
       # actual plant damage         
-      actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
-      ### auxilary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
-      auxilary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
-      actual_plant_dmg_aut <- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
-      ### auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
-      auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
+      actual_plant_dmg_man <- auxiliary_table$plant_dmg_pot_man[y] - auxiliary_table$pest_quant_man[y]
+      ### auxiliary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
+      auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man<0,0,actual_plant_dmg_man)
+      
+      actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
+      auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut<0,0,actual_plant_dmg_aut)
       
       }else  {
       # general chance affected by biodiversity and water contamination that government intervenes
-      auxilary_table$gov_inter_chance_man[y] <- auxilary_table$gov_inter_chance_man[y-1] +
-        ( ((1 - auxilary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
-      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
+      auxiliary_table$gov_inter_chance_man[y] <- auxiliary_table$gov_inter_chance_man[y-1] +
+        ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxiliary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
+      auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_aut[y-1] +
+        ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+            ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
 
-      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
-      auxilary_table$gov_inter_chance_aut[y] <- auxilary_table$gov_inter_chance_aut[y-1] +
-        ( ((1 - auxilary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-            ((auxilary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
       # chance for government intervention.
       # government intervention instantaneous but calculated on values government_reaction_time years before.
-      intervention_delay <- ifelse(government_reaction_time <= y,
-                                   0,
-                                   y - government_reaction_time)
-      auxilary_table$gov_inter_happened_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y-1] == 0,
-                                                     chance_event(auxilary_table$gov_inter_chance_man[intervention_delay],1, 0, 1),
-                                                     1)
-      auxilary_table$gov_inter_happened_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y-1] == 0,
-                                                     chance_event(auxilary_table$gov_inter_chance_aut[intervention_delay],1, 0, 1),
-                                                     1)
+      # intervention_delay <- ifelse(round(government_reaction_time) <= y,
+      #                              1,
+      #                              y - round(government_reaction_time))
+       
+      if(auxiliary_table$gov_inter_happened_man[y-1] == 0) {
+        if ( (y + auxiliary_table$gov_reaction[y] <= n_years) & 
+             (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
+          {
+          auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction] <- chance_event(auxiliary_table$gov_inter_chance_man[y],
+                                                                                                   1, 0, 1)
+        }
+      }else {auxiliary_table$gov_inter_happened_man[y] <- 1}
+      
+      if (auxiliary_table$gov_inter_happened_aut[y-1] == 0) {
+        if ( (y + auxiliary_table$gov_reaction[y] <= n_years) & 
+             (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
+        {
+          auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction] <- chance_event(auxiliary_table$gov_inter_chance_aut[y],
+                                                                                                   1, 0, 1)
+        }
+      }else {auxiliary_table$gov_inter_happened_aut[y] <- 1} 
+      
       
       # potential plant damagex
-      auxilary_table$plant_dmg_pot_man[y] <- potential_plant_damage
-      auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_man[y]
+      auxiliary_table$plant_dmg_pot_man[y] <- potential_plant_damage
+      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_man[y]
       # pesticide quantity
-      auxilary_table$pest_quant_man[y] <- pesticide_quantity
-      auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_man[y] * pest_red_fac
+      auxiliary_table$pest_quant_man[y] <- pesticide_quantity
+      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # water contamination ## assuming that the pesticide quantity influences the water contamination by 10%
-      auxilary_table$rel_water_cont_man[y] <- auxilary_table$rel_water_cont_man[y-1] +
-        ((1 - auxilary_table$pest_quant_man[y-1]) * pest_cont_fac)
-      auxilary_table$rel_water_cont_aut[y] <- auxilary_table$rel_water_cont_aut[y-1] +
-        ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_cont_fac)
+      auxiliary_table$rel_water_cont_man[y] <- auxiliary_table$rel_water_cont_man[y-1] +
+        ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_cont_fac)
+      auxiliary_table$rel_water_cont_aut[y] <- auxiliary_table$rel_water_cont_aut[y-1] +
+        ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_cont_fac)
       
       # biodiversity ## assuming that the water contamination influences the biodiversity by 10%
-      auxilary_table$rel_bio_man[y] <- auxilary_table$rel_bio_man[y-1] +
-        ((1 - auxilary_table$pest_quant_man[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
+      auxiliary_table$rel_bio_man[y] <- auxiliary_table$rel_bio_man[y-1] +
+        ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_bio_fac) + ((1 - auxiliary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
       
-      auxilary_table$rel_bio_aut[y] <- auxilary_table$rel_bio_aut[y-1] +
-        ((1 - auxilary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxilary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
+      auxiliary_table$rel_bio_aut[y] <- auxiliary_table$rel_bio_aut[y-1] +
+        ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_bio_fac) + ((1 - auxiliary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
       
       # potential plant damage ## effected by biodiversity
-      auxilary_table$plant_dmg_pot_man[y] <- auxilary_table$plant_dmg_pot_man[y-1] +
-        auxilary_table$plant_dmg_pot_man[y-1] * (1 -  auxilary_table$rel_bio_man[y-1])
-      auxilary_table$plant_dmg_pot_aut[y] <- auxilary_table$plant_dmg_pot_aut[y-1] +
-        auxilary_table$plant_dmg_pot_aut[y-1] * (1 -  auxilary_table$rel_bio_aut[y-1])
+      auxiliary_table$plant_dmg_pot_man[y] <- auxiliary_table$plant_dmg_pot_man[y-1] +
+        auxiliary_table$plant_dmg_pot_man[y-1] * (1 -  auxiliary_table$rel_bio_man[y-1])
+      auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_aut[y-1] +
+        auxiliary_table$plant_dmg_pot_aut[y-1] * (1 -  auxiliary_table$rel_bio_aut[y-1])
       # pesticide quantity ## effected by biodiversity
-      auxilary_table$pest_quant_man[y] <- auxilary_table$pest_quant_man[y] +
-        auxilary_table$pest_quant_man[y] * (1 - auxilary_table$rel_bio_man[y])
-      auxilary_table$pest_quant_aut[y] <- auxilary_table$pest_quant_aut[y] +
-        auxilary_table$pest_quant_aut[y] * (1 - auxilary_table$rel_bio_aut[y])
+      auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
+        auxiliary_table$pest_quant_man[y] * (1 - auxiliary_table$rel_bio_man[y])
+      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_aut[y] +
+        auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y])
       
-      auxilary_table$pest_quant_man[y] <- ifelse(auxilary_table$gov_inter_happened_man[y] == 0,
-                                                 auxilary_table$pest_quant_man[y],
-                                                 ifelse(auxilary_table$pest_quant_man[y] > government_pesticide_quantity,
+      auxiliary_table$pest_quant_man[y] <- ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
+                                                 auxiliary_table$pest_quant_man[y],
+                                                 ifelse(auxiliary_table$pest_quant_man[y] > government_pesticide_quantity,
                                                         government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_man[y]))
+                                                        auxiliary_table$pest_quant_man[y]))
       
-      auxilary_table$pest_quant_aut[y] <- ifelse(auxilary_table$gov_inter_happened_aut[y] == 0,
-                                                 auxilary_table$pest_quant_aut[y],
-                                                 ifelse(auxilary_table$pest_quant_aut[y] > government_pesticide_quantity,
+      auxiliary_table$pest_quant_aut[y] <- ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
+                                                 auxiliary_table$pest_quant_aut[y],
+                                                 ifelse(auxiliary_table$pest_quant_aut[y] > government_pesticide_quantity,
                                                         government_pesticide_quantity,
-                                                        auxilary_table$pest_quant_aut[y]))
+                                                        auxiliary_table$pest_quant_aut[y]))
       
       # actual plant damage ## potential plant damage - pesticide quantity 
-      actual_plant_dmg_man <- auxilary_table$plant_dmg_pot_man[y] - auxilary_table$pest_quant_man[y]
-      auxilary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0, 0, actual_plant_dmg_man)
-      ### auxilary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
-      actual_plant_dmg_aut <- auxilary_table$plant_dmg_pot_aut[y] - auxilary_table$pest_quant_aut[y] / pest_red_fac
-      auxilary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0, 0, actual_plant_dmg_aut)
-      ### auxilary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
+      actual_plant_dmg_man <- auxiliary_table$plant_dmg_pot_man[y] - auxiliary_table$pest_quant_man[y]
+      auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0, 0, actual_plant_dmg_man)
+      ### auxiliary_table$actual_plant_dmg_man[y] <- actual_plant_dmg_man
+      actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
+      auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0, 0, actual_plant_dmg_aut)
+      ### auxiliary_table$actual_plant_dmg_aut[y] <- actual_plant_dmg_aut
     }
     
   }
-  print(auxilary_table)
-
+  print(auxiliary_table)
   
   # chance_event() government
   # pest_quant_gov <- vv(government_pesticide_quantity, 10, n_years)
@@ -478,8 +497,8 @@ ascs_decision_model <- function(x, varnames){
   
   # yields prizes are varying depending on the years and the plant damage
   yield_t_ha <- vv(yield, var_CV, n_years)
-  yield_t_ha_man <- yield_t_ha * (1 - auxilary_table$actual_plant_dmg_man)
-  yield_t_ha_aut <- yield_t_ha * (1 - auxilary_table$actual_plant_dmg_aut)
+  yield_t_ha_man <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_man)
+  yield_t_ha_aut <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_aut)
   # market prizes are varying over the years
   market_price_e_t <- vv(market_price, var_CV, n_years)
   # fruit sales depend on yield and market price
@@ -488,8 +507,8 @@ ascs_decision_model <- function(x, varnames){
   
   # costs for pesticides per ha and decision
   pest_cost_ha_const <- vv( pesticide_cost, var_CV, n_years )
-  pest_cost_ha_man <- pest_cost_ha_const * auxilary_table$pest_quant_man
-  pest_cost_ha_aut <- pest_cost_ha_const * auxilary_table$pest_quant_aut
+  pest_cost_ha_man <- pest_cost_ha_const * auxiliary_table$pest_quant_man
+  pest_cost_ha_aut <- pest_cost_ha_const * auxiliary_table$pest_quant_aut
   # machine costs are applied only once so n = 1
   machine_upg_cost <- c( initial_upg_cost, rep(0,(n_years-1)) )
 
@@ -534,11 +553,12 @@ mcSimulation_results <- decisionSupport::mcSimulation(
   #  estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
   estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 10,
+  numberOfModelRuns = 5,
   functionSyntax = "plainNames"
 )
+```
 
-
+```{r}
 ## Plot Net Present Value (NPV) distributions 
 decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV", "NO_Interv_NPV"),

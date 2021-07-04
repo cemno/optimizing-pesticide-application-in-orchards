@@ -3,21 +3,161 @@ title: "Implementing automated section control sprayers for optimising pesticide
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 output: html_document
+bibliography:
+  - bib/references.bib
 ---
+
+## Abstract (Lucas)
+
+In this project we are looking a prototype of an automated section-control blower 
+sprayer (ASCS) which is currently being tested at Competence Centre for Fruit 
+Production Lake Constance (Kompetenzzentrum Obstbau Bodensee, KOB) in its first 
+season. It is compared on a monetary background to a manual section-control blower 
+sprayer (MSCS) which is the current standard technology for spraying pesticides 
+in orchards.
+
+The most basic decision to make is whether the reduction of running-costs of the 
+ASCS through lower pesticide usage compared to the MSCS are higher than the increased 
+initial investment for the more expensive sprayer.
+
+Other factors taken into consideration are the influence the reduction of pesticide 
+application has on the biodiversity and water contamination. These factors influence 
+the likelihood of the government setting a restriction on the maximum amount of 
+pesticide allowed to be applied. In addition, these factors influence the customer 
+behavior.
+
+The output of the model generated in this project will be a monetary value for the 
+farmer’s profit per hectare, calculated based on the investment costs, running costs, 
+damage to the fruits (apples) - calculated by combining applied pesticides (with a 
+potential limit) and influences of the increased or decreased biodiversity - and 
+the customer behavior.
 
 \ 
 
-#### Description   
+## Introduction (Jasper)  
+
+Reducing the use of pesticides in agricultural and horticultural production has 
+been an important concern of policymakers, NGO, and also farmers for years. Not 
+only is a reduction economically favourable on a farm level, but more and more 
+negative impacts of the liberal use of agrochemicals on ecosystems have been reported 
+recently. In orcharding, efforts have been made to make pesticide application more 
+efficient in order to bring down the overall amount applied while still securing 
+fruit quality and stable yields. This led to the advent of blower sprayers capable 
+of section control. This feature allows the operator to reduce or completely turn 
+off the application of pesticides on a part of the total working width when it is 
+appropriate. For instance, if a shorter tree comes up in a row of taller trees, 
+the operator will manually turn off the topmost section of the blower sprayer to 
+prevent pesticide being sprayed past the treetop into the environment. 
+
+While the manually-operated section control sprayer (MSCS) is generally able to 
+reduce pesticide application rates while maintaining the effectiveness of the agent 
+where it is needed, the strain it puts on the operator is exhausting and requires 
+properly trained and experienced personnel. This limits the overall work capacity
+of one unit. Furthermore, because of the complex handling, errors are likely to 
+occur which diminishes the potential to reduce the ingress of agrochemicals into 
+the environment. 
+
+Therefore, a novel technology is currently under development to automate the 
+modulation of the section control feature of orchard sprayers. Light detection 
+and ranging (LiDAR) sensors are mounted to the sprayer to allow a computer to 
+assess the structure of the upcoming trees. This, in turn, enables the machine 
+to appropriately adapt the individual sections to the current requirements. Besides 
+the immediate relief for the tractor driver, this technology also allows less 
+experienced workers to safely spray pesticide in orchards. Therefore, an 
+automatically-controlled section control sprayer (ASCS) has a higher work capacity 
+than a MSCS, i.e. a larger area can be sprayed in a given amount of time. Apart 
+from that, pesticide reduction can be improved due to the higher precision in 
+modulating the application rate following the principle of “as little as possible, 
+as much as necessary”. 
+
+All in all, the ASCS promises to a more efficient application of pesticide and 
+higher work capacity per sprayer, as well as less contamination of the environment 
+while maintaining full effectiveness in terms of plant protection. 
+
+\  
+
+## Data acquistion (Christoph)  
+
+### Expert knowledge (Nils)  
+
+For the decision-relevant questions, we consulted various stakeholders as experts 
+for our model. We consulted several experimental managers from different apple 
+growing regions in Germany, Leaders and technical assistants from the area of 
+plant health, plant protection and production technology of the Competence Centre 
+for Fruit Production Lake Constance, as well as fruit grower from the Lake 
+Constance region.  
+
+\ 
+
+#### Calibration training (Christoph)  
+
+For a decision analysis it is important to known how valuable the given estimates 
+are because it need to be based on comprehensive and reliable data. Therefore, 
+calibration training is applied.  
+
+Calibration is a process to find out and document how the deviation of measuring 
+device is. Due to Calibration training the affective answering behavior is reduced 
+and it helps to improve the given estimates. It can also help to know your 
+uncertainties and to train to give good estimates.  
+
+In this case experts are used as measuring device for good estimates. The answers 
+are normally linked to various cognitive biases and normally lead to an overconfidence 
+of the experts about their estimates.  
+
+To reduce this, a series of basic questions is used. In the first part of the 
+calibration training the persons to be calibrated need to answer questions where 
+the correct answer must be within a range. In the second part they need to answer 
+yes or no questions and they need to estimate their confidence about the given 
+answers. after answering the basic questions, they get the feedback about the 
+given answers. This led to a reduction of overconfidence.  
+
+After the calibration training, they were asked about estimates to all inputs for 
+the model with a 90% confidence interval.  
+
+
+**The two alternatives**  
+
+*Decision alternative 1*: Buying an automated section control sprayer for orchards  
+
+* This decision alternative has one main cost and some advantages for the future 
+and the environment.  
+
+* The main cost incurred when buying the automated section control sprayer, because 
+of the sensors which enable the section control sprayer to regulate the application 
+of the pesticides automatically when they are needed.   
+
+* This option can have the advantage to decrease the needed plant protection which 
+result in some positive effects on the environment like increasing the biodiversity, 
+decreasing the water contamination and decrease the pests and diseases of the apple trees.  
+
+* The benefits were derived from possibly having a bigger harvest and less losses 
+due to pest and diseases. They can also derive from not getting sanctioned by 
+governmental restrictions concerning about too much application of pesticides.  
+
+
+*Decision alternative 2*: Buying a manual section control sprayer for orchards.  
+
+* Within this decision alternative the farmer buys a manual section control sprayer 
+where the implementation cost incurred, but less than for the first alternative. 
+The farmer must control the application of plant protection by hand and can have 
+the disadvantage of applying more pesticide than needed.  
+
+* The benefits are derived from the harvest and selling price, but the advantages 
+of not getting sanctioned or increasing the biodiversity and the harvest can`t took place.
+
+\  
+
+### Description   
 Reducing pesticide use: An analysis on the decision whether to implement an automated or manually operated section control sprayer in orchards.
 
 \ 
 
-#### Decision maker: farmer   
+### Decision maker: farmer   
 * Farmer is the main stakeholder who makes the decision whether or not to buy a modern sprayer which is able to minimise pesticide application rates
 
 \ 
 
-#### Stakeholders: (describe further)
+### Stakeholders: (describe further)
 * Farmer
   + importance: very high
   + Main Decision maker
@@ -75,7 +215,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Problems:    
+### Problems:    
 * Some common agrochemicals will be banned in the near future for various reasons
   + Overuse causes problems 
   + Public opinion is getting worse   
@@ -84,7 +224,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Options:  
+### Options:  
 * Buy automatic section control sprayer
 * keeping / buying a manual section control sprayer
 * Spray less pesticide with existing machinery 
@@ -93,7 +233,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Allocation of resources:  
+### Allocation of resources:  
 * Money
   + Overheads
   + Overheads        
@@ -105,12 +245,12 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Obstacles:  
+### Obstacles:  
 * Costs of investment
 * Learning curve for running the equipment 
 * compatibility with current machinery
 
-#### Uncertainties:  
+### Uncertainties:  
 * Potential reduction of pesticides using an automatic section controlled sprayer
   + Especially the reduction of excessive pesticides
 * Common application rates of pesticides in orchards
@@ -122,7 +262,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 * Image of a farmer trying to reduce pesticides but still using them
 * Maintenance cost of an more complicated and sensitive system
 
-#### (Sources of) information:
+### (Sources of) information:
 * Farmers
   + knowledge of the farm, knowledge of problems during application 
 * Manufacturer (Currently developing a prototype)

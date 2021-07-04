@@ -565,11 +565,16 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$gov_inter_chance_man[y] <- auxiliary_table$gov_inter_chance_man[y-1] +
         ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_man[y-1] - 1) * water_contamination_on_gov_concern))
-      
       auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_aut[y-1] +
         ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
 
+      auxiliary_table$gov_inter_chance_man[y] <- ifelse(auxiliary_table$gov_inter_chance_man[y] < 0,
+                                                        0,
+                                                        auxiliary_table$gov_inter_chance_man[y])
+      auxiliary_table$gov_inter_chance_aut[y] <- ifelse(auxiliary_table$gov_inter_chance_aut[y] < 0,
+                                                        0,
+                                                        auxiliary_table$gov_inter_chance_aut[y])
       # chance for government intervention.
       # government intervention instantaneous but calculated on values government_reaction_time years before.
       # intervention_delay <- ifelse(round(government_reaction_time) <= y,
@@ -715,7 +720,7 @@ mcSimulation_results <- decisionSupport::mcSimulation(
 #  estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 100,
+  numberOfModelRuns = 10000,
   functionSyntax = "plainNames"
 )
 ```

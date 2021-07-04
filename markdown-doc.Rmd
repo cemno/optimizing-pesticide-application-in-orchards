@@ -5,19 +5,42 @@ date: "6/1/2021"
 output: html_document
 ---
 
+#### Introduction ----
+
+**Decision Analysis**  
+* Forecasting the performance of an intervention with the help of models can aid management decisions * New practices and the systems they are planned to be implemented in need to be analysed realistically and holistically  
+* It is important to openly disclose and discuss uncertainties $\rightarrow$ use distributions instead of fixed input values 
+* Decision analysis in agricultural development
+  + How will decisions influence future sustainability? 
+  + Goal: Offer support in decision making under uncertainty 
+  + Approach: Making use of existing knowledge to build forecasts 
+* What is a decision in this context? 
+  + Logical choice between two different interventions options 
+  + Irrevocable allocation of resources 
+* Impact pathways
+  + Helpful to think the consequences of a decision through beforehand $\rightarrow$ identify weak links 
+
+**Automated section control sprayer** 
+* Traditional sprayers cannot easily adapt application rates to changing requirements 
+  + $\rightarrow$ More pesticide than necessary is applied  
+* In order to reduce pesticide application rates, farmers can upgrade to section control-enabled sprayers  
+* Current innovation for orchards: Automated vertical section control sprayers promise superior performance compared to manually operated units and those with fixed application rates 
+
+
+
 \ 
 
-#### Description   
+#### Description ----
 Reducing pesticide use: An analysis on the decision whether to implement an automated or manually operated section control sprayer in orchards.
 
 \ 
 
-#### Decision maker: farmer   
+#### Decision maker: farmer ----   
 * Farmer is the main stakeholder who makes the decision whether or not to buy a modern sprayer which is able to minimise pesticide application rates
 
 \ 
 
-#### Stakeholders: (describe further)
+#### Stakeholders: (describe further) ----
 * Farmer
   + importance: very high
   + Main Decision maker
@@ -75,7 +98,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Problems:    
+#### Problems ----    
 * Some common agrochemicals will be banned in the near future for various reasons
   + Overuse causes problems 
   + Public opinion is getting worse   
@@ -84,7 +107,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Options:  
+#### Options ---- 
 * Buy automatic section control sprayer
 * keeping / buying a manual section control sprayer
 * Spray less pesticide with existing machinery 
@@ -93,7 +116,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Allocation of resources:  
+#### Allocation of resources ---- 
 * Money
   + Overheads
   + Overheads        
@@ -105,12 +128,12 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-#### Obstacles:  
+#### Obstacles ----
 * Costs of investment
 * Learning curve for running the equipment 
 * compatibility with current machinery
 
-#### Uncertainties:  
+#### Uncertainties ----
 * Potential reduction of pesticides using an automatic section controlled sprayer
   + Especially the reduction of excessive pesticides
 * Common application rates of pesticides in orchards
@@ -122,7 +145,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 * Image of a farmer trying to reduce pesticides but still using them
 * Maintenance cost of an more complicated and sensitive system
 
-#### (Sources of) information:
+#### (Sources of) information ----
 * Farmers
   + knowledge of the farm, knowledge of problems during application 
 * Manufacturer (Currently developing a prototype)
@@ -306,7 +329,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 ```
 
 
-#### First model 
+#### First model ----
 
 <!-- Not finished yet -->
 <!-- #### Calculating the decision model {.tabset} -->
@@ -390,7 +413,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 
 
-#### Notes for improvement from the seminar 
+#### Notes for improvement from the seminar ---- 
 
 
 **Inspiration from other presentations**  
@@ -409,7 +432,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
  
  
  
-#### Example code from Seminar 08 and Seminar 09 
+#### Example code from Seminar 08 and Seminar 09 ---- 
 
 ```{r, include = FALSE}
 library(decisionSupport)

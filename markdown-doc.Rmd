@@ -529,7 +529,7 @@ ascs_decision_model <- function(x, varnames){
       ## auxiliary_table$pest_quant_man[y] <- pesticide_quantity     # vv( pesticide_quantity, var_CV, n_years)
       ## auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_man[y] * pest_red_fac
       # manuell correlation between pesticide quantity and potential plant damage
-      auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rnorm(n_years, 1, 0.1) 
+      auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rnorm(n_years, 1, 0.05) 
       auxiliary_table$pest_quant_aut <- auxiliary_table$pest_quant_man * pest_red_fac
       
       
@@ -571,10 +571,14 @@ ascs_decision_model <- function(x, varnames){
 
       auxiliary_table$gov_inter_chance_man[y] <- ifelse(auxiliary_table$gov_inter_chance_man[y] < 0,
                                                         0,
-                                                        auxiliary_table$gov_inter_chance_man[y])
+                                                        ifelse(auxiliary_table$gov_inter_chance_man[y] > 1,
+                                                               1,
+                                                               auxiliary_table$gov_inter_chance_man[y]))
       auxiliary_table$gov_inter_chance_aut[y] <- ifelse(auxiliary_table$gov_inter_chance_aut[y] < 0,
                                                         0,
-                                                        auxiliary_table$gov_inter_chance_aut[y])
+                                                        ifelse(auxiliary_table$gov_inter_chance_aut[y] > 1,
+                                                               1,
+                                                               auxiliary_table$gov_inter_chance_aut[y]))
       # chance for government intervention.
       # government intervention instantaneous but calculated on values government_reaction_time years before.
       # intervention_delay <- ifelse(round(government_reaction_time) <= y,
@@ -585,7 +589,7 @@ ascs_decision_model <- function(x, varnames){
         if ( (y + auxiliary_table$gov_reaction[y] <= n_years) & 
              (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
           {
-          auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction] <- chance_event(auxiliary_table$gov_inter_chance_man[y],
+          auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y],
                                                                                                    1, 0, 1)
         }
       }else {auxiliary_table$gov_inter_happened_man[y] <- 1}
@@ -594,7 +598,7 @@ ascs_decision_model <- function(x, varnames){
         if ( (y + auxiliary_table$gov_reaction[y] <= n_years) & 
              (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0) ) 
         {
-          auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction] <- chance_event(auxiliary_table$gov_inter_chance_aut[y],
+          auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y],
                                                                                                    1, 0, 1)
         }
       }else {auxiliary_table$gov_inter_happened_aut[y] <- 1} 
@@ -720,7 +724,7 @@ mcSimulation_results <- decisionSupport::mcSimulation(
 #  estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 10000,
+  numberOfModelRuns = 5000,
   functionSyntax = "plainNames"
 )
 ```

@@ -644,10 +644,10 @@ plot(hail_path)
 
 ## Building the model 
 hail_estimates <- data.frame(variable = c("yield", 
-                                           "var_CV", 
-                                           "initial_investment", 
-                                           "price", 
-                                           "p_hail"),
+                                          "var_CV", 
+                                          "initial_investment", 
+                                          "price", 
+                                          "p_hail"),
                     lower = c(6000, 20, 500, 5, 0.02),
                     median = NA,
                     upper = c(14000, 20, 1000, 80, 0.2),
@@ -662,7 +662,7 @@ hail_estimates <- data.frame(variable = c("yield",
                               "Market price (EUR/kg)", 
                               "% chance hail"),
                     Description = c("Yield under normal conditions",
-                                    "Coefficient of variation (measure of relative variability)",
+                                    "Coefficient of variation (measure of relativevariability)",
                                     "Investment cost", 
                                     "Market price achieved for yields (EUR/kg)", 
                                     "Probability of a hail storm"))

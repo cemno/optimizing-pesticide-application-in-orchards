@@ -697,7 +697,7 @@ ascs_decision_model <- function(x, varnames){
   ## resulting profit gets multiplied by the number of hectares (area_per_machine)
   ## for the automated option the machine upgrade cost get subtracted 
   farmers_profit_man = (fruit_sales_e_ha_man * customers_man - pest_cost_ha_man) * area_per_machine - machine_cost_man
-  farmers_profit_aut = (fruit_sainitial_aut_coles_e_ha_aut * customers_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
+  farmers_profit_aut = (fruit_sales_e_ha_aut * customers_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
   
   # NPV - the value of money in the future gets discounted
   ## 2 - 5 % since our farmers are likely to invest

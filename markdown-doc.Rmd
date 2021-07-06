@@ -456,10 +456,10 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 ```{r}
 
 ## Importing input table 
-  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",")
+  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",", stringsAsFactors = FALSE)
   input_table <- drop_na(input_table, c("lower","upper"))
   write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
-  input_table <- read.csv("data/final/inputs.csv")
+  input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
   # as.estimate(input_table) 
 
 
@@ -595,35 +595,21 @@ ascs_decision_model <- function(x, varnames){
       ### there was no intervention in the previous years
       ### there was no intervention in the relevant year already
       
-      print(c("before if", y, auxiliary_table$gov_reaction[y] ))
-      
-      if (y + auxiliary_table$gov_reaction[y] <= n_years)
-      {
-        
-        print( c("gov_inter_happ y-1", auxiliary_table$gov_inter_happened_man[y-1]) )
-        print( c("chance", auxiliary_table$gov_inter_chance_man[y]))
-        
-        if (auxiliary_table$gov_inter_happened_man[y-1] == 0)
-        {  
-          print( c("gov_react[y+gov_react]", auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]], "++++++++++++++++++++") )
-          if (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0)
-          {
-            
-            print(c("rbinom", rbinom(1, 1, auxiliary_table$gov_inter_chance_man[y]), "------------------------------------"))
-            
-            auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- rbinom(1, 1, auxiliary_table$gov_inter_chance_man[y])
-                                                            ##### as.numeric(chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0, 1))
+      if(y + auxiliary_table$gov_reaction[y] <= n_years){
+        if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
+          if(auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] == 0){
+            auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0)
           }
-        }else auxiliary_table$gov_inter_happened_man[y] <- 1
-        
-        if (auxiliary_table$gov_inter_happened_aut[y-1] == 0) 
-        {
-          if (auxiliary_table$gov_reaction[y + auxiliary_table$gov_reaction[y]] == 0)
-          {
-            auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- rbinom(1, 1, auxiliary_table$gov_inter_chance_aut[y])
-                                                            ###### chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0, 1)
+        }else{
+          auxiliary_table$gov_inter_happened_man[y] <- 1
+        }
+        if(auxiliary_table$gov_inter_happened_aut[y-1] == 0){
+          if(auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] == 0){
+            auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0)
           }
-        }else {auxiliary_table$gov_inter_happened_aut[y] <- 1} 
+        }else{
+          auxiliary_table$gov_inter_happened_aut[y] <- 1
+        }
       }
       
       # water contamination 

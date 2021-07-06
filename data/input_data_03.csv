@@ -1,8 +1,8 @@
 variable;lower;median;upper;distribution;label;units;description
-initial_upg_cost;5000;;8000;posnorm;;€;upgrade costs to automate a manual section controled sprayer (Euro)
-initial_aut_cost;14000;;47000;posnorm;initial costs automated sprayer;€;investmant costs for a automated section controled sprayer (Euro)
-initial_man_cost;10000;;40000;posnorm;initial costs normal sprayer;€;investmant costs for a manual section controled sprayer (Euro)
-pesticide_cost;717;;717;const;pesticide costs;€/ha;costs of pesticides (Euro/ha)
+initial_upg_cost;5000;;7000;posnorm;;?;upgrade costs to automate a manual section controled sprayer (Euro)
+initial_aut_cost;23000;;37000;posnorm;initial costs automated sprayer;?;investmant costs for a automated section controled sprayer (Euro)
+initial_man_cost;18000;;30000;posnorm;initial costs normal sprayer;?;investmant costs for a manual section controled sprayer (Euro)
+pesticide_cost;1400;;2200;posnorm;pesticide costs;?/ha;costs of pesticides (Euro/ha)
 pesticide_quantity;0,7;;1,3;norm;;;relative quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
 pesticide_reduction_auto;0,85;;0,95;posnorm;reduction of pesticide quantity;%;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
 potential_plant_damage;1;;1;const;potential plant damage;status quo;potential damage the plants could take if no spraying is done, influenced by weather, pests, diseases, biodiversity, etc
@@ -13,12 +13,12 @@ government_concern;;;;;;;
 government_pesticide_quantity;1;;1;const;governmental pesticide qunatity;guideline;governmental guideline to only spray less (mean of pest_quantity)
 customer_on_fruitsales;1;;1;const;customer buying behavior;status quo;customer buying behavior
 yield;20;;60;posnorm;yield t/ha;t/ha;yield (t/ha)
-market_price;500;;800;posnorm;market price €/t;Euro/t;fruit price (Euro/t)
+market_price;500;;800;posnorm;market price ?/t;Euro/t;fruit price (Euro/t)
 sprayer_lifetime;;;;;;;the estimated lifetime of a new sprayer in years
 n_years;10;;10;const;lifespan of the machine;years;timespan of the model 
 var_CV;5;;25;posnorm;standard co-variation;%;
 discount_rate;2;;5;posnorm;discount rate;%;discount rate, reducing future costs and benefits to their present value (%)
-area_per_machine;15;;15;const;effective area of one machine;ha;area one sprayer can effectivly manage
+area_per_machine;15;;20;posnorm;effective area of one machine;ha;area one sprayer can effectivly manage
 pesticide_on_water_contamination_factor;0,05;;0,15;tnorm_0_1;pesticide effect on water contamination;%;influence percentage from pesticide usage of the previous year on water contamination 
 pesticide_on_biodiversity_factor;0,001;;0,05;tnorm_0_1;pesticide effect on biodiversity;%;influence percentage from pesticide usage of the previous year on biodiversity
 water_contamination_on_biodiversity_factor;0,001;;0,05;tnorm_0_1;water contamination effect on pesticide;%;influence percentage from water contamination on biodiversity

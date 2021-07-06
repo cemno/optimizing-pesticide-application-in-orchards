@@ -458,7 +458,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 # Importing and adjusting input table 
 input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",", stringsAsFactors = FALSE)
 input_table <- drop_na(input_table, c("lower","upper"))
-input_table <- filter(input_table, !variable == "initial_upg_cost", !variable == "pesticide_quantity")
+input_table <- filter(input_table, !variable == "initial_aut_cost", !variable == "pesticide_quantity") # !variable == "initial_aut_cost", 
 input_table <- input_table[ order(input_table$distribution, input_table$variable), ]
 write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
 input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
@@ -628,8 +628,8 @@ ascs_decision_model <- function(x, varnames){
       ## effected by biodiversity
       auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
         auxiliary_table$pest_quant_man[y] * (1 - auxiliary_table$rel_bio_man[y])
-      auxiliary_table$pest_quant_aut[y] <- auxiliary_table$pest_quant_aut[y] +
-        auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y])
+      auxiliary_table$pest_quant_aut[y] <- (auxiliary_table$pest_quant_aut[y] +
+        auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y]))
       
       # influence of chance_event
       auxiliary_table$pest_quant_man[y] <- ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
@@ -651,7 +651,7 @@ ascs_decision_model <- function(x, varnames){
                                                         0,
                                                         actual_plant_dmg_man)
       
-      actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
+      actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y]  / pest_red_fac
       auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
                                                         0,
                                                         actual_plant_dmg_aut)
@@ -682,7 +682,7 @@ ascs_decision_model <- function(x, varnames){
   
   # machine costs are applied only once so n = 1
   machine_cost_man <- c( initial_man_cost, rep( 0, (n_years-1) ) )
-  machine_cost_aut <- c( initial_aut_cost, rep( 0, (n_years-1) ) )
+  machine_cost_aut <- machine_cost_man + c( initial_upg_cost, rep( 0, (n_years-1) ) )
   
   # customers influence
   ## influenced by water contamination and biodiversity on customers buying behaviour
@@ -697,7 +697,7 @@ ascs_decision_model <- function(x, varnames){
   ## resulting profit gets multiplied by the number of hectares (area_per_machine)
   ## for the automated option the machine upgrade cost get subtracted 
   farmers_profit_man = (fruit_sales_e_ha_man * customers_man - pest_cost_ha_man) * area_per_machine - machine_cost_man
-  farmers_profit_aut = (fruit_sales_e_ha_aut * customers_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
+  farmers_profit_aut = (fruit_sainitial_aut_coles_e_ha_aut * customers_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
   
   # NPV - the value of money in the future gets discounted
   ## 2 - 5 % since our farmers are likely to invest
@@ -705,8 +705,9 @@ ascs_decision_model <- function(x, varnames){
   NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
   
   # debugging print  (only with small number of runs)
-  # print(auxiliary_table)
-  
+  #print(auxiliary_table)
+  #print(farmers_profit_aut)
+  #print(farmers_profit_man)
   return(list(Interv_NPV = NPV_aut,
               NO_Interv_NPV = NPV_man,
               NPV_decision_do = NPV_aut - NPV_man,
@@ -723,9 +724,16 @@ ascs_decision_model <- function(x, varnames){
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 1000,
+  numberOfModelRuns = 5000,
   functionSyntax = "plainNames"
 )
+
+# Here we subset the outputs from the mcSimulation function (y) by selecting the correct variables
+# choose this carefully and be sure to run the multi_EVPI only on the variables that the you want
+mcSimulation_table <- data.frame(mcSimulation_results$x, mcSimulation_results$y[1:3])
+
+evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
+
 ```
 
 ```{r}
@@ -746,8 +754,7 @@ decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results,
 
 
 ## Cashflow analysis 
-plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")+
-  scale_x_continuous(breaks = seq(1,9,1), minor_breaks = NULL)
+plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 
 
 
@@ -760,23 +767,19 @@ plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, l
 
 ## Value of information (VoI) analysis 
 
-# Here we subset the outputs from the mcSimulation function (y) by selecting the correct variables
-# choose this carefully and be sure to run the multi_EVPI only on the variables that the you want
-mcSimulation_table <- data.frame(mcSimulation_results$x, mcSimulation_results$y[1:3])
 
-evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 
 plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
 
-# compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results, 
-#                                    input_table = input_table,
-#                                    plsrResults = pls_result, 
-#                                    EVPIresults = evpi,
-#                                    decision_var_name = "NPV_decision_do", 
-#                                    cashflow_var_name = "Cashflow_decision_do", 
-#                                    base_size = 7) 
-# 
+compound_figure(mcSimulation_object = mcSimulation_results, 
+                                    input_table = input_table,
+                                    plsrResults = pls_result, 
+                                    EVPIresults = evpi,
+                                    decision_var_name = "NPV_decision_do", 
+                                    cashflow_var_name = "Cashflow_decision_do", 
+                                    base_size = 7) 
+ 
 # ggsave(filename = "images/compound_figure2.png", plot = compound_fig, width = 7, height = 5)
 
 

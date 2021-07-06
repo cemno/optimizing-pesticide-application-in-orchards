@@ -514,10 +514,9 @@ ascs_decision_model <- function(x, varnames){
       # chance event of government intervention takes only place if the reaction
       # delay is inside our n_years boundaries 
       if ((y + auxiliary_table$gov_reaction[y]) <= n_years) {
-        auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0, 1)
-        auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0, 1)
+        auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0)
+        auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0)
       }
-      
       # influence factor from pesticides on water contamination ## fix per run
       pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
       # influence factor from pesticides on biodiversity ## fix per run
@@ -532,13 +531,11 @@ ascs_decision_model <- function(x, varnames){
       ## will be affected by biodiversity later on 
       auxiliary_table$plant_dmg_pot_man <- vv(potential_plant_damage, potential_plant_damage_CV, n_years)
       auxiliary_table$plant_dmg_pot_aut <- auxiliary_table$plant_dmg_pot_man
-
       # manual correlation between pesticide quantity and potential plant damage
       # the farmer tries to assess how much plant damage there will be and sets
       # the applied pest quantity accordingly
       auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rnorm(n_years, 1, 0.05) 
       auxiliary_table$pest_quant_aut <- auxiliary_table$pest_quant_man * pest_red_fac
-
       # water contamination and biodiversity are 1 in the first year ("status quo")
       auxiliary_table$rel_water_cont_man[y] <- 1 
       auxiliary_table$rel_water_cont_aut[y] <- 1 
@@ -562,7 +559,6 @@ ascs_decision_model <- function(x, varnames){
       
     }else  { # ongoing years (year 2 - n_years) 
       ## the values change per year so the influence changes as well
-      
       # government intervention chance
       ## general chance affected by biodiversity and water contamination 
       auxiliary_table$gov_inter_chance_man[y] <- auxiliary_table$gov_inter_chance_man[y-1] +
@@ -572,7 +568,7 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_aut[y-1] +
         ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
-      
+  
       # checking if the chance is really between 0 and 1 so the chance_event function works
       auxiliary_table$gov_inter_chance_man[y] <- ifelse(auxiliary_table$gov_inter_chance_man[y] <= 0,
                                                         0,
@@ -594,7 +590,6 @@ ascs_decision_model <- function(x, varnames){
       ## only applies ifthe value for the intervention delay + the current year is still inside the n_years boarder &
       ### there was no intervention in the previous years
       ### there was no intervention in the relevant year already
-      
       if(y + auxiliary_table$gov_reaction[y] <= n_years){
         if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
           if(auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] == 0){
@@ -737,7 +732,7 @@ mcSimulation_results <- decisionSupport::mcSimulation(
   # estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 5000,
+  numberOfModelRuns = 1000,
   functionSyntax = "plainNames"
 )
 ```
@@ -767,7 +762,7 @@ plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "C
 pls_result <- plsr.mcSimulation(object = mcSimulation_results,
                                 resultName = names(mcSimulation_results$y)[3], ncomp = 1)
 
-plot_pls(pls_result, input_table = input_table, threshold = 0)
+plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$variable), threshold = 0)
 
 
 ## Value of information (VoI) analysis 
@@ -781,7 +776,7 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
 compound_figure(mcSimulation_object = mcSimulation_results, 
-                input_table = input_table, plsrResults = pls_result, 
+                input_table = data.frame(variable = input_table$variable, label = input_table$variable), plsrResults = pls_result, 
                 EVPIresults = evpi, decision_var_name = "NPV_decision_do", 
                 cashflow_var_name = "Cashflow_decision_do", 
                 base_size = 7)

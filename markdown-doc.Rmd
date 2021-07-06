@@ -686,14 +686,15 @@ ascs_decision_model <- function(x, varnames){
   pest_cost_ha_aut <- pest_cost_ha_const * auxiliary_table$pest_quant_aut
   
   # machine costs are applied only once so n = 1
-  machine_upg_cost <- c( initial_upg_cost, rep( 0, (n_years-1) ) )
+  machine_man_cost <- c( initial_man_cost, rep( 0, (n_years-1) ) )
+  machine_aut_cost <- c( initial_auto_cost, rep( 0, (n_years-1) ) )
   
   
   # profit - depends an the fruit sales and the pesticide costs per hectare 
   ## resulting profit gets multiplied by the number of hectares (area_per_machine)
   ## for the automated option the machine upgrade cost get subtracted 
-  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine
-  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_upg_cost
+  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine - machine_man_cost
+  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_aut_cost
   
   # NPV - the value of money in the future gets discounted
   ## 2 - 5 % since our farmers are likely to invest
@@ -714,18 +715,6 @@ ascs_decision_model <- function(x, varnames){
 
 
 ```{r}
-
-## creating Correlation matrix 
-# estimateTextCor<-",                       potential_plant_damage, pesticide_quantity
-#                   potential_plant_damage,                      1,               0.9
-#                   pesticide_quantity,                        0.9,                1"
-# correlation_matrix <- data.matrix( read.csv( text=estimateTextCor, row.names=1, strip.white=TRUE))
-
-
-
-## adding the input table and the correlation matrix to the estimate object
-#inputs <- as.estimate(input_table, correlation_matrix = correlation_matrix)
-
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
   # estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
@@ -755,7 +744,8 @@ decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results,
 
 
 ## Cashflow analysis 
-plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
+plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")+
+  scale_x_continuous(breaks = seq(1,9,1), minor_breaks = NULL)
 
 
 ## Projection to Latent Structures (PLS) analysis 

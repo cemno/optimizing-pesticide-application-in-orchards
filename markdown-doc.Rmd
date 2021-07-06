@@ -459,6 +459,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",", stringsAsFactors = FALSE)
 input_table <- drop_na(input_table, c("lower","upper"))
 input_table <- filter(input_table, !variable == "initial_upg_cost", !variable == "pesticide_quantity")
+input_table <- input_table[ order(input_table$distribution, input_table$variable), ]
 write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
 input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
 
@@ -519,11 +520,15 @@ ascs_decision_model <- function(x, varnames){
       ## will be affected by biodiversity later on 
       auxiliary_table$plant_dmg_pot_man <- vv(potential_plant_damage, potential_plant_damage_CV, n_years)
       auxiliary_table$plant_dmg_pot_aut <- auxiliary_table$plant_dmg_pot_man
+      
       # manual correlation between pesticide quantity and potential plant damage
-      # the farmer tries to assess how much plant damage there will be and sets
-      # the applied pest quantity accordingly
-      auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rnorm(n_years, 1, 0.05) 
+      ## the farmer tries to assess how much plant damage there will be and sets
+      ## the applied pest quantity accordingly      
+      lower <- input_table[input_table$variable == "farmers_pesticide_quantity_miscalculation", "lower"]
+      upper <- input_table[input_table$variable == "farmers_pesticide_quantity_miscalculation", "upper"]
+      auxiliary_table$pest_quant_man <- auxiliary_table$plant_dmg_pot_man * rposnorm90ci(n_years, lower = lower, upper = upper)
       auxiliary_table$pest_quant_aut <- auxiliary_table$pest_quant_man * pest_red_fac
+      
       # water contamination and biodiversity are 1 in the first year ("status quo")
       auxiliary_table$rel_water_cont_man[y] <- 1 
       auxiliary_table$rel_water_cont_aut[y] <- 1 
@@ -679,11 +684,20 @@ ascs_decision_model <- function(x, varnames){
   machine_cost_man <- c( initial_man_cost, rep( 0, (n_years-1) ) )
   machine_cost_aut <- c( initial_aut_cost, rep( 0, (n_years-1) ) )
   
+  # customers influence
+  ## influenced by water contamination and biodiversity on customers buying behaviour
+  customers_man <- rep(customer_on_fruitsales, n_years) +
+    (auxiliary_table$rel_bio_man - 1) * biodiversity_on_customer +
+    (1 - auxiliary_table$rel_water_cont_man) * water_contamination_on_customer
+  customers_aut <- rep(customer_on_fruitsales, n_years) +
+    (auxiliary_table$rel_bio_aut - 1) * biodiversity_on_customer +
+    (1 - auxiliary_table$rel_water_cont_aut) * water_contamination_on_customer
+  
   # profit - depends an the fruit sales and the pesticide costs per hectare 
   ## resulting profit gets multiplied by the number of hectares (area_per_machine)
   ## for the automated option the machine upgrade cost get subtracted 
-  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine - machine_cost_man
-  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
+  farmers_profit_man = (fruit_sales_e_ha_man * customers_man - pest_cost_ha_man) * area_per_machine - machine_cost_man
+  farmers_profit_aut = (fruit_sales_e_ha_aut * customers_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
   
   # NPV - the value of money in the future gets discounted
   ## 2 - 5 % since our farmers are likely to invest

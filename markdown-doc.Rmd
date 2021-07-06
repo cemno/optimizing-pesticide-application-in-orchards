@@ -1,13 +1,13 @@
 ---
-title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
+  title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 output: html_document
 bibliography:
   - bib/references.bib
 ---
-
-```{r setup, include=FALSE}
+  
+  ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, results = 'hide', message = FALSE, eval = FALSE)
 ```
 
@@ -34,7 +34,7 @@ behavior.
 The output of the model generated in this project will be a monetary value for the 
 farmer’s profit per hectare, calculated based on the investment costs, running costs, 
 damage to the fruits (apples) - calculated by combining applied pesticides (with a 
-potential limit) and influences of the increased or decreased biodiversity - and 
+                                                                            potential limit) and influences of the increased or decreased biodiversity - and 
 the customer behavior.
 
 \ 
@@ -121,8 +121,8 @@ the model with a 90% confidence interval.
 
 
 **The two alternatives**  
-
-*Decision alternative 1*: Buying an automated section control sprayer for orchards  
+  
+  *Decision alternative 1*: Buying an automated section control sprayer for orchards  
 
 * This decision alternative has one main cost and some advantages for the future 
 and the environment.  
@@ -164,66 +164,66 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 ### Stakeholders: (describe further)
 * Farmer
-  + importance: very high
-  + Main Decision maker
-  + Operator / User (knowledge about relevant orchards)
-  + Budget for purchasing costs
-  + profitable longterm?
++ importance: very high
++ Main Decision maker
++ Operator / User (knowledge about relevant orchards)
++ Budget for purchasing costs
++ profitable longterm?
   
-* Manufacturer
-  + importance: (very) low
-  + Supplier
-  + (takes feedback into account)
+  * Manufacturer
++ importance: (very) low
++ Supplier
++ (takes feedback into account)
 
 * Government
-  + importance: medium - high
-  + Bund/Länder - Arbeitsgemeinschaft Wasser (LAWA), Landwirtschaftskammer ...
-  + Reduction of pesticide residues and unwanted effects
-  + taking probes from products, groundwater, biodiversity (short & longterm)
++ importance: medium - high
++ Bund/Länder - Arbeitsgemeinschaft Wasser (LAWA), Landwirtschaftskammer ...
++ Reduction of pesticide residues and unwanted effects
++ taking probes from products, groundwater, biodiversity (short & longterm)
 
 * Consumers
-  + importance: low - mid
-  + no residues on products
-  + inclined to buy farmers products
++ importance: low - mid
++ no residues on products
++ inclined to buy farmers products
 
 * Food retailers
-  + same as consumers
++ same as consumers
 
 * Society  
-  + importance: low - mid
-  + no active influence / Public image <br/> $\Rightarrow$  influencing government decisions (mindset about eg. Biodiversity)
- 
++ importance: low - mid
++ no active influence / Public image <br/> $\Rightarrow$  influencing government decisions (mindset about eg. Biodiversity)
+
 * NGOs
-  + importance: mid
-  + Greenpeace, newspaper organizations, research centers / institutes
-  + influencing society, consumers, government
-  + newspaper, magazine article
++ importance: mid
++ Greenpeace, newspaper organizations, research centers / institutes
++ influencing society, consumers, government
++ newspaper, magazine article
 
 * Water suppliers
-  + importance: mid
-  + conservation of healthy water bodies
-  + food chains (plankton), fishing grounds, drinking water
++ importance: mid
++ conservation of healthy water bodies
++ food chains (plankton), fishing grounds, drinking water
 
 * Agro-chemical companies
-  + importance: low
-  + keeping residues in environment low to prevent restrictive legislation (longterm)
-  + BUT less sales of plant protection agents (shortterm)
++ importance: low
++ keeping residues in environment low to prevent restrictive legislation (longterm)
++ BUT less sales of plant protection agents (shortterm)
 
 * Local biodiversity
-  + importance: high
-  + higher diversity <br/> more pollinators <br/> reduces chance of diseases
-  
++ importance: high
++ higher diversity <br/> more pollinators <br/> reduces chance of diseases
+
 * Beekeepers
-  + importance: low - mid
-  + less potential harm to bees
++ importance: low - mid
++ less potential harm to bees
 
 
 \ 
 
 ### Problems:    
 * Some common agrochemicals will be banned in the near future for various reasons
-  + Overuse causes problems 
-  + Public opinion is getting worse   
++ Overuse causes problems 
++ Public opinion is getting worse   
 * Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
 * Agrochemicals are costly supplies <br/> $\Rightarrow$ reduction is welcome  
 
@@ -240,12 +240,12 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 ### Allocation of resources:  
 * Money
-  + Overheads
-  + Overheads        
-  + Running costs 
++ Overheads
++ Overheads        
++ Running costs 
 * Labour 
-  + Conducting actual tasks 
-  + Acquiring know-how
++ Conducting actual tasks 
++ Acquiring know-how
 * Pollinators  
 
 \ 
@@ -257,7 +257,7 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 ### Uncertainties:  
 * Potential reduction of pesticides using an automatic section controlled sprayer
-  + Especially the reduction of excessive pesticides
++ Especially the reduction of excessive pesticides
 * Common application rates of pesticides in orchards
 * Potential Cost of an automatic section controlled sprayer
 * Changing climate influencing the frequency of pesticides application
@@ -269,16 +269,16 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 ### (Sources of) information:
 * Farmers
-  + knowledge of the farm, knowledge of problems during application 
++ knowledge of the farm, knowledge of problems during application 
 * Manufacturer (Currently developing a prototype)
-  + Cost and capabilities of an automatic section control sprayer
++ Cost and capabilities of an automatic section control sprayer
 * Landwirtschaftskammer NRW
-  + Potential subsidisation of automatic section control sprayer
-  + Political foreshadowing of future legislations
++ Potential subsidisation of automatic section control sprayer
++ Political foreshadowing of future legislations
 * (commercial) Beekeepers
-  + How much of an problem are pesticides
++ How much of an problem are pesticides
 * Consumers
-  + Assess the importance/conception of reduced pesticide application to the consumer 
++ Assess the importance/conception of reduced pesticide application to the consumer 
 
 
 
@@ -455,48 +455,36 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 #### First model 
 ```{r}
 
-## Importing input table 
-  input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",", stringsAsFactors = FALSE)
-  input_table <- drop_na(input_table, c("lower","upper"))
-  write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
-  input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
-  # as.estimate(input_table) 
+# Importing and adjusting input table 
+input_table <- read.csv("data/input_data_03.csv", sep = ";", dec = ",", stringsAsFactors = FALSE)
+input_table <- drop_na(input_table, c("lower","upper"))
+input_table <- filter(input_table, !variable == "initial_upg_cost", !variable == "pesticide_quantity")
+write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
+input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
 
 
 ascs_decision_model <- function(x, varnames){
   
-
-  # the amount of used pesticides can vary depending on weather forecasts (factor from 0.7 - 1.3)
-  # and infestation/disease levels but this is integrated through a correlation with plant_damage
-  # quantity varies for manual and automated sprayer 
-  # pest_quant_man <- vv( pesticide_quantity, var_CV, n_years)
-  # pest_quant_aut <- pest_quant_man * pesticide_reduction_auto 
-
-  # application efficiency (tree distance and how much it saves to not spray in between)
-  # the efficiency is fix over the years per model run 
-  
-  
-  
-  # iterative pesticide impact
+  # table for iterative impacted variables 
   auxiliary_table <- data.frame(year = c(1:n_years),
-                               pest_quant_man = rep(0.,n_years),
-                               pest_quant_aut = rep(0.,n_years),
-                               rel_water_cont_man = rep(0.,n_years),
-                               rel_water_cont_aut = rep(0.,n_years),
-                               rel_bio_man = rep(0.,n_years),
-                               rel_bio_aut = rep(0.,n_years),
-                               plant_dmg_pot_man = rep(0.,n_years),
-                               plant_dmg_pot_aut = rep(0.,n_years),
-                               actual_plant_dmg_man = rep(0.,n_years),
-                               actual_plant_dmg_aut = rep(0.,n_years),
-                               gov_inter_chance_man = rep(0.,n_years),
-                               gov_inter_chance_aut = rep(0.,n_years),
-                               gov_inter_happened_man = rep(0,n_years),
-                               gov_inter_happened_aut = rep(0,n_years),
-                               gov_reaction = rep(0,n_years)
-                               )
+                                pest_quant_man = rep(0.,n_years),
+                                pest_quant_aut = rep(0.,n_years),
+                                rel_water_cont_man = rep(0.,n_years),
+                                rel_water_cont_aut = rep(0.,n_years),
+                                rel_bio_man = rep(0.,n_years),
+                                rel_bio_aut = rep(0.,n_years),
+                                plant_dmg_pot_man = rep(0.,n_years),
+                                plant_dmg_pot_aut = rep(0.,n_years),
+                                actual_plant_dmg_man = rep(0.,n_years),
+                                actual_plant_dmg_aut = rep(0.,n_years),
+                                gov_inter_chance_man = rep(0.,n_years),
+                                gov_inter_chance_aut = rep(0.,n_years),
+                                gov_inter_happened_man = rep(0,n_years),
+                                gov_inter_happened_aut = rep(0,n_years),
+                                gov_reaction = rep(0,n_years)
+  )
   
-    
+  
   for (y in 1:n_years) {
     
     if (y == 1) { # first year
@@ -539,7 +527,7 @@ ascs_decision_model <- function(x, varnames){
       # water contamination and biodiversity are 1 in the first year ("status quo")
       auxiliary_table$rel_water_cont_man[y] <- 1 
       auxiliary_table$rel_water_cont_aut[y] <- 1 
-
+      
       auxiliary_table$rel_bio_man[y] <- 1
       auxiliary_table$rel_bio_aut[y] <- 1
       
@@ -557,7 +545,7 @@ ascs_decision_model <- function(x, varnames){
                                                         0,
                                                         actual_plant_dmg_aut)
       
-    }else  { # ongoing years (year 2 - n_years) 
+    }else  {  # ongoing years (year 2 - n_years) 
       ## the values change per year so the influence changes as well
       # government intervention chance
       ## general chance affected by biodiversity and water contamination 
@@ -568,7 +556,7 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$gov_inter_chance_aut[y] <- auxiliary_table$gov_inter_chance_aut[y-1] +
         ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
             ((auxiliary_table$rel_water_cont_aut[y-1] - 1) * water_contamination_on_gov_concern))
-  
+      
       # checking if the chance is really between 0 and 1 so the chance_event function works
       auxiliary_table$gov_inter_chance_man[y] <- ifelse(auxiliary_table$gov_inter_chance_man[y] <= 0,
                                                         0,
@@ -580,32 +568,32 @@ ascs_decision_model <- function(x, varnames){
                                                         ifelse(auxiliary_table$gov_inter_chance_aut[y] >= 1,
                                                                1,
                                                                auxiliary_table$gov_inter_chance_aut[y]))
-   
-      ## debugging
-      # print(c("man", y, auxiliary_table$gov_inter_chance_man[y]))
-      # print(c("aut", y, auxiliary_table$gov_inter_chance_aut[y]))
       
       
       # chance_event function 
-      ## only applies ifthe value for the intervention delay + the current year is still inside the n_years boarder &
+      ## only applies if the value for the intervention delay + the current year is still inside the n_years boarder &
       ### there was no intervention in the previous years
       ### there was no intervention in the relevant year already
-      if(y + auxiliary_table$gov_reaction[y] <= n_years){
-        if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
+      if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
+        if(y + auxiliary_table$gov_reaction[y] <= n_years){
           if(auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] == 0){
             auxiliary_table$gov_inter_happened_man[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0)
           }
-        }else{
-          auxiliary_table$gov_inter_happened_man[y] <- 1
         }
-        if(auxiliary_table$gov_inter_happened_aut[y-1] == 0){
+      }else{
+        auxiliary_table$gov_inter_happened_man[y] <- 1
+      }
+      
+      if(auxiliary_table$gov_inter_happened_aut[y-1] == 0){
+        if(y + auxiliary_table$gov_reaction[y] <= n_years){
           if(auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] == 0){
             auxiliary_table$gov_inter_happened_aut[y + auxiliary_table$gov_reaction[y]] <- chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0)
           }
-        }else{
-          auxiliary_table$gov_inter_happened_aut[y] <- 1
-        }
+        }  
+      }else{
+        auxiliary_table$gov_inter_happened_aut[y] <- 1
       }
+      
       
       # water contamination 
       ## assuming that the pesticide quantity influences the water contamination by pest_cont_fac
@@ -630,7 +618,7 @@ ascs_decision_model <- function(x, varnames){
       
       auxiliary_table$plant_dmg_pot_aut[y] <- auxiliary_table$plant_dmg_pot_aut[y] +
         auxiliary_table$plant_dmg_pot_aut[y] * (1 -  auxiliary_table$rel_bio_aut[y])
-
+      
       # pesticide quantity
       ## effected by biodiversity
       auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
@@ -657,7 +645,7 @@ ascs_decision_model <- function(x, varnames){
       auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0,
                                                         0,
                                                         actual_plant_dmg_man)
-
+      
       actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] - auxiliary_table$pest_quant_aut[y] / pest_red_fac
       auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
                                                         0,
@@ -666,8 +654,10 @@ ascs_decision_model <- function(x, varnames){
     
   }
   
+  # Debugging
+  # print(auxiliary_table)
   
-
+  
   # yields prizes are varying depending on the years and the plant damage
   yield_t_ha <- vv(yield, var_CV, n_years)
   yield_t_ha_man <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_man)
@@ -686,15 +676,14 @@ ascs_decision_model <- function(x, varnames){
   pest_cost_ha_aut <- pest_cost_ha_const * auxiliary_table$pest_quant_aut
   
   # machine costs are applied only once so n = 1
-  machine_man_cost <- c( initial_man_cost, rep( 0, (n_years-1) ) )
-  machine_aut_cost <- c( initial_auto_cost, rep( 0, (n_years-1) ) )
-  
+  machine_cost_man <- c( initial_man_cost, rep( 0, (n_years-1) ) )
+  machine_cost_aut <- c( initial_aut_cost, rep( 0, (n_years-1) ) )
   
   # profit - depends an the fruit sales and the pesticide costs per hectare 
   ## resulting profit gets multiplied by the number of hectares (area_per_machine)
   ## for the automated option the machine upgrade cost get subtracted 
-  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine - machine_man_cost
-  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_aut_cost
+  farmers_profit_man = (fruit_sales_e_ha_man - pest_cost_ha_man) * area_per_machine - machine_cost_man
+  farmers_profit_aut = (fruit_sales_e_ha_aut - pest_cost_ha_aut) * area_per_machine - machine_cost_aut
   
   # NPV - the value of money in the future gets discounted
   ## 2 - 5 % since our farmers are likely to invest
@@ -715,10 +704,9 @@ ascs_decision_model <- function(x, varnames){
 
 
 ```{r}
+
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
-  # estimate = decisionSupport::estimate_read_csv("data/final/inputs.csv"),
-  # estimate = as.estimate(input_table, correlation_matrix = correlation_matrix),
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
   numberOfModelRuns = 1000,
@@ -746,6 +734,7 @@ decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results,
 ## Cashflow analysis 
 plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")+
   scale_x_continuous(breaks = seq(1,9,1), minor_breaks = NULL)
+
 
 
 ## Projection to Latent Structures (PLS) analysis 
@@ -782,21 +771,21 @@ compound_figure(mcSimulation_object = mcSimulation_results,
 
 
 **Inspiration from other presentations**  
-
-* Implement "interception" aspect at the base of the model  
+  
+  * Implement "interception" aspect at the base of the model  
 * End model with "Overall value"/"NPV" instead of "Farmer's profit" 
 * Add legend to the model visualisation  
 
 
 **Suggestions to improve our model**  
-* Orchard size:
+  * Orchard size:
   + Keep applicability to many different situations in minds 
-  + Create a number of realistic scenarios 
++ Create a number of realistic scenarios 
 * Estimate maximum area one unit can work on $\Rightarrow$ Set maximum workload as upper boundary 
-  + Consider max. speed, max. uninterrupted working hours 
- 
- 
- 
++ Consider max. speed, max. uninterrupted working hours 
+
+
+
 #### Example code from Seminar 08 and Seminar 09 
 
 ```{r, include = FALSE}
@@ -816,18 +805,18 @@ Model Framework
 Assigning model variables to variable type
 
 * Event (`chance_event()`, simulate occurrence of random events), either happens or not
-  + Governments concern triggers intervention, which results in the end of the model (less chance to occur for the automated one)
-  + Disease infection, chance might be reduced with better biodiversity. Different severities.
++ Governments concern triggers intervention, which results in the end of the model (less chance to occur for the automated one)
++ Disease infection, chance might be reduced with better biodiversity. Different severities.
 
 * Fix variables
-  + Cost of the machines are given (distribution)
-  + Pesticides is a yearly necessity (distribution of mean over many years)
++ Cost of the machines are given (distribution)
++ Pesticides is a yearly necessity (distribution of mean over many years)
 
 * Time-dependent variables (`vv()`, value varier function), variables that change with every iteration
-  + Water contamination
-  + Customers
-  + Biodiversity (maybe using a logistic function?)
-  + Fruit sales
++ Water contamination
++ Customers
++ Biodiversity (maybe using a logistic function?)
++ Fruit sales
 
 * Combined variables
-  + Both events are also time dependent, as higher water contamination rises goverments concern and thus an intervention
++ Both events are also time dependent, as higher water contamination rises goverments concern and thus an intervention

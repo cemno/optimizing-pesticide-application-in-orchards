@@ -755,7 +755,7 @@ plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "C
 pls_result <- plsr.mcSimulation(object = mcSimulation_results,
                                 resultName = names(mcSimulation_results$y)[3], ncomp = 1)
 
-plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$variable), threshold = 0)
+plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$label), threshold = 0)
 
 
 ## Value of information (VoI) analysis 
@@ -768,11 +768,18 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 
 plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
-compound_figure(mcSimulation_object = mcSimulation_results, 
-                input_table = data.frame(variable = input_table$variable, label = input_table$variable), plsrResults = pls_result, 
-                EVPIresults = evpi, decision_var_name = "NPV_decision_do", 
-                cashflow_var_name = "Cashflow_decision_do", 
-                base_size = 7)
+
+# compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results, 
+#                                    input_table = input_table,
+#                                    plsrResults = pls_result, 
+#                                    EVPIresults = evpi,
+#                                    decision_var_name = "NPV_decision_do", 
+#                                    cashflow_var_name = "Cashflow_decision_do", 
+#                                    base_size = 7) 
+# 
+# ggsave(filename = "images/compound_figure2.png", plot = compound_fig, width = 7, height = 5)
+
+
 
 
 ```

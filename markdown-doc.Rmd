@@ -724,7 +724,7 @@ ascs_decision_model <- function(x, varnames){
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 100,
+  numberOfModelRuns = 1000,
   functionSyntax = "plainNames"
 )
 
@@ -738,19 +738,23 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 
 ```{r}
 ## Plot Net Present Value (NPV) distributions 
-decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
+compare_decisions <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV", "NO_Interv_NPV"),
                                     method = 'smooth_simple_overlay', 
                                     base_size = 7)
+
+ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
 
 decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV",
                                              "NO_Interv_NPV"),
                                     method = 'boxplot')
 
-decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
+NPV_distribution <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = "NPV_decision_do",
                                     method = 'boxplot_density')
+
+ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
 
 
 ## Cashflow analysis 
@@ -762,11 +766,11 @@ plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "C
 pls_result <- plsr.mcSimulation(object = mcSimulation_results,
                                 resultName = names(mcSimulation_results$y)[3], ncomp = 1)
 
-plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$label), threshold = 0)
+pls <- plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$label), threshold = 0.9)
 
+ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
 
 ## Value of information (VoI) analysis 
-
 
 
 plot_evpi(evpi, decision_vars = "NPV_decision_do")
@@ -834,7 +838,7 @@ summary_subset_data <- subset_data %>%
 
 
 
-plot_cashflow <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
+plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
                                y_axis_name = "Cashflow", legend_name = "Quantiles (%)", 
                                legend_labels = c("5 to 95", "25 to 75", "median"), 
                                color_25_75 = "grey40", color_5_95 = "grey70", 
@@ -908,9 +912,9 @@ plot_cashflow <- function (mcSimulation_object, cashflow_var_name, x_axis_name =
 
 
 
-plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
+cashflow_new <- plot_cashflow_new(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 
-
+ggsave(filename = "images/cashflow_new.png", plot = cashflow_new, width = 5, height = 3)
 ```
 
 

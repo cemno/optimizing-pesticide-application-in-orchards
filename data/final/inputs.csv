@@ -10,7 +10,7 @@
 "farmers_pesticide_quantity_miscalculation",0.9,NA,1.1,"posnorm","farmers miscalculation of pesticide quantity","std","the farmer tries to spray enough to have 0 plant damage, but there is a chance he miscalculated how much he needs to spray"
 "government_reaction_time",2,NA,6,"posnorm","time delay of government decision","years","time from government decision to implementation of intervention"
 "initial_man_cost",18000,NA,30000,"posnorm","initial costs normal sprayer","euro","investmant costs for a manual section controled sprayer (Euro)"
-"initial_upg_cost",5000,NA,7000,"posnorm","","euro","upgrade costs to automate a manual section controled sprayer (Euro)"
+"initial_upg_cost",5000,NA,7000,"posnorm","initial upgrade cost","euro","upgrade costs to automate a manual section controled sprayer (Euro)"
 "market_price",500,NA,800,"posnorm","market price euro/t","Euro/t","fruit price (Euro/t)"
 "pesticide_cost",1400,NA,2200,"posnorm","pesticide costs","euro/ha","costs of pesticides (Euro/ha)"
 "pesticide_reduction_auto",0.85,NA,0.95,"posnorm","reduction of pesticide quantity","%","reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one "

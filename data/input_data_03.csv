@@ -1,5 +1,5 @@
 variable;lower;median;upper;distribution;label;units;description
-initial_upg_cost;5000;;7000;posnorm;;euro;upgrade costs to automate a manual section controled sprayer (Euro)
+initial_upg_cost;5000;;7000;posnorm;initial upgrade cost;euro;upgrade costs to automate a manual section controled sprayer (Euro)
 initial_aut_cost;23000;;37000;posnorm;initial costs automated sprayer;euro;investmant costs for a automated section controled sprayer (Euro)
 initial_man_cost;18000;;30000;posnorm;initial costs normal sprayer;euro;investmant costs for a manual section controled sprayer (Euro)
 pesticide_cost;1400;;2200;posnorm;pesticide costs;euro/ha;costs of pesticides (Euro/ha)

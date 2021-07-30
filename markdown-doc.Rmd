@@ -1001,7 +1001,6 @@ compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results,
 
 compound_fig
 
-<<<<<<< HEAD
 plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
                                y_axis_name = "Cashflow", legend_name = "Quantiles (%)", 
                                legend_labels = c("5 to 95", "25 to 75", "median"), 
@@ -1070,13 +1069,7 @@ plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_na
                                                    0, 0, 0, unit = "cm"), strip.background = ggplot2::element_blank(), 
                    ...)
 }
-=======
 ```
->>>>>>> 7926daa1c04862dd6ebcf771bdc6a23969750b5b
-
-
-
-
 
 
 

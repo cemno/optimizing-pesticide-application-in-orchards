@@ -851,7 +851,7 @@ plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_na
   assertthat::assert_that(is.character(cashflow_var_name), 
                           msg = "cashflow_var_name is not a character string.")
   assertthat::assert_that(all(!stringr::str_detect(cashflow_var_name, 
-                                                   pattern = "[:digit:]")), msg = "cashflow_var_name contains numbers. Consider renaming your cashflow variables in the model function")
+                                                   pattern = "[:digit:]{1,}")), msg = "cashflow_var_name contains numbers. Consider renaming your cashflow variables in the model function")
   assertthat::assert_that(is.character(x_axis_name), msg = "x_axis_name is not a character string.")
   assertthat::assert_that(is.character(y_axis_name), msg = "y_axis_name is not a character string.")
   assertthat::assert_that(is.character(color_25_75), msg = "color_25_75 is not a character string.")
@@ -872,7 +872,7 @@ plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_na
   }
   subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
     tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
-  years_position <- stringr::str_locate(subset_data$name, pattern = "[:digit:]")
+  years_position <- stringr::str_locate(subset_data$name, pattern = "[:digit:]{1,}")
   subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name, 
                                                                            years_position[, 1], years_position[, 2])), decision_option = as.character(substr(subset_data$name, 
                                                                                                                                                              1, (years_position[, 1] - 1))))

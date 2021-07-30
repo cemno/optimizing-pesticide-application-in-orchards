@@ -1,18 +1,26 @@
 ---
-  title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
+title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
-output: html_document
+
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: true
+    theme: readable
 bibliography:
   - bib/references.bib
 ---
   
-  ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, results = 'hide', message = FALSE, eval = FALSE)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+#results = 'hide' ,echo = TRUE,
 ```
 
 
-## Abstract (Lucas)
+# Abstract (Lucas)
 
 In this project we are looking a prototype of an automated section-control blower 
 sprayer (ASCS) which is currently being tested at Competence Centre for Fruit 
@@ -39,7 +47,7 @@ the customer behavior.
 
 \ 
 
-## Introduction (Jasper)  
+# Introduction (Jasper)  
 
 Reducing the use of pesticides in agricultural and horticultural production has 
 been an important concern of policymakers, NGO, and also farmers for years. Not 
@@ -79,50 +87,13 @@ All in all, the ASCS promises to a more efficient application of pesticide and
 higher work capacity per sprayer, as well as less contamination of the environment 
 while maintaining full effectiveness in terms of plant protection. 
 
-\  
+## Short introduction to decision analysis
 
-## Data acquistion (Christoph)  
-
-### Expert knowledge (Nils)  
-
-For the decision-relevant questions, we consulted various stakeholders as experts 
-for our model. We consulted several experimental managers from different apple 
-growing regions in Germany, Leaders and technical assistants from the area of 
-plant health, plant protection and production technology of the Competence Centre 
-for Fruit Production Lake Constance, as well as fruit grower from the Lake 
-Constance region.  
-
-\ 
-
-#### Calibration training (Christoph)  
-
-For a decision analysis it is important to known how valuable the given estimates 
-are because it need to be based on comprehensive and reliable data. Therefore, 
-calibration training is applied.  
-
-Calibration is a process to find out and document how the deviation of measuring 
-device is. Due to Calibration training the affective answering behavior is reduced 
-and it helps to improve the given estimates. It can also help to know your 
-uncertainties and to train to give good estimates.  
-
-In this case experts are used as measuring device for good estimates. The answers 
-are normally linked to various cognitive biases and normally lead to an overconfidence 
-of the experts about their estimates.  
-
-To reduce this, a series of basic questions is used. In the first part of the 
-calibration training the persons to be calibrated need to answer questions where 
-the correct answer must be within a range. In the second part they need to answer 
-yes or no questions and they need to estimate their confidence about the given 
-answers. after answering the basic questions, they get the feedback about the 
-given answers. This led to a reduction of overconfidence.  
-
-After the calibration training, they were asked about estimates to all inputs for 
-the model with a 90% confidence interval.  
-
+# Intervention
 
 **The two alternatives**  
   
-  *Decision alternative 1*: Buying an automated section control sprayer for orchards  
+*Decision alternative 1*: Buying an automated section control sprayer for orchards  
 
 * This decision alternative has one main cost and some advantages for the future 
 and the environment.  
@@ -139,6 +110,7 @@ decreasing the water contamination and decrease the pests and diseases of the ap
 due to pest and diseases. They can also derive from not getting sanctioned by 
 governmental restrictions concerning about too much application of pesticides.  
 
+\ 
 
 *Decision alternative 2*: Buying a manual section control sprayer for orchards.  
 
@@ -150,19 +122,31 @@ the disadvantage of applying more pesticide than needed.
 * The benefits are derived from the harvest and selling price, but the advantages 
 of not getting sanctioned or increasing the biodiversity and the harvest can`t took place.
 
-\  
+\ 
 
-### Description   
+## Description   
 Reducing pesticide use: An analysis on the decision whether to implement an automated or manually operated section control sprayer in orchards.
 
 \ 
 
-### Decision maker: farmer   
+## Options:  
+* Buy automatic section control sprayer
+* keeping / buying a manual section control sprayer
+* Spray less pesticide with existing machinery 
+* Adopt organic farming practices <br/> $\Rightarrow$ Use beneficiaries (beneficial organisms)
+* Spray manually <br/> $\Rightarrow$ identify areas which need application <br/> $\Rightarrow$ application amount can be imprecise 
+
+\ 
+
+
+# Decision maker: farmer   
 * Farmer is the main stakeholder who makes the decision whether or not to buy a modern sprayer which is able to minimise pesticide application rates
 
 \ 
 
-### Stakeholders: (describe further)
+
+# Stakeholders
+: (describe further)
 * Farmer
 + importance: very high
 + Main Decision maker
@@ -220,54 +204,9 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 
 \ 
 
-### Problems:    
-* Some common agrochemicals will be banned in the near future for various reasons
-+ Overuse causes problems 
-+ Public opinion is getting worse   
-* Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
-* Agrochemicals are costly supplies <br/> $\Rightarrow$ reduction is welcome  
+# Data acquistion (Christoph)  
 
-\ 
-
-### Options:  
-* Buy automatic section control sprayer
-* keeping / buying a manual section control sprayer
-* Spray less pesticide with existing machinery 
-* Adopt organic farming practices <br/> $\Rightarrow$ Use beneficiaries (beneficial organisms)
-* Spray manually <br/> $\Rightarrow$ identify areas which need application <br/> $\Rightarrow$ application amount can be imprecise 
-
-\ 
-
-### Allocation of resources:  
-* Money
-+ Overheads
-+ Overheads        
-+ Running costs 
-* Labour 
-+ Conducting actual tasks 
-+ Acquiring know-how
-* Pollinators  
-
-\ 
-
-### Obstacles:  
-* Costs of investment
-* Learning curve for running the equipment 
-* compatibility with current machinery
-
-### Uncertainties:  
-* Potential reduction of pesticides using an automatic section controlled sprayer
-+ Especially the reduction of excessive pesticides
-* Common application rates of pesticides in orchards
-* Potential Cost of an automatic section controlled sprayer
-* Changing climate influencing the frequency of pesticides application
-* Increased bee survival rate (as there still are pesticides, just less)
-* Added value through increased bee survival and thus increasing pollination
-* Governmental interest in pesticides reduction
-* Image of a farmer trying to reduce pesticides but still using them
-* Maintenance cost of an more complicated and sensitive system
-
-### (Sources of) information:
+## (Sources of) information:
 * Farmers
 + knowledge of the farm, knowledge of problems during application 
 * Manufacturer (Currently developing a prototype)
@@ -280,10 +219,86 @@ Reducing pesticide use: An analysis on the decision whether to implement an auto
 * Consumers
 + Assess the importance/conception of reduced pesticide application to the consumer 
 
+\ 
+
+## Expert knowledge (Nils)  
+
+For the decision-relevant questions, we consulted various stakeholders as experts 
+for our model. We consulted several experimental managers from different apple 
+growing regions in Germany, Leaders and technical assistants from the area of 
+plant health, plant protection and production technology of the Competence Centre 
+for Fruit Production Lake Constance, as well as fruit grower from the Lake 
+Constance region.  
+
+\ 
+
+## Calibration training (Christoph)  
+
+For a decision analysis it is important to known how valuable the given estimates 
+are because it need to be based on comprehensive and reliable data. Therefore, 
+calibration training is applied.  
+
+Calibration is a process to find out and document how the deviation of measuring 
+device is. Due to Calibration training the affective answering behavior is reduced 
+and it helps to improve the given estimates. It can also help to know your 
+uncertainties and to train to give good estimates.  
+
+In this case experts are used as measuring device for good estimates. The answers 
+are normally linked to various cognitive biases and normally lead to an overconfidence 
+of the experts about their estimates.  
+
+To reduce this, a series of basic questions is used. In the first part of the 
+calibration training the persons to be calibrated need to answer questions where 
+the correct answer must be within a range. In the second part they need to answer 
+yes or no questions and they need to estimate their confidence about the given 
+answers. after answering the basic questions, they get the feedback about the 
+given answers. This led to a reduction of overconfidence.  
+
+After the calibration training, they were asked about estimates to all inputs for 
+the model with a 90% confidence interval.  
+
+\  
+
+## Allocation of resources:  
+* Money
++ Overheads
++ Overheads        
++ Running costs 
+* Labour 
++ Conducting actual tasks 
++ Acquiring know-how
+* Pollinators  
+
+\ 
+
+# Problems:    
+* Some common agrochemicals will be banned in the near future for various reasons
++ Overuse causes problems 
++ Public opinion is getting worse   
+* Excessive use of pesticides can cause unwanted effects (e.g. resistances)  
+* Agrochemicals are costly supplies <br/> $\Rightarrow$ reduction is welcome  
+
+## Obstacles:  
+* Costs of investment
+* Learning curve for running the equipment 
+* compatibility with current machinery
+
+## Uncertainties:  
+* Potential reduction of pesticides using an automatic section controlled sprayer
++ Especially the reduction of excessive pesticides
+* Common application rates of pesticides in orchards
+* Potential Cost of an automatic section controlled sprayer
+* Changing climate influencing the frequency of pesticides application
+* Increased bee survival rate (as there still are pesticides, just less)
+* Added value through increased bee survival and thus increasing pollination
+* Governmental interest in pesticides reduction
+* Image of a farmer trying to reduce pesticides but still using them
+* Maintenance cost of an more complicated and sensitive system
 
 
-#### Flow chart using diagrammeR package ----  
+# Flow chart of our model {.tabset}
 ```{r, include=FALSE}
+# Using diagrammeR package
 library(decisionSupport)
 library(DiagrammeR)
 library(DiagrammeRsvg)
@@ -292,7 +307,168 @@ library(tidyverse)
 ```
 
 
-```{r, echo=FALSE}
+## Plot
+```{r echo=FALSE}
+
+model_flow_chart <- grViz("
+
+digraph {
+  
+  # Add general information which counts for everything!!!
+  
+  # ---------
+  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
+  rankdir = 'LR'
+  
+  # Add graph statements 
+  graph [#label = 'Initial Model',
+         labelloc = t,
+         fontsize = 45,
+         ranksep=2,
+         nodesep=1]
+  
+  # Add node statements
+  node [fontname = Arial,
+        fontcolor = black,
+        color = darkslategray,
+        penwidth = 1]
+  
+  # Add edge statements
+  edge [fontsize=30,
+        penwidth=2,
+        fontname=Arial]
+  # ---------  
+  
+  # ---------  
+  # create 'ranks' (basically nodes) for arranging nodes later on
+  rank1 [style=invis]
+  rank2 [style=invis]
+  rank3 [style=invis]
+  rank4 [style=invis]
+  rank5 [style=invis]
+  
+  # make invisible (white) links between them
+  rank1->rank2->rank3->rank4->rank5 [color=white]
+  # ---------  
+  
+  # ---------  
+  # Add specific statements for node group {Intervention & Alternatives} 
+  node [shape = box,
+        fontsize = 30,
+        fixedsize = true,
+        width = 3.6,
+        height = 1.5]
+
+    Ascs [label = 'Automated section \n control sprayer'];
+    Al1 [label = 'Manual section \n control sprayer'];
+  # ---------
+  
+  
+  
+  # Add specific statements for node group {Pesticides & Cost} 
+  # --------- 
+  node [shape = box,
+        fontsize = 28,
+        fixedsize = true,
+        width = 2.8,
+        height = 0.9]
+  
+  Pe [label = 'Pesticides'];
+  Co [label = 'Cost']
+  
+  Cu [label = 'Customers'];          
+  Di [label = 'Plant damage'];
+  Bio [label = 'Biodiversity'];
+  WC [label = 'Water \n contamination'];
+  
+  FS [label = 'Fruit sales'];
+  GC [label = 'Government \n concerns'];
+  
+  FP [label = 'Farmers profit']
+  
+  # ---------  
+  
+  
+  # Add edge statements for negative connection (arrows) and add the connections
+  # ---------  
+  edge [label = '-    ',
+        fontcolor = 'red',
+        color = 'red']
+  {Ascs Al1} -> Pe #[headport = w, tailport = e]
+  GC -> Pe
+  Pe->Bio #[headport = w]
+  Pe-> Di 
+  Bio->{Di GC}
+  WC->{Bio Cu}
+  Di->FS
+  Co->FP
+  # ---------  
+  
+  # Add edge statements for positive connection (arrows) and add the connections
+  # ---------  
+  edge [label = '+',
+        fontcolor = 'forestgreen',
+        color = 'forestgreen']
+  
+  {Ascs Al1}->Co #[headport = w, tailport = s]
+  Pe-> WC  #[headport = w, tailport = n]
+  Pe-> Co
+  FS->FP 
+  WC->GC 
+  Bio-> Cu
+#  Di -> Pe
+  Cu->FS
+  # ---------  
+  
+  # ---------  
+  # sorting the nodes per rank
+  
+  {
+    Ascs -> Al1 -> rank1 [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    Co -> Pe -> GC -> rank2 [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    Di -> Bio -> WC -> rank3 [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+  
+  {
+    Cu -> FS -> rank4 [style=invis];
+    rank=same;
+    rankdir=TD;
+  }
+ 
+#   {
+#     rank5 -> FS [style=invis];
+#     rank=same;
+#     rankdir=DT;
+#   }
+#   
+  # ---------  
+  
+}")
+
+# Plot flow chart 
+model_flow_chart
+
+# Export flow chart as .png files; save in "images" folder 
+rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png") 
+
+
+```
+
+
+## Code
+```{r, eval=FALSE}
 
 model_flow_chart <- grViz("
 
@@ -443,16 +619,11 @@ digraph {
 
 
 
-# Plot flow chart 
-model_flow_chart
-
-# Export flow chart as .png files; save in "images" folder 
-rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png") 
-
 ```
 
+# Model {.tabset}
 
-#### First model 
+## Model
 ```{r}
 
 # Importing and adjusting input table 
@@ -717,14 +888,14 @@ ascs_decision_model <- function(x, varnames){
 
 ```
 
-
+## Monte Carlo Simulation
 ```{r}
 
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 1000,
+  numberOfModelRuns = 5,
   functionSyntax = "plainNames"
 )
 
@@ -736,46 +907,82 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 
 ```
 
+# Results {.tabset}
+
+## Comparison
+<details><summary>Expand code</summary>
 ```{r}
+#, eval = FALSE
 ## Plot Net Present Value (NPV) distributions 
 compare_decisions <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV", "NO_Interv_NPV"),
                                     method = 'smooth_simple_overlay', 
                                     base_size = 7)
 
-ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
+# ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
 
-decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
+compare_boxplot <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV",
                                              "NO_Interv_NPV"),
                                     method = 'boxplot')
-
-NPV_distribution <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
+# NPV_distribution <- 
+decision_do <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = "NPV_decision_do",
                                     method = 'boxplot_density')
 
-ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
+# ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
+```
+</details>
+```{r echo = FALSE}
+compare_decisions
+compare_boxplot
+decision_do
+```
 
+## Cashflow
+<details><summary>Expand code</summary>
+```{r}
+cashflow <- plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 
-## Cashflow analysis 
-plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
+```
+</details>
+```{r echo = FALSE}
+cashflow
+```
 
-
-
+## PLS
+<details><summary>Expand code</summary>
+```{r}
 ## Projection to Latent Structures (PLS) analysis 
 pls_result <- plsr.mcSimulation(object = mcSimulation_results,
                                 resultName = names(mcSimulation_results$y)[3], ncomp = 1)
-
 pls <- plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$label), threshold = 0.9)
 
-ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
+#ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
+
+```
+</details>
+```{r echo = FALSE}
+pls
+```
+
+## EVPI
+<details><summary>Expand code</summary>
+```{r}
 
 ## Value of information (VoI) analysis 
+evpi_plot <- plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
+```
+</details>
+```{r echo = FALSE}
+pls
+evpi_plot
+```
 
-plot_evpi(evpi, decision_vars = "NPV_decision_do")
-
-
+## Compound figure {.active}
+<details><summary>Expand code</summary>
+```{r}
 compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results, 
                                 input_table = input_table,
                                 plsrResults = pls_result, 
@@ -784,60 +991,17 @@ compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results,
                                 cashflow_var_name = "Cashflow_decision_do", 
                                 base_size = 7) 
 
-ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
 
 
+```
+</details>
+```{r echo=FALSE}
 
+# ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
 
+compound_fig
 
-
-
-
-
-
-
-
-data <- mcSimulation_results$y[!(names(mcSimulation_results$y) %in% c("Interv_NPV", "NO_Interv_NPV", "NPV_decision_do"))]
-cashflow_var_name = "Cashflow_decision_do"
-
-
-subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
-  tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
-
-years_position <- stringr::str_locate(subset_data$name, pattern = "[0-9]")
-
-subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name,
-                                                                         years_position[, 1],
-                                                                         years_position[, 2])),
-                                             decision_option = as.character(substr(subset_data$name, 1, (years_position[, 1] - 1))))
-
-############### hier liegt der fehler ... das pattern sucht nur nach einer einzelnen zahl
-############### Cashflow_decision_do10 wird mit Cashflow_decision_do1 gleichgesetzt
-subset_data$x_scale[subset_data$name == "Cashflow_decision_do10"] <- rep(10,100)
-
-summary_subset_data <- subset_data %>%
-  dplyr::group_by(decision_option, x_scale) %>%
-  dplyr::summarize(p5 = quantile(value, 0.05),
-                   p25 = quantile(value, 0.25),
-                   p50 = quantile(value, 0.5),
-                   p75 = quantile(value, 0.75),
-                   p95 = quantile(value, 0.95))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<<<<<<< HEAD
 plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
                                y_axis_name = "Cashflow", legend_name = "Quantiles (%)", 
                                legend_labels = c("5 to 95", "25 to 75", "median"), 
@@ -906,22 +1070,142 @@ plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_na
                                                    0, 0, 0, unit = "cm"), strip.background = ggplot2::element_blank(), 
                    ...)
 }
+=======
+```
+>>>>>>> 7926daa1c04862dd6ebcf771bdc6a23969750b5b
 
 
 
 
 
 
-cashflow_new <- plot_cashflow_new(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 
-ggsave(filename = "images/cashflow_new.png", plot = cashflow_new, width = 5, height = 3)
+``` {r, include=FALSE}
+# data <- mcSimulation_results$y[!(names(mcSimulation_results$y) %in% c("Interv_NPV", "NO_Interv_NPV", "NPV_decision_do"))]
+# cashflow_var_name = "Cashflow_decision_do"
+# 
+# 
+# subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
+#   tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
+# 
+# years_position <- stringr::str_locate(subset_data$name, pattern = "[0-9]")
+# 
+# subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name,
+#                                                                          years_position[, 1],
+#                                                                          years_position[, 2])),
+#                                              decision_option = as.character(substr(subset_data$name, 1, (years_position[, 1] - 1))))
+# 
+# ############### hier liegt der fehler ... das pattern sucht nur nach einer einzelnen zahl
+# ############### Cashflow_decision_do10 wird mit Cashflow_decision_do1 gleichgesetzt
+# subset_data$x_scale[subset_data$name == "Cashflow_decision_do10"] <- rep(10,100)
+# 
+# summary_subset_data <- subset_data %>%
+#   dplyr::group_by(decision_option, x_scale) %>%
+#   dplyr::summarize(p5 = quantile(value, 0.05),
+#                    p25 = quantile(value, 0.25),
+#                    p50 = quantile(value, 0.5),
+#                    p75 = quantile(value, 0.75),
+#                    p95 = quantile(value, 0.95))
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
+#                                y_axis_name = "Cashflow", legend_name = "Quantiles (%)", 
+#                                legend_labels = c("5 to 95", "25 to 75", "median"), 
+#                                color_25_75 = "grey40", color_5_95 = "grey70", 
+#                                color_median = "blue", facet_labels = cashflow_var_name, 
+#                                base_size = 11, ...) 
+# {
+#   assertthat::assert_that(class(mcSimulation_object)[[1]] == 
+#                             "mcSimulation", msg = "mcSimulation_object is not class 'mcSimulation', please provide a valid object. This does not appear to have been generated with 'mcSimulation' function.")
+#   data <- data.frame(mcSimulation_object$y, mcSimulation_object$x)
+#   assertthat::assert_that(is.character(cashflow_var_name), 
+#                           msg = "cashflow_var_name is not a character string.")
+#   assertthat::assert_that(all(!stringr::str_detect(cashflow_var_name, 
+#                                                    pattern = "[:digit:]")), msg = "cashflow_var_name contains numbers. Consider renaming your cashflow variables in the model function")
+#   assertthat::assert_that(is.character(x_axis_name), msg = "x_axis_name is not a character string.")
+#   assertthat::assert_that(is.character(y_axis_name), msg = "y_axis_name is not a character string.")
+#   assertthat::assert_that(is.character(color_25_75), msg = "color_25_75 is not a character string.")
+#   assertthat::assert_that(is.character(color_5_95), msg = "color_5_95 is not a character string.")
+#   assertthat::assert_that(is.character(color_median), msg = "color_median is not a character string.")
+#   assertthat::assert_that(color_25_75 %in% grDevices::colors(), 
+#                           msg = "Please choose a color name for color_25_75 from the grDevices colors.")
+#   assertthat::assert_that(color_5_95 %in% grDevices::colors(), 
+#                           msg = "Please choose a color name for color_5_95 from the grDevices colors.")
+#   assertthat::assert_that(color_median %in% grDevices::colors(), 
+#                           msg = "Please choose a color name for color_median from the grDevices colors.")
+#   assertthat::assert_that(any(substr(names(data), 1, nchar(cashflow_var_name)) %in% 
+#                                 cashflow_var_name), msg = "There are no variables that start with the same name as cashflow_var_name in your data.")
+#   if (any(is.na(data))) {
+#     warning(paste("Some data included \"NA\" and", 
+#                   table(is.na(data))[2], "rows were removed."))
+#     data <- data[stats::complete.cases(data), ]
+#   }
+#   subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
+#     tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
+#   years_position <- stringr::str_locate(subset_data$name, pattern = "[:digit:]")
+#   subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name, 
+#                                                                            years_position[, 1], years_position[, 2])), decision_option = as.character(substr(subset_data$name, 
+#                                                                                                                                                              1, (years_position[, 1] - 1))))
+#   
+#   
+#   
+#   
+#   subset_data$x_scale[subset_data$name == "Cashflow_decision_do10"] <- rep(10,100)
+#   
+#   
+#   
+#   
+#   
+#   summary_subset_data <- suppressMessages(subset_data %>% dplyr::group_by(decision_option, 
+#                                                                           x_scale) %>% dplyr::summarize(p5 = quantile(value, 0.05), 
+#                                                                                                         p25 = quantile(value, 0.25), p50 = quantile(value, 0.5), 
+#                                                                                                         p75 = quantile(value, 0.75), p95 = quantile(value, 0.95)))
+#   ggplot2::ggplot(summary_subset_data, ggplot2::aes(x_scale)) + 
+#     ggplot2::geom_ribbon(ggplot2::aes(ymin = p5, ymax = p95, 
+#                                       fill = legend_labels[1])) + ggplot2::geom_ribbon(ggplot2::aes(ymin = p25, 
+#                                                                                                     ymax = p75, fill = legend_labels[2])) + ggplot2::geom_line(ggplot2::aes(y = p50, 
+#                                                                                                                                                                             color = legend_labels[3])) + ggplot2::geom_line(ggplot2::aes(y = 0)) + 
+#     ggplot2::scale_x_continuous(expand = c(0, 0)) + ggplot2::scale_y_continuous(labels = scales::comma) + 
+#     ggplot2::scale_fill_manual(values = c(color_25_75, color_5_95)) + 
+#     ggplot2::scale_color_manual(values = color_median) + 
+#     ggplot2::guides(fill = ggplot2::guide_legend(reverse = T, 
+#                                                  order = 1)) + ggplot2::labs(x = x_axis_name, y = y_axis_name, 
+#                                                                              fill = legend_name, color = "") + ggplot2::facet_wrap(~factor(decision_option, 
+#                                                                                                                                            labels = facet_labels)) + ggplot2::theme_bw(base_size = base_size) + 
+#     ggplot2::theme(legend.margin = ggplot2::margin(-0.75, 
+#                                                    0, 0, 0, unit = "cm"), strip.background = ggplot2::element_blank(), 
+#                    ...)
+# }
+# 
+# 
+# 
+# 
+# 
+# 
+# cashflow_new <- plot_cashflow_new(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
+# 
+# ggsave(filename = "images/cashflow_new.png", plot = cashflow_new, width = 5, height = 3)
 ```
 
 
 
 
 
-#### Notes for improvement from the seminar 
+# Notes for improvement from the seminar 
 
 
 **Inspiration from other presentations**  
@@ -940,7 +1224,7 @@ ggsave(filename = "images/cashflow_new.png", plot = cashflow_new, width = 5, hei
 
 
 
-#### Example code from Seminar 08 and Seminar 09 
+## Example code from Seminar 08 and Seminar 09 
 
 ```{r, include = FALSE}
 library(readr)
@@ -950,7 +1234,7 @@ library(dplyr)
 library(igraph)
 ```
 
-### Seminar 08
+## Seminar 08
 Model Framework
 * Runs for 10 years (Time to be financially feasible)
 * One sprayer can handle 15 ha

@@ -10,10 +10,13 @@ output:
     collapsed: false
     number_sections: true
     theme: readable
+    css: layout/button.css
 bibliography:
   - bib/references.bib
 ---
-  
+
+<script src="layout/hideOutput.js"></script>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE)
 #results = 'hide' ,echo = TRUE,
@@ -306,9 +309,8 @@ library(rsvg)
 library(tidyverse)
 ```
 
-
-## Plot
-```{r echo=FALSE}
+<div class = "fold s">
+```{r}
 
 model_flow_chart <- grViz("
 
@@ -456,167 +458,15 @@ digraph {
   # ---------  
   
 }")
+```
+</div>
 
+```{r}
 # Plot flow chart 
 model_flow_chart
 
 # Export flow chart as .png files; save in "images" folder 
 rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png") 
-
-
-```
-
-
-## Code
-```{r, eval=FALSE}
-
-model_flow_chart <- grViz("
-
-digraph {
-  
-  # Add general information which counts for everything!!!
-  
-  # ---------
-  # Change flow chart orientation (top down: 'TD'; left to right: 'LR' 
-  rankdir = 'LR'
-  
-  # Add graph statements 
-  graph [#label = 'Initial Model',
-         labelloc = t,
-         fontsize = 45,
-         ranksep=2,
-         nodesep=1]
-  
-  # Add node statements
-  node [fontname = Arial,
-        fontcolor = black,
-        color = darkslategray,
-        penwidth = 1]
-  
-  # Add edge statements
-  edge [fontsize=30,
-        penwidth=2,
-        fontname=Arial]
-  # ---------  
-  
-  # ---------  
-  # create 'ranks' (basically nodes) for arranging nodes later on
-  rank1 [style=invis]
-  rank2 [style=invis]
-  rank3 [style=invis]
-  rank4 [style=invis]
-  rank5 [style=invis]
-  
-  # make invisible (white) links between them
-  rank1->rank2->rank3->rank4->rank5 [color=white]
-  # ---------  
-  
-  # ---------  
-  # Add specific statements for node group {Intervention & Alternatives} 
-  node [shape = box,
-        fontsize = 30,
-        fixedsize = true,
-        width = 3.6,
-        height = 1.5]
-
-    Ascs [label = 'Automated section \n control sprayer'];
-    Al1 [label = 'Manual section \n control sprayer'];
-  # ---------
-  
-  
-  
-  # Add specific statements for node group {Pesticides & Cost} 
-  # --------- 
-  node [shape = box,
-        fontsize = 28,
-        fixedsize = true,
-        width = 2.8,
-        height = 0.9]
-  
-  Pe [label = 'Pesticides'];
-  Co [label = 'Cost']
-  
-  Cu [label = 'Customers'];          
-  Di [label = 'Plant damage'];
-  Bio [label = 'Biodiversity'];
-  WC [label = 'Water \n contamination'];
-  
-  FS [label = 'Fruit sales'];
-  GC [label = 'Government \n concerns'];
-  
-  FP [label = 'Farmers profit']
-  
-  # ---------  
-  
-  
-  # Add edge statements for negative connection (arrows) and add the connections
-  # ---------  
-  edge [label = '-    ',
-        fontcolor = 'red',
-        color = 'red']
-  {Ascs Al1} -> Pe #[headport = w, tailport = e]
-  GC -> Pe
-  Pe->Bio #[headport = w]
-  Pe-> Di 
-  Bio->{Di GC}
-  WC->{Bio Cu}
-  Di->FS
-  Co->FP
-  # ---------  
-  
-  # Add edge statements for positive connection (arrows) and add the connections
-  # ---------  
-  edge [label = '+',
-        fontcolor = 'forestgreen',
-        color = 'forestgreen']
-  
-  {Ascs Al1}->Co #[headport = w, tailport = s]
-  Pe-> WC  #[headport = w, tailport = n]
-  Pe-> Co
-  FS->FP 
-  WC->GC 
-  Bio-> Cu
-#  Di -> Pe
-  Cu->FS
-  # ---------  
-  
-  # ---------  
-  # sorting the nodes per rank
-  
-  {
-    Ascs -> Al1 -> rank1 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Co -> Pe -> GC -> rank2 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Di -> Bio -> WC -> rank3 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
-  
-  {
-    Cu -> FS -> rank4 [style=invis];
-    rank=same;
-    rankdir=TD;
-  }
- 
-#   {
-#     rank5 -> FS [style=invis];
-#     rank=same;
-#     rankdir=DT;
-#   }
-#   
-  # ---------  
-  
-}")
-
 
 
 ```
@@ -910,78 +760,75 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 # Results {.tabset}
 
 ## Comparison
-<details><summary>Expand code</summary>
+
+<div class = "fold s">
 ```{r}
-#, eval = FALSE
 ## Plot Net Present Value (NPV) distributions 
 compare_decisions <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV", "NO_Interv_NPV"),
                                     method = 'smooth_simple_overlay', 
                                     base_size = 7)
 
-# ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
-
 compare_boxplot <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = c("Interv_NPV",
                                              "NO_Interv_NPV"),
                                     method = 'boxplot')
-# NPV_distribution <- 
+
 decision_do <- decisionSupport::plot_distributions(mcSimulation_object = mcSimulation_results, 
                                     vars = "NPV_decision_do",
                                     method = 'boxplot_density')
 
-# ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
 ```
-</details>
+</div>
 ```{r echo = FALSE}
+# ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
+# ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
 compare_decisions
 compare_boxplot
 decision_do
 ```
 
 ## Cashflow
-<details><summary>Expand code</summary>
+<div class = "fold s">
 ```{r}
 cashflow <- plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 
 ```
-</details>
+</div>
 ```{r echo = FALSE}
 cashflow
 ```
 
 ## PLS
-<details><summary>Expand code</summary>
+<div class = "fold s">
 ```{r}
 ## Projection to Latent Structures (PLS) analysis 
 pls_result <- plsr.mcSimulation(object = mcSimulation_results,
                                 resultName = names(mcSimulation_results$y)[3], ncomp = 1)
 pls <- plot_pls(pls_result, input_table = data.frame(variable = input_table$variable, label = input_table$label), threshold = 0.9)
 
-#ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
-
 ```
-</details>
+</div>
 ```{r echo = FALSE}
+#ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
 pls
 ```
 
 ## EVPI
-<details><summary>Expand code</summary>
+<div class = "fold s">
 ```{r}
-
 ## Value of information (VoI) analysis 
 evpi_plot <- plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
 ```
-</details>
+</div>
 ```{r echo = FALSE}
 pls
 evpi_plot
 ```
 
 ## Compound figure {.active}
-<details><summary>Expand code</summary>
+<div class="fold s">
 ```{r}
 compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results, 
                                 input_table = input_table,
@@ -994,14 +841,17 @@ compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results,
 
 
 ```
-</details>
+</div>
 ```{r echo=FALSE}
-
 # ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
-
 compound_fig
 
 ```
+
+
+
+
+
 
 
 

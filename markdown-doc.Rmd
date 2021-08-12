@@ -13,7 +13,31 @@ output:
 bibliography:
   - bib/references.bib
 ---
-  
+```{js, echo = FALSE}
+<script src="js/hideOutput.js"></script>
+```
+```{css, echo = FALSE}
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 100px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
+}
+```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE)
 #results = 'hide' ,echo = TRUE,
@@ -967,18 +991,14 @@ pls
 ```
 
 ## EVPI
-<details><summary>Expand code</summary>
+<div class = "fold o">
 ```{r}
-
 ## Value of information (VoI) analysis 
 evpi_plot <- plot_evpi(evpi, decision_vars = "NPV_decision_do")
-
-```
-</details>
-```{r echo = FALSE}
 pls
 evpi_plot
 ```
+</div>
 
 ## Compound figure {.active}
 <details><summary>Expand code</summary>
@@ -1251,3 +1271,6 @@ Assigning model variables to variable type
 
 * Combined variables
 + Both events are also time dependent, as higher water contamination rises goverments concern and thus an intervention
+
+
+

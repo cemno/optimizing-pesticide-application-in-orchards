@@ -9,19 +9,39 @@ output:
     toc_float: true
     collapsed: false
     number_sections: true
-    theme: readable
-    css: layout/button.css
+#    theme: readable
+#    code_folding: hide
+    css: [layout/css/bootstrap.css, layout/button.css]
 bibliography:
   - bib/references.bib
 ---
 
+<!-- # ```{css, echo=FALSE} -->
+<!-- # body .main-container { -->
+<!-- #   max-width: 1400px !important; -->
+<!-- #   width: 1400px !important; -->
+<!-- # } -->
+<!-- # body { -->
+<!-- #   max-width: 1400px !important; -->
+<!-- # } -->
+<!-- # ``` -->
+```{css, echo=FALSE}
+body .main-container {
+  max-width: 100%;
+}
+```
+<!-- <head><meta name="viewport" content="width=device-width, initial-scale=1"></head> -->
+    
 <script src="layout/hideOutput.js"></script>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, eval = FALSE, cache=TRUE}
 knitr::opts_chunk$set(message = FALSE)
 #results = 'hide' ,echo = TRUE,
 ```
 
+<!-- ```{r set-options, echo=FALSE, cache=FALSE} -->
+<!-- options(width = 200) -->
+<!-- ``` -->
 
 # Abstract (Lucas)
 
@@ -299,9 +319,43 @@ the model with a 90% confidence interval.
 * Maintenance cost of an more complicated and sensitive system
 
 
-# Flow chart of our model {.tabset}
+# Flow chart of our model
+
+
+The following graph is meant to give a better understanding of our model.
+We included two different sprayers, the automated and the manual sprayer seen on
+the far left of the model. Those effect mainly the amount of needed pesticides
+and plant protection agents but also the initial cost.
+Pesticides are the main factor in our model. They effect water contamination,
+biodiversity, plant damage and the cost through the amount applied. \ 
+
+We chose the duration of our model to be 10 years __explain__ and it had to be iterative,
+since most variables have an effect on the following years.
+
+One Example for this is the amount we spray and the plant damage. If the farmer 
+sprayed enough then there won't be any damage, but if he or she estimated the 
+amount incorrectly and sprayed less then needed then the plant damage in the 
+following year will be effected.
+Something similar can be said about the customers. If we spray a lot then
+the water contamination increases and the biodiversity on the field 
+decreases, this change is being picked up by the customers through the news, 
+magazines or first hand if they are residents nearby.
+
+Existing plant damage and fewer customers will reduce the harvest and thus 
+lessen the fruit sales.
+The sales and minus the overall costs will create the farmers profit, 
+the output variable we want to analyze.
+
+Lastly we also included an event representing the government intervening in the 
+amount we are allowed to spray. This has an impact especially in years the 
+farmer has to spray a lot. Here the impact on the manual sprayer will be bigger 
+as the automated sprayer reduces the overall amount of needed.
+The chance of the government intervening is set low, but is influenced by the 
+water contamination and the biodiversity.
+
 ```{r, include=FALSE}
 # Using diagrammeR package
+# devtools::install_github("eikeluedeling/decisionSupport")
 library(decisionSupport)
 library(DiagrammeR)
 library(DiagrammeRsvg)
@@ -461,7 +515,7 @@ digraph {
 ```
 </div>
 
-```{r}
+```{r echo=FALSE, out.width="100%", cache=FALSE,fig.cap="testtesttesttest"}
 # Plot flow chart 
 model_flow_chart
 
@@ -470,6 +524,7 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 
 ```
+
 
 # Model {.tabset}
 
@@ -739,7 +794,7 @@ ascs_decision_model <- function(x, varnames){
 ```
 
 ## Monte Carlo Simulation
-```{r}
+```{r warning=FALSE}
 
 ## Perform a Monte Carlo simulation 
 mcSimulation_results <- decisionSupport::mcSimulation(
@@ -842,143 +897,12 @@ compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results,
 
 ```
 </div>
-```{r echo=FALSE}
+```{r echo=FALSE, out.width="100%"}
 # ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
 compound_fig
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-``` {r, include=FALSE}
-# data <- mcSimulation_results$y[!(names(mcSimulation_results$y) %in% c("Interv_NPV", "NO_Interv_NPV", "NPV_decision_do"))]
-# cashflow_var_name = "Cashflow_decision_do"
-# 
-# 
-# subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
-#   tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
-# 
-# years_position <- stringr::str_locate(subset_data$name, pattern = "[0-9]")
-# 
-# subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name,
-#                                                                          years_position[, 1],
-#                                                                          years_position[, 2])),
-#                                              decision_option = as.character(substr(subset_data$name, 1, (years_position[, 1] - 1))))
-# 
-# ############### hier liegt der fehler ... das pattern sucht nur nach einer einzelnen zahl
-# ############### Cashflow_decision_do10 wird mit Cashflow_decision_do1 gleichgesetzt
-# subset_data$x_scale[subset_data$name == "Cashflow_decision_do10"] <- rep(10,100)
-# 
-# summary_subset_data <- subset_data %>%
-#   dplyr::group_by(decision_option, x_scale) %>%
-#   dplyr::summarize(p5 = quantile(value, 0.05),
-#                    p25 = quantile(value, 0.25),
-#                    p50 = quantile(value, 0.5),
-#                    p75 = quantile(value, 0.75),
-#                    p95 = quantile(value, 0.95))
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# plot_cashflow_new <- function (mcSimulation_object, cashflow_var_name, x_axis_name = "Timeline of intervention", 
-#                                y_axis_name = "Cashflow", legend_name = "Quantiles (%)", 
-#                                legend_labels = c("5 to 95", "25 to 75", "median"), 
-#                                color_25_75 = "grey40", color_5_95 = "grey70", 
-#                                color_median = "blue", facet_labels = cashflow_var_name, 
-#                                base_size = 11, ...) 
-# {
-#   assertthat::assert_that(class(mcSimulation_object)[[1]] == 
-#                             "mcSimulation", msg = "mcSimulation_object is not class 'mcSimulation', please provide a valid object. This does not appear to have been generated with 'mcSimulation' function.")
-#   data <- data.frame(mcSimulation_object$y, mcSimulation_object$x)
-#   assertthat::assert_that(is.character(cashflow_var_name), 
-#                           msg = "cashflow_var_name is not a character string.")
-#   assertthat::assert_that(all(!stringr::str_detect(cashflow_var_name, 
-#                                                    pattern = "[:digit:]")), msg = "cashflow_var_name contains numbers. Consider renaming your cashflow variables in the model function")
-#   assertthat::assert_that(is.character(x_axis_name), msg = "x_axis_name is not a character string.")
-#   assertthat::assert_that(is.character(y_axis_name), msg = "y_axis_name is not a character string.")
-#   assertthat::assert_that(is.character(color_25_75), msg = "color_25_75 is not a character string.")
-#   assertthat::assert_that(is.character(color_5_95), msg = "color_5_95 is not a character string.")
-#   assertthat::assert_that(is.character(color_median), msg = "color_median is not a character string.")
-#   assertthat::assert_that(color_25_75 %in% grDevices::colors(), 
-#                           msg = "Please choose a color name for color_25_75 from the grDevices colors.")
-#   assertthat::assert_that(color_5_95 %in% grDevices::colors(), 
-#                           msg = "Please choose a color name for color_5_95 from the grDevices colors.")
-#   assertthat::assert_that(color_median %in% grDevices::colors(), 
-#                           msg = "Please choose a color name for color_median from the grDevices colors.")
-#   assertthat::assert_that(any(substr(names(data), 1, nchar(cashflow_var_name)) %in% 
-#                                 cashflow_var_name), msg = "There are no variables that start with the same name as cashflow_var_name in your data.")
-#   if (any(is.na(data))) {
-#     warning(paste("Some data included \"NA\" and", 
-#                   table(is.na(data))[2], "rows were removed."))
-#     data <- data[stats::complete.cases(data), ]
-#   }
-#   subset_data <- data %>% dplyr::select(dplyr::starts_with(cashflow_var_name)) %>% 
-#     tidyr::pivot_longer(dplyr::starts_with(cashflow_var_name))
-#   years_position <- stringr::str_locate(subset_data$name, pattern = "[:digit:]")
-#   subset_data <- subset_data %>% dplyr::mutate(x_scale = as.numeric(substr(subset_data$name, 
-#                                                                            years_position[, 1], years_position[, 2])), decision_option = as.character(substr(subset_data$name, 
-#                                                                                                                                                              1, (years_position[, 1] - 1))))
-#   
-#   
-#   
-#   
-#   subset_data$x_scale[subset_data$name == "Cashflow_decision_do10"] <- rep(10,100)
-#   
-#   
-#   
-#   
-#   
-#   summary_subset_data <- suppressMessages(subset_data %>% dplyr::group_by(decision_option, 
-#                                                                           x_scale) %>% dplyr::summarize(p5 = quantile(value, 0.05), 
-#                                                                                                         p25 = quantile(value, 0.25), p50 = quantile(value, 0.5), 
-#                                                                                                         p75 = quantile(value, 0.75), p95 = quantile(value, 0.95)))
-#   ggplot2::ggplot(summary_subset_data, ggplot2::aes(x_scale)) + 
-#     ggplot2::geom_ribbon(ggplot2::aes(ymin = p5, ymax = p95, 
-#                                       fill = legend_labels[1])) + ggplot2::geom_ribbon(ggplot2::aes(ymin = p25, 
-#                                                                                                     ymax = p75, fill = legend_labels[2])) + ggplot2::geom_line(ggplot2::aes(y = p50, 
-#                                                                                                                                                                             color = legend_labels[3])) + ggplot2::geom_line(ggplot2::aes(y = 0)) + 
-#     ggplot2::scale_x_continuous(expand = c(0, 0)) + ggplot2::scale_y_continuous(labels = scales::comma) + 
-#     ggplot2::scale_fill_manual(values = c(color_25_75, color_5_95)) + 
-#     ggplot2::scale_color_manual(values = color_median) + 
-#     ggplot2::guides(fill = ggplot2::guide_legend(reverse = T, 
-#                                                  order = 1)) + ggplot2::labs(x = x_axis_name, y = y_axis_name, 
-#                                                                              fill = legend_name, color = "") + ggplot2::facet_wrap(~factor(decision_option, 
-#                                                                                                                                            labels = facet_labels)) + ggplot2::theme_bw(base_size = base_size) + 
-#     ggplot2::theme(legend.margin = ggplot2::margin(-0.75, 
-#                                                    0, 0, 0, unit = "cm"), strip.background = ggplot2::element_blank(), 
-#                    ...)
-# }
-# 
-# 
-# 
-# 
-# 
-# 
-# cashflow_new <- plot_cashflow_new(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
-# 
-# ggsave(filename = "images/cashflow_new.png", plot = cashflow_new, width = 5, height = 3)
-```
 
 
 

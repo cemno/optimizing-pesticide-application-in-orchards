@@ -812,7 +812,7 @@ ascs_decision_model <- function(x, varnames){
 
 ### Walkthrough  
 
-In the following chapter we show and explain the code of our model chunk by chunk.
+In the following chapters we show and explain the code of our model chunk by chunk.
 
 #### Input data
 
@@ -1157,9 +1157,10 @@ the cashflow to further plot and analyze them.
 
 ## Monte Carlo Simulation
 
-Since looking at the outcome of the 10 year model only is not enough to make an
-educated recommendation, we utilize the Monte Carlo simulation (`mcSimulation()`).
-We set the `numberOfModelRuns` for our purpose to 10 000. This should <br>
+Since looking at the outcome of the 10 year model only is not enough, we utilize
+the Monte Carlo simulation (`mcSimulation()`).
+We set the `numberOfModelRuns` to 10 000. This creates a big enough distribution
+to make an educated recommendation. <br>
 Lastly we also calculate the estimated value of perfect information (`evpi`) 
 from a subset of our Monte Carlo simulation.
 

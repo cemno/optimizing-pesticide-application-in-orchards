@@ -35,7 +35,7 @@ body .main-container {
 <script src="layout/hideOutput.js"></script>
 
 ```{r setup, include=FALSE, eval = FALSE, cache=TRUE}
-knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(message = FALSE, warnings = FALSE)
 #results = 'hide' ,echo = TRUE,
 ```
 

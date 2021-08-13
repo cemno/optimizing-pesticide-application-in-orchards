@@ -800,7 +800,7 @@ ascs_decision_model <- function(x, varnames){
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 5,
+  numberOfModelRuns = 10000,
   functionSyntax = "plainNames"
 )
 
@@ -847,7 +847,7 @@ decision_do
 <div class = "fold s">
 ```{r}
 cashflow <- plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
-
+cashflow <- cashflow + (scale_x_continuous(breaks = seq(0,10,2), expand = c(0,0)))
 ```
 </div>
 ```{r echo = FALSE}

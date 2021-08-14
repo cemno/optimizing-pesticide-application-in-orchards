@@ -336,7 +336,7 @@ between the government decision and the implementation of it. This delay can
 vary between two and six years, because various governmental institutions or
 decisions take less time than others.
 
-```{r, include=FALSE}
+```{r, eval = TRUE, echo=FALSE}
 # devtools::install_github("eikeluedeling/decisionSupport")
 library(decisionSupport)
 library(DiagrammeR)
@@ -503,8 +503,7 @@ digraph {
 model_flow_chart
 
 # Export flow chart as .png files; save in "images" folder 
-rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png") 
-
+rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 ```
 
@@ -1390,26 +1389,20 @@ compound_fig
 
 # Discussion
 
-The limitations of the model developed in this project, are coursed by the data
-laying at its base and some functions made for the limited time frame of 10 
-years.
+Overall the analysis supports our decision for buying the automated section control sprayer rather then the manual section controlled sprayer. This was expected, as the benefit from the reduced costs of pesticides per year are easily enough to cover the relative small upgrade cost. Surprising though was the big difference between the estimated pesticide cost per year we came up with after our research and the estimates of our experts. This augmented the discrepancy even more. The resulting yearly profit can be seen in the [Cashflow](#Results), the median effectively shows this sound profit. 
 
-As shown in figure `“variable importance”`, the -reduction of pesticide 
-quantity - is the most important factor, weather the higher investment into a 
-ASCS is economically feasible.
+As one can also see in the [Cashflow](#Results) is the relative large increase of the fifth to ninety-fifth quantile, which is the government intervention. While the impact on the difference in profit is rather large, it does not occur often enough to seriously shift the distribution. Due to some rather large numbers these cases, the mean still deviates by roughly 10k from the median. The timespan of 10 years is probably not enough, to give a rarely occurring intervention by the government enough impact. Especially due to the delay that was implemented. The delay was still necessary as decisions with such an impact are usually implemented carefully to let the involved parties adapt accordingly. So a implemented intervention by the government should be really rare or impossible within the first two years. The ten year timespan was chosen because it is the legal time to write off an agricultural machine for a farmer. A larger timespan would also benefit the ASCS, so a further investigation for a longer timespan was not carried out.
 
-Most of the experts asked about this matter are from the KOB or related 
-facilities. In this region in the south west of Germany the trees in the
-orchards are rather homogeneous, because of climate and soil conditions. This is
-the reason why, to increase the authenticity of the estimations for pesticide 
-reduction, experts from other facilities with different growth conditions and 
-orchard structure should be included.
+Another factor regarding the governments intervention is the type of intervention. As it involves politics, this is a complex topic to predict as political focus can shift frequently and is volatile. The results are often complex regulations, which are beyond the scope of this course. Thus we settled for a pesticide limit. It is easy to implement, reduces the pesticides quantity applied effectively and in the long run mostly harms farmers who rely on pesticides too much. With this in mind a limit to the current average pesticide quantity used by orchard farmers was set. In reality such an intervention being implemented within only a few years can still be considered a strong regulation and thereby represents a good compromise for this model.
 
-For the model a - reduction of pesticide quantity -, without reducing the effect
-of the application, by using a ASCS was set to a range of 5 -15 %. Some of the
-experts estimated that this reduction would increase if the orchards get more 
+One key aspect of our decision was how much the ASCS is able to reduce the pesticide quantity we need to apply. This is also supported by our [projection to latent structures analysis](#Results), which shows the aforementioned variable as the one with the most influence on our net present value. As we are rather conservative with our estimations and a lot of the other influences are based on multiple variables, this led to the absence of other strong effects by single variables. The only other variable having a variable importance of greater than 1.5 is the yield of tonnes per hectare. It is also directly contributing to our net present value and thus influences it considerably . This is not surprising as the yield is the farmers only modelled income source. 
+
+For our model the `reduction of pesticide quantity` for the ASCS was set to a range of 5 -15 %. This was without reducing the effect of the application. Some of the experts estimated that this reduction would increase if the orchards get more 
 heterogeneous, this tends to be the case in the north eastern regions of 
-Germany. Roth estimates up to 30 %.
+Germany. `Roth ?????` estimates up to 30 %. Most of the experts we asked about this matter are from the KOB or related 
+facilities. In this south western region of Germany the trees in the
+orchards are rather homogeneous, because of the humid climate and good soil conditions. To increase the authenticity of the estimations for pesticide reduction on a larger scale, experts from other facilities with different growth conditions and 
+orchard structure should be included. 
 
 Erdal Ozkan from the agricultural College of the Ohio State University estimated
 the reduction of pesticide application of a comparable sprayer system he worked 
@@ -1420,7 +1413,8 @@ structure and a higher heterogeneity of orchards in the USA compared to Germany.
 Ozakan is also talking about orchards in general, the tree density in other 
 fruit cultures tends to be lower than in apple orchards, were it ranges from 
 2500 – 3500 trees*ha^-1 or even higher, depending on the system. This increases
-the heterogeneity of the plant area, were the pesticides need to be applied. 
+the heterogeneity of the plant area, were the pesticides need to be applied. Summarizing all these various findings for possible pesticide reduction would dilute regional characteristics. An adapted recalculation for the specific region the farmers lives in is thus advised.
+
 
 Other data e.g., the likelihood, that the government is limiting the amount of
 pesticides allowed to be applied, depending on the biodiversity, is difficult to
@@ -1430,12 +1424,11 @@ large survey, with different experts working in different fields of expertise,
 would be required.  
 
 
-At the moment the model is designed for a time frame of 10 years. If a longer
-time period of simulation is desired, some fundamental changes are required. 
+Even though the chosen 10 year timespan was already discussed, a note should be made that the model is programmed to run for a longer period as well, but there currently are some other mechanism missing to support longer timespans. The biodiversity for example needs a saturation function over time, to not create a self sustaining feedback loop. But this requires a deep understanding of the underlying ecological process and might be to much for farmer to consider. This is also of no concern because of the limited time frame, which prevents such feedback loops with the current parameters.
+
+
 The model uses relative values for factors that are hard to quantity 
-(e.g., biodiversity). These values are not capped. This is of no concern because
-of the limited time frame. A solution for a longer simulation period would be a 
-saturation function were these values could be based on. 
+(e.g., biodiversity). These values are not capped. 
 
 `To increase ease of use for practical application some simplifications can be 
 implemented. Removing the parts for biodiversity, water contamination, 

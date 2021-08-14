@@ -336,7 +336,7 @@ between the government decision and the implementation of it. This delay can
 vary between two and six years, because various governmental institutions or
 decisions take less time than others.
 
-```{r, eval = TRUE, echo=FALSE}
+```{r, cache=FALSE, include=FALSE}
 # devtools::install_github("eikeluedeling/decisionSupport")
 library(decisionSupport)
 library(DiagrammeR)
@@ -509,11 +509,404 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 ## Code {.tabset}
 
+### Walkthrough  {-}
+
+In the following chapters we show and explain the code of our model chunk by 
+chunk. To see the code in its entirety please consult the tab [Full Code](#Code) next to this one.
+
+#### Input data {-}
+
+The first step in creating our model is to load in our input variables from the 
+excel file.<br>
+We optionally tidy our file up with `drop_na`, `filter`, `order` and
+write the clean file to a new directory. Now we import the final excel file.<br>
+In the Script we often use the `_man` or `_aut` abbreviation as an 
+suffix to indicate which sprayer (ASCS  or MSCS) variables we are modifying.
+
+<!-- <blockquote> -->
+<!--   <p><span style="font-family: consolas;"> -->
+ <!-- <br> for linebreaks  -->
+```
+input_table <- read.csv("data/input_data_03.csv",sep = ";",
+                        dec = ",", stringsAsFactors = FALSE)
+input_table <- drop_na(input_table, c("lower","upper"))
+input_table <- filter(input_table, !variable == "initial_aut_cost",
+                      !variable == "pesticide_quantity")
+input_table <- input_table[ order(input_table&amp;distribution,
+                                  input_table$variable), ]
+write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
+input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
+```
+<!--   </span></p> -->
+<!-- </blockquote> -->
+
+<!-- ## Auxiliary table -->
+
+After we loaded in all our predefined variables we need to define the iterative 
+variables. For this we start writing our function `ascs_decision_model`. <br>
+We created an `auxiliary_table` with `n_years` amount of rows and all the relevant
+variables in the columns, to make the calculations of the variables 
+faster.<br>
+At this point we defined the values for each year as `0`.
+
+```
+ascs_decision_model <- function(x, varnames){
+  
+  auxiliary_table <- data.frame(year = c(1:n_years),
+                                pest_quant_man = rep(0.,n_years),
+                                pest_quant_aut = rep(0.,n_years),
+                                rel_water_cont_man = rep(0.,n_years),
+                                rel_water_cont_aut = rep(0.,n_years),
+                                rel_bio_man = rep(0.,n_years),
+                                rel_bio_aut = rep(0.,n_years),
+                                plant_dmg_pot_man = rep(0.,n_years),
+                                plant_dmg_pot_aut = rep(0.,n_years),
+                                actual_plant_dmg_man = rep(0.,n_years),
+                                actual_plant_dmg_aut = rep(0.,n_years),
+                                gov_inter_chance_man = rep(0.,n_years),
+                                gov_inter_chance_aut = rep(0.,n_years),
+                                gov_inter_happened_man = rep(0,n_years),
+                                gov_inter_happened_aut = rep(0,n_years),
+                                gov_reaction = rep(0,n_years)
+                                )
+```
+#### For-loop {.tabset -}
+
+##### First year{-}
+ 
+To iterate through each year we set the `for`-loop to be `n_years` long.
+Furthermore we kept in mind that `n_years` can vary and kept our model dynamic
+and easily adaptable for other cases. <br>
+
+The next step in the `for`-loop is to overwrite all the iterative variables for 
+the first year (`if (y == 1)`. Here we first change the government reaction to a
+number randomly derived from between the `government_reaction_time` boundaries 
+from the input table. This delay is used later on and represents the time 
+between the government decision and its implementation. <br>
+
+The `chance` that the government intervenes is covered by (pre-)assumptions for
+the first year, it is directly taken from the input table. In later years it
+will be effected by the biodiversity and water contamination.
+
+We also make sure that the government intervention happens only inside the 
+`n_years` boundaries, because it wouldn't have any effect on our model.
+
+```
+  for (y in 1:n_years) {
+  
+    if (y == 1) {
+    lower <- input_table[input_table$variable ==
+                           "government_reaction_time", "lower"]
+    upper <- input_table[input_table$variable ==
+                           "government_reaction_time", "upper"]
+    auxiliary_table$gov_reaction <- round(runif(n_years,lower,upper))
+    
+    auxiliary_table$gov_inter_chance_man[y] <- government_intervention_chance 
+    auxiliary_table$gov_inter_chance_aut[y] <-
+      auxiliary_table$gov_inter_chance_man[y]
+    
+    if ((y + auxiliary_table$gov_reaction[y]) <= n_years) {
+      auxiliary_table$gov_inter_happened_man[y + 
+        auxiliary_table$gov_reaction[y]] <- chance_event(
+        auxiliary_table$gov_inter_chance_man[y], 1, 0)
+      auxiliary_table$gov_inter_happened_aut[y +
+        auxiliary_table$gov_reaction[y]] <- chance_event(
+        auxiliary_table$gov_inter_chance_aut[y], 1, 0)
+    }
+```
+
+In the following part we use the `vv()` function to get values for the influence
+factors. Those include the influence from pesticides on water contamination and 
+biodiversity but also from water contamination on biodiversity.
+Further we import the factor that describes how much reduction can be achieved 
+by using the automated sprayer (`pesticide_reduction_auto`) from the input 
+table. This value gets subtracted from 1 to get a reduction by multiplying with
+this factor.
+
+```
+    pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
+    pest_bio_fac <- vv(pesticide_on_biodiversity_factor, var_CV, 1)
+    cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
+    
+    pest_red_fac <- 1 - pesticide_reduction_auto    
+```
+
+To get to the actual plant damage we initially define a potential plant damage
+for every year. This potential damage will be effected by the amount of pesticides 
+sprayed and the biodiversity changes in the following years.
+
+Now we let the pesticide quantity correlate with the potential plant damage.<br>
+The idea here is that the farmer tries to spray enough but not to much. This
+estimation is prone to errors, so we chose to multiply the potential plant damage 
+with a randomly drawn number from the 90% confidence interval of the borders
+defined in the `farmers_pesticide_quantity_miscalculation` variable.<br>
+The amount of pesticide usage for the automated sprayer is further multiplied by
+the pesticide reduction factor (`pest_red_fac`). This represents the further
+reduction of pesticide usage through using the ASCS instead of the MSCS.
+
+```
+    auxiliary_table$plant_dmg_pot_man <-
+      vv(potential_plant_damage, potential_plant_damage_CV, n_years)
+    auxiliary_table$plant_dmg_pot_aut <- auxiliary_table$plant_dmg_pot_man
+    
+    lower <- input_table[input_table$variable ==
+                           "farmers_pesticide_quantity_miscalculation", "lower"]
+    upper <- input_table[input_table$variable ==
+                           "farmers_pesticide_quantity_miscalculation", "upper"]
+    auxiliary_table$pest_quant_man <-
+      auxiliary_table$plant_dmg_pot_man *
+      rposnorm90ci(n_years, lower = lower, upper = upper)
+    auxiliary_table$pest_quant_aut <-
+      auxiliary_table$pest_quant_man *
+      pest_red_fac
+```
+
+We decided that the biodiversity and water contamination will be relative and
+set it for the first year to 1. They will increase or decrease in the following 
+years, depending on the pesticide usage.<br>
+The amount that was sprayed is subtracted from potential plant damage to get to 
+the actual plant damage.<br>
+We made an optional check to make sure that the actual plant damage is not
+below zero.<br>
+
+```
+    auxiliary_table$rel_water_cont_man[y] <- 1 
+    auxiliary_table$rel_water_cont_aut[y] <- 1 
+    auxiliary_table$rel_bio_man[y] <- 1
+    auxiliary_table$rel_bio_aut[y] <- 1
+    
+    actual_plant_dmg_man <- auxiliary_table$plant_dmg_pot_man[y] -
+      auxiliary_table$pest_quant_man[y]
+    auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0,
+      0, actual_plant_dmg_man)
+    
+    actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] -
+      auxiliary_table$pest_quant_aut[y] / pest_red_fac
+    auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
+      0, actual_plant_dmg_aut)
+``` 
+
+With this we are finished with everything regarding the first year. If you want
+to check the calculations for the second and following years, you need to go 
+back to the beginning of the [For-loop](#For-loop) chapter and select the corresponding tab.
+
+
+##### Following years {-}
+
+For the following years (year 2 - `n_years`) a lot of variables are varying.<br>
+
+The first change is in the chance for the government intervention. This is
+depending on the variation in biodiversity and water contamination. <br>
+We also check for the chance being between 1 and 0.
+
+```
+    }else {
+    auxiliary_table$gov_inter_chance_man[y] <-
+      auxiliary_table$gov_inter_chance_man[y-1] +
+      ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
+      ((auxiliary_table$rel_water_cont_man[y-1] - 1) *
+         water_contamination_on_gov_concern))
+    
+    auxiliary_table$gov_inter_chance_aut[y] <-
+      auxiliary_table$gov_inter_chance_aut[y-1] +
+      ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
+      ((auxiliary_table$rel_water_cont_aut[y-1] - 1) *
+         water_contamination_on_gov_concern))
+    
+    auxiliary_table$gov_inter_chance_man[y] <- 
+      ifelse(auxiliary_table$gov_inter_chance_man[y] <= 0,
+             0,
+             ifelse(auxiliary_table$gov_inter_chance_man[y] >= 1,
+                    1,
+                    auxiliary_table$gov_inter_chance_man[y]))
+    
+    auxiliary_table$gov_inter_chance_aut[y] <-
+      ifelse(auxiliary_table$gov_inter_chance_aut[y] <= 0,
+             0,
+             ifelse(auxiliary_table$gov_inter_chance_aut[y] >= 1,
+                    1,
+                    auxiliary_table$gov_inter_chance_aut[y]))
+```
+
+Now for the `chance_event` function itself. <br>
+The event can only take place if the intervention delay added to the current
+year lies inside the `n_years` range and there was no intervention in the last
+year or in the relevant year already. <br>
+If the event takes place, then the amount of pesticides legally allowed to be 
+sprayed will be changed to a fixed number for the relevant years and following.
+This will have an especially big impact on the manual sprayer, since the amount
+sprayed by the automated sprayer is always lower.
+
+
+```
+    if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
+      if(y + auxiliary_table$gov_reaction[y] <= n_years){
+        if(auxiliary_table$gov_inter_happened_man[
+          y + auxiliary_table$gov_reaction[y]] == 0){
+          auxiliary_table$gov_inter_happened_man[
+            y + auxiliary_table$gov_reaction[y]] <-
+            chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0)
+        }
+      }
+    }else{
+      auxiliary_table$gov_inter_happened_man[y] <- 1
+    }
+    
+    if(auxiliary_table$gov_inter_happened_aut[y-1] == 0){
+      if(y + auxiliary_table$gov_reaction[y] <= n_years){
+        if(auxiliary_table$gov_inter_happened_aut[
+          y + auxiliary_table$gov_reaction[y]] == 0){
+          auxiliary_table$gov_inter_happened_aut[
+            y + auxiliary_table$gov_reaction[y]] <-
+            chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0)
+        }
+      }  
+    }else{
+      auxiliary_table$gov_inter_happened_aut[y] <- 1
+    }
+```
+
+To get the values of biodiversity and water contamination of the current year,
+we multiply the pesticide quantity from the last year with the respective 
+influence factor and add it to the biodiversity and water contamination of last 
+year. The current biodiversity is additionally influenced through the water 
+contamination of the last year.
+
+```
+    auxiliary_table$rel_water_cont_man[y] <-
+      auxiliary_table$rel_water_cont_man[y-1] +
+      ((auxiliary_table$pest_quant_man[y-1] - 1) * pest_cont_fac)
+    auxiliary_table$rel_water_cont_aut[y] <-
+      auxiliary_table$rel_water_cont_aut[y-1] +
+      ((auxiliary_table$pest_quant_aut[y-1] - 1) * pest_cont_fac)
+          
+    auxiliary_table$rel_bio_man[y] <- auxiliary_table$rel_bio_man[y-1] +
+      ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_bio_fac) +
+      ((1 - auxiliary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
+    auxiliary_table$rel_bio_aut[y] <- auxiliary_table$rel_bio_aut[y-1] +
+      ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_bio_fac) +
+      ((1 - auxiliary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
+```
+
+The present potential plant damage and pesticide quantity get reduced by the
+newly calculated biodiversity. The idea here is that the pests get reduced 
+through the higher biodiversity.
+
+```
+    auxiliary_table$plant_dmg_pot_man[y] <-
+      auxiliary_table$plant_dmg_pot_man[y] +
+      auxiliary_table$plant_dmg_pot_man[y] *(1 -  auxiliary_table$rel_bio_man[y])
+    auxiliary_table$plant_dmg_pot_aut[y] <- 
+      auxiliary_table$plant_dmg_pot_aut[y] +
+      auxiliary_table$plant_dmg_pot_aut[y] *(1 -  auxiliary_table$rel_bio_aut[y])
+    
+    auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
+      auxiliary_table$pest_quant_man[y] * (1 - auxiliary_table$rel_bio_man[y])
+    auxiliary_table$pest_quant_aut[y] <- (auxiliary_table$pest_quant_aut[y] +
+      auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y]))
+```
+
+Since everything in the `if`-loop part is calculated for the first year only,
+the actual plant damage and the effect of the intervention must be calculated 
+for the following years again.
+
+```
+    auxiliary_table$pest_quant_man[y] <-
+  ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
+         auxiliary_table$pest_quant_man[y],
+         ifelse(auxiliary_table$pest_quant_man[y] >
+                  government_pesticide_quantity,
+                government_pesticide_quantity,
+                auxiliary_table$pest_quant_man[y]))
+
+    auxiliary_table$pest_quant_aut[y] <-
+      ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
+             auxiliary_table$pest_quant_aut[y],
+             ifelse(auxiliary_table$pest_quant_aut[y] >
+                      government_pesticide_quantity,
+                    government_pesticide_quantity,
+                    auxiliary_table$pest_quant_aut[y]))
+    
+    actual_plant_dmg_man <-
+      auxiliary_table$plant_dmg_pot_man[y] -
+      auxiliary_table$pest_quant_man[y]
+    auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0,
+                                                      0,
+                                                      actual_plant_dmg_man)
+          
+    actual_plant_dmg_aut <-
+      auxiliary_table$plant_dmg_pot_aut[y] -
+      auxiliary_table$pest_quant_aut[y] /
+      pest_red_fac
+    auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
+                                                      0,
+                                                      actual_plant_dmg_aut)
+  }
+```
+
+#### Output {-}
+
+Many variables are not iterative but still vary:
+<ul>
+  <li>`yield` depending on the year and plant damage</li>
+  <li>`market prices` depending on the year</li>
+  <li>`fruit sales` depending on the yield and the market price</li>
+  <li>`pesticide costs per hectare` depending on the year</li>
+  <li>`pesticide costs per hectare and sprayer` depending additionally on the amount sprayed</li>
+  <li>`machine costs` depending on the brand, year, and if its automated or manual</li>
+  <li>`customers` depending on biodiversity and water contamination</li>
+  <li>`profit` depending on fruit sales, pesticide costs, hectare, customers and machine costs</li>
+</ul>
+
+```
+    yield_t_ha <- vv(yield, var_CV, n_years)
+    yield_t_ha_man <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_man)
+    yield_t_ha_aut <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_aut)
+    
+    market_price_e_t <- vv(market_price, var_CV, n_years)
+    
+    fruit_sales_e_ha_man <- yield_t_ha_man * market_price_e_t
+    fruit_sales_e_ha_aut <- yield_t_ha_aut * market_price_e_t
+    
+    pest_cost_ha_const <- vv( pesticide_cost, var_CV, n_years )
+    pest_cost_ha_man <- pest_cost_ha_const * auxiliary_table$pest_quant_man
+    pest_cost_ha_aut <- pest_cost_ha_const * auxiliary_table$pest_quant_aut
+    
+    machine_cost_man <- c( initial_man_cost, rep( 0, (n_years-1) ) )
+    machine_cost_aut <- machine_cost_man + c( initial_upg_cost,
+                                              rep( 0, (n_years-1) ) )
+    
+    customers_man <- rep(customer_on_fruitsales, n_years) +
+      (auxiliary_table$rel_bio_man - 1) * biodiversity_on_customer +
+      (1 - auxiliary_table$rel_water_cont_man) * water_contamination_on_customer
+    customers_aut <- rep(customer_on_fruitsales, n_years) +
+      (auxiliary_table$rel_bio_aut - 1) * biodiversity_on_customer +
+      (1 - auxiliary_table$rel_water_cont_aut) * water_contamination_on_customer
+      
+    farmers_profit_man = (fruit_sales_e_ha_man * customers_man -
+                            pest_cost_ha_man) * area_per_machine - machine_cost_man
+    farmers_profit_aut = (fruit_sales_e_ha_aut * customers_aut -
+                            pest_cost_ha_aut) * area_per_machine - machine_cost_aut
+```
+
+The profits get discounted to generate the respective net present value.
+We chose a discount rate between 2 and 5 %, since our farmers are likely to invest.<br>
+In the end we return the calculated NPVs, the difference between the NPVs and
+the cashflow to further plot and analyze them.
+
+```
+    NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
+    NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
+    
+    return(list(Interv_NPV = NPV_aut,
+                NO_Interv_NPV = NPV_man,
+                NPV_decision_do = NPV_aut - NPV_man,
+                Cashflow_decision_do = farmers_profit_aut - farmers_profit_man))
+}
+```
 ### Full model code {-}
 
-As a reference we added the whole model code with short comments to make it a
-bit more readable, but if you want a more in depth explanation of every step
-in the code, you can consult the Walkthrough chapter.
+As a reference we added the whole model code with short comments to make it more readable as a whole.
 
 <!-- <div class = "fold s"> -->
 ```{r}
@@ -834,403 +1227,6 @@ ascs_decision_model <- function(x, varnames){
 
 ```
 <!-- <div> -->
-
-
-### Walkthrough  {-}
-
-In the following chapters we show and explain the code of our model chunk by 
-chunk.
-
-#### Input data {-}
-
-The first step in creating our model is to load in our input variables from the 
-excel file.<br>
-We optionally tidy our file up with `drop_na`, `filter`, `order` and
-write the clean file to a new directory. Now we import the final excel file.<br>
-In the Script we often use the `_man` or `_aut` abbreviation as an 
-suffix to indicate which sprayer (ASCS  or MSCS) variables we are modifying.
-
-<!-- <blockquote> -->
-<!--   <p><span style="font-family: consolas;"> -->
- <!-- <br> for linebreaks  -->
-```
-input_table <- read.csv("data/input_data_03.csv",sep = ";",
-                        dec = ",", stringsAsFactors = FALSE)
-input_table <- drop_na(input_table, c("lower","upper"))
-input_table <- filter(input_table, !variable == "initial_aut_cost",
-                      !variable == "pesticide_quantity")
-input_table <- input_table[ order(input_table&amp;distribution,
-                                  input_table$variable), ]
-write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
-input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
-```
-<!--   </span></p> -->
-<!-- </blockquote> -->
-
-<!-- ## Auxiliary table -->
-
-After we loaded in all our predefined variables we need to define the iterative 
-variables. For this we start writing our function `ascs_decision_model`. <br>
-We created an `auxiliary_table` with `n_years` amount of rows and all the relevant
-variables in the columns, to make the calculations of the variables 
-faster.<br>
-At this point we defined the values for each year as `0`.
-
-```
-ascs_decision_model <- function(x, varnames){
-  
-  auxiliary_table <- data.frame(year = c(1:n_years),
-                                pest_quant_man = rep(0.,n_years),
-                                pest_quant_aut = rep(0.,n_years),
-                                rel_water_cont_man = rep(0.,n_years),
-                                rel_water_cont_aut = rep(0.,n_years),
-                                rel_bio_man = rep(0.,n_years),
-                                rel_bio_aut = rep(0.,n_years),
-                                plant_dmg_pot_man = rep(0.,n_years),
-                                plant_dmg_pot_aut = rep(0.,n_years),
-                                actual_plant_dmg_man = rep(0.,n_years),
-                                actual_plant_dmg_aut = rep(0.,n_years),
-                                gov_inter_chance_man = rep(0.,n_years),
-                                gov_inter_chance_aut = rep(0.,n_years),
-                                gov_inter_happened_man = rep(0,n_years),
-                                gov_inter_happened_aut = rep(0,n_years),
-                                gov_reaction = rep(0,n_years)
-                                )
-```
-#### For-loop {.tabset -}
-
-##### First year{-}
- 
-To iterate through each year we set the `for`-loop to be `n_years` long.
-Furthermore we kept in mind that `n_years` can vary and kept our model dynamic
-and easily adaptable for other cases. <br>
-
-The next step in the `for`-loop is to overwrite all the iterative variables for 
-the first year (`if (y == 1)`. Here we first change the government reaction to a
-number randomly derived from between the `government_reaction_time` boundaries 
-from the input table. This delay is used later on and represents the time 
-between the government decision and its implementation. <br>
-
-The `chance` that the government intervenes is covered by (pre-)assumptions for
-the first year, it is directly taken from the input table. In later years it
-will be effected by the biodiversity and water contamination.
-
-We also make sure that the government intervention happens only inside the 
-`n_years` boundaries, because it wouldn't have any effect on our model.
-
-```
-  for (y in 1:n_years) {
-  
-    if (y == 1) {
-    lower <- input_table[input_table$variable ==
-                           "government_reaction_time", "lower"]
-    upper <- input_table[input_table$variable ==
-                           "government_reaction_time", "upper"]
-    auxiliary_table$gov_reaction <- round(runif(n_years,lower,upper))
-    
-    auxiliary_table$gov_inter_chance_man[y] <- government_intervention_chance 
-    auxiliary_table$gov_inter_chance_aut[y] <-
-      auxiliary_table$gov_inter_chance_man[y]
-    
-    if ((y + auxiliary_table$gov_reaction[y]) <= n_years) {
-      auxiliary_table$gov_inter_happened_man[y + 
-        auxiliary_table$gov_reaction[y]] <- chance_event(
-        auxiliary_table$gov_inter_chance_man[y], 1, 0)
-      auxiliary_table$gov_inter_happened_aut[y +
-        auxiliary_table$gov_reaction[y]] <- chance_event(
-        auxiliary_table$gov_inter_chance_aut[y], 1, 0)
-    }
-```
-
-In the following part we use the `vv()` function to get values for the influence
-factors. Those include the influence from pesticides on water contamination and 
-biodiversity but also from water contamination on biodiversity.
-Further we import the factor that describes how much reduction can be achieved 
-by using the automated sprayer (`pesticide_reduction_auto`) from the input 
-table. This value gets subtracted from 1 to get a reduction by multiplying with
-this factor.
-
-```
-    pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
-    pest_bio_fac <- vv(pesticide_on_biodiversity_factor, var_CV, 1)
-    cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
-    
-    pest_red_fac <- 1 - pesticide_reduction_auto    
-```
-
-To get to the actual plant damage we initially define a potential plant damage
-for every year. This potential damage will be effected by the amount of pesticides 
-sprayed and the biodiversity changes in the following years.
-
-Now we let the pesticide quantity correlate with the potential plant damage.<br>
-The idea here is that the farmer tries to spray enough but not to much. This
-estimation is prone to errors, so we chose to multiply the potential plant damage 
-with a randomly drawn number from the 90% confidence interval of the borders
-defined in the `farmers_pesticide_quantity_miscalculation` variable.<br>
-The amount of pesticide usage for the automated sprayer is further multiplied by
-the pesticide reduction factor (`pest_red_fac`). This represents the further
-reduction of pesticide usage through using the ASCS instead of the MSCS.
-
-```
-    auxiliary_table$plant_dmg_pot_man <-
-      vv(potential_plant_damage, potential_plant_damage_CV, n_years)
-    auxiliary_table$plant_dmg_pot_aut <- auxiliary_table$plant_dmg_pot_man
-    
-    lower <- input_table[input_table$variable ==
-                           "farmers_pesticide_quantity_miscalculation", "lower"]
-    upper <- input_table[input_table$variable ==
-                           "farmers_pesticide_quantity_miscalculation", "upper"]
-    auxiliary_table$pest_quant_man <-
-      auxiliary_table$plant_dmg_pot_man *
-      rposnorm90ci(n_years, lower = lower, upper = upper)
-    auxiliary_table$pest_quant_aut <-
-      auxiliary_table$pest_quant_man *
-      pest_red_fac
-```
-
-We decided that the biodiversity and water contamination will be relative and
-set it for the first year to 1. They will increase or decrease in the following 
-years, depending on the pesticide usage.<br>
-The amount that was sprayed is subtracted from potential plant damage to get to 
-the actual plant damage.<br>
-We made an optional check to make sure that the actual plant damage is not
-below zero.<br>
-
-```
-    auxiliary_table$rel_water_cont_man[y] <- 1 
-    auxiliary_table$rel_water_cont_aut[y] <- 1 
-    auxiliary_table$rel_bio_man[y] <- 1
-    auxiliary_table$rel_bio_aut[y] <- 1
-    
-    actual_plant_dmg_man <- auxiliary_table$plant_dmg_pot_man[y] -
-      auxiliary_table$pest_quant_man[y]
-    auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0,
-      0, actual_plant_dmg_man)
-    
-    actual_plant_dmg_aut <- auxiliary_table$plant_dmg_pot_aut[y] -
-      auxiliary_table$pest_quant_aut[y] / pest_red_fac
-    auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
-      0, actual_plant_dmg_aut)
-``` 
-
-With this we are finished with everything regarding the first year. If you want
-to check the calculations for the second and following years, you need to go 
-back to the beginning of the [test](#For-loop) chapter and click the button.
-
-
-##### Following years {-}
-
-For the following years (year 2 - `n_years`) a lot of variables are varying.<br>
-
-The first change is in the chance for the government intervention. This is
-depending on the variation in biodiversity and water contamination. <br>
-We also check for the chance being between 1 and 0.
-
-```
-    }else {
-    auxiliary_table$gov_inter_chance_man[y] <-
-      auxiliary_table$gov_inter_chance_man[y-1] +
-      ( ((1 - auxiliary_table$rel_bio_man[y-1]) * biodiversity_on_gov_concern) + 
-      ((auxiliary_table$rel_water_cont_man[y-1] - 1) *
-         water_contamination_on_gov_concern))
-    
-    auxiliary_table$gov_inter_chance_aut[y] <-
-      auxiliary_table$gov_inter_chance_aut[y-1] +
-      ( ((1 - auxiliary_table$rel_bio_aut[y-1]) * biodiversity_on_gov_concern) + 
-      ((auxiliary_table$rel_water_cont_aut[y-1] - 1) *
-         water_contamination_on_gov_concern))
-    
-    auxiliary_table$gov_inter_chance_man[y] <- 
-      ifelse(auxiliary_table$gov_inter_chance_man[y] <= 0,
-             0,
-             ifelse(auxiliary_table$gov_inter_chance_man[y] >= 1,
-                    1,
-                    auxiliary_table$gov_inter_chance_man[y]))
-    
-    auxiliary_table$gov_inter_chance_aut[y] <-
-      ifelse(auxiliary_table$gov_inter_chance_aut[y] <= 0,
-             0,
-             ifelse(auxiliary_table$gov_inter_chance_aut[y] >= 1,
-                    1,
-                    auxiliary_table$gov_inter_chance_aut[y]))
-```
-
-Now for the `chance_event` function itself. <br>
-The event can only take place if the intervention delay added to the current
-year lies inside the `n_years` range and there was no intervention in the last
-year or in the relevant year already. <br>
-If the event takes place, then the amount of pesticides legally allowed to be 
-sprayed will be changed to a fixed number for the relevant years and following.
-This will have an especially big impact on the manual sprayer, since the amount
-sprayed by the automated sprayer is always lower.
-
-
-```
-    if(auxiliary_table$gov_inter_happened_man[y-1] == 0){
-      if(y + auxiliary_table$gov_reaction[y] <= n_years){
-        if(auxiliary_table$gov_inter_happened_man[
-          y + auxiliary_table$gov_reaction[y]] == 0){
-          auxiliary_table$gov_inter_happened_man[
-            y + auxiliary_table$gov_reaction[y]] <-
-            chance_event(auxiliary_table$gov_inter_chance_man[y], 1, 0)
-        }
-      }
-    }else{
-      auxiliary_table$gov_inter_happened_man[y] <- 1
-    }
-    
-    if(auxiliary_table$gov_inter_happened_aut[y-1] == 0){
-      if(y + auxiliary_table$gov_reaction[y] <= n_years){
-        if(auxiliary_table$gov_inter_happened_aut[
-          y + auxiliary_table$gov_reaction[y]] == 0){
-          auxiliary_table$gov_inter_happened_aut[
-            y + auxiliary_table$gov_reaction[y]] <-
-            chance_event(auxiliary_table$gov_inter_chance_aut[y], 1, 0)
-        }
-      }  
-    }else{
-      auxiliary_table$gov_inter_happened_aut[y] <- 1
-    }
-```
-
-To get the values of biodiversity and water contamination of the current year,
-we multiply the pesticide quantity from the last year with the respective 
-influence factor and add it to the biodiversity and water contamination of last 
-year. The current biodiversity is additionally influenced through the water 
-contamination of the last year.
-
-```
-    auxiliary_table$rel_water_cont_man[y] <-
-      auxiliary_table$rel_water_cont_man[y-1] +
-      ((auxiliary_table$pest_quant_man[y-1] - 1) * pest_cont_fac)
-    auxiliary_table$rel_water_cont_aut[y] <-
-      auxiliary_table$rel_water_cont_aut[y-1] +
-      ((auxiliary_table$pest_quant_aut[y-1] - 1) * pest_cont_fac)
-          
-    auxiliary_table$rel_bio_man[y] <- auxiliary_table$rel_bio_man[y-1] +
-      ((1 - auxiliary_table$pest_quant_man[y-1]) * pest_bio_fac) +
-      ((1 - auxiliary_table$rel_water_cont_man[y-1]) * cont_bio_fac)
-    auxiliary_table$rel_bio_aut[y] <- auxiliary_table$rel_bio_aut[y-1] +
-      ((1 - auxiliary_table$pest_quant_aut[y-1]) * pest_bio_fac) +
-      ((1 - auxiliary_table$rel_water_cont_aut[y-1]) * cont_bio_fac)
-```
-
-The present potential plant damage and pesticide quantity get reduced by the
-newly calculated biodiversity. The idea here is that the pests get reduced 
-through the higher biodiversity.
-
-```
-    auxiliary_table$plant_dmg_pot_man[y] <-
-      auxiliary_table$plant_dmg_pot_man[y] +
-      auxiliary_table$plant_dmg_pot_man[y] *(1 -  auxiliary_table$rel_bio_man[y])
-    auxiliary_table$plant_dmg_pot_aut[y] <- 
-      auxiliary_table$plant_dmg_pot_aut[y] +
-      auxiliary_table$plant_dmg_pot_aut[y] *(1 -  auxiliary_table$rel_bio_aut[y])
-    
-    auxiliary_table$pest_quant_man[y] <- auxiliary_table$pest_quant_man[y] +
-      auxiliary_table$pest_quant_man[y] * (1 - auxiliary_table$rel_bio_man[y])
-    auxiliary_table$pest_quant_aut[y] <- (auxiliary_table$pest_quant_aut[y] +
-      auxiliary_table$pest_quant_aut[y] * (1 - auxiliary_table$rel_bio_aut[y]))
-```
-
-Since everything in the `if`-loop part is calculated for the first year only,
-the actual plant damage and the effect of the intervention must be calculated 
-for the following years again.
-
-```
-    auxiliary_table$pest_quant_man[y] <-
-  ifelse(auxiliary_table$gov_inter_happened_man[y] == 0,
-         auxiliary_table$pest_quant_man[y],
-         ifelse(auxiliary_table$pest_quant_man[y] >
-                  government_pesticide_quantity,
-                government_pesticide_quantity,
-                auxiliary_table$pest_quant_man[y]))
-
-    auxiliary_table$pest_quant_aut[y] <-
-      ifelse(auxiliary_table$gov_inter_happened_aut[y] == 0,
-             auxiliary_table$pest_quant_aut[y],
-             ifelse(auxiliary_table$pest_quant_aut[y] >
-                      government_pesticide_quantity,
-                    government_pesticide_quantity,
-                    auxiliary_table$pest_quant_aut[y]))
-    
-    actual_plant_dmg_man <-
-      auxiliary_table$plant_dmg_pot_man[y] -
-      auxiliary_table$pest_quant_man[y]
-    auxiliary_table$actual_plant_dmg_man[y] <- ifelse(actual_plant_dmg_man < 0,
-                                                      0,
-                                                      actual_plant_dmg_man)
-          
-    actual_plant_dmg_aut <-
-      auxiliary_table$plant_dmg_pot_aut[y] -
-      auxiliary_table$pest_quant_aut[y] /
-      pest_red_fac
-    auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0,
-                                                      0,
-                                                      actual_plant_dmg_aut)
-  }
-```
-
-#### Output {-}
-
-Many variables are not iterative but still vary:
-<ul>
-  <li>`yield` depending on the year and plant damage</li>
-  <li>`market prices` depending on the year</li>
-  <li>`fruit sales` depending on the yield and the market price</li>
-  <li>`pesticide costs per hectare` depending on the year</li>
-  <li>`pesticide costs per hectare and sprayer` depending additionally on the amount sprayed</li>
-  <li>`machine costs` depending on the brand, year, and if its automated or manual</li>
-  <li>`customers` depending on biodiversity and water contamination</li>
-  <li>`profit` depending on fruit sales, pesticide costs, hectare, customers and machine costs</li>
-</ul>
-
-```
-    yield_t_ha <- vv(yield, var_CV, n_years)
-    yield_t_ha_man <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_man)
-    yield_t_ha_aut <- yield_t_ha * (1 - auxiliary_table$actual_plant_dmg_aut)
-    
-    market_price_e_t <- vv(market_price, var_CV, n_years)
-    
-    fruit_sales_e_ha_man <- yield_t_ha_man * market_price_e_t
-    fruit_sales_e_ha_aut <- yield_t_ha_aut * market_price_e_t
-    
-    pest_cost_ha_const <- vv( pesticide_cost, var_CV, n_years )
-    pest_cost_ha_man <- pest_cost_ha_const * auxiliary_table$pest_quant_man
-    pest_cost_ha_aut <- pest_cost_ha_const * auxiliary_table$pest_quant_aut
-    
-    machine_cost_man <- c( initial_man_cost, rep( 0, (n_years-1) ) )
-    machine_cost_aut <- machine_cost_man + c( initial_upg_cost,
-                                              rep( 0, (n_years-1) ) )
-    
-    customers_man <- rep(customer_on_fruitsales, n_years) +
-      (auxiliary_table$rel_bio_man - 1) * biodiversity_on_customer +
-      (1 - auxiliary_table$rel_water_cont_man) * water_contamination_on_customer
-    customers_aut <- rep(customer_on_fruitsales, n_years) +
-      (auxiliary_table$rel_bio_aut - 1) * biodiversity_on_customer +
-      (1 - auxiliary_table$rel_water_cont_aut) * water_contamination_on_customer
-      
-    farmers_profit_man = (fruit_sales_e_ha_man * customers_man -
-                            pest_cost_ha_man) * area_per_machine - machine_cost_man
-    farmers_profit_aut = (fruit_sales_e_ha_aut * customers_aut -
-                            pest_cost_ha_aut) * area_per_machine - machine_cost_aut
-```
-
-The profits get discounted to generate the respective net present value.
-We chose a discount rate between 2 and 5 %, since our farmers are likely to invest.<br>
-In the end we return the calculated NPVs, the difference between the NPVs and
-the cashflow to further plot and analyze them.
-
-```
-    NPV_aut = discount(farmers_profit_aut, discount_rate, calculate_NPV = TRUE)
-    NPV_man = discount(farmers_profit_man, discount_rate, calculate_NPV = TRUE)
-    
-    return(list(Interv_NPV = NPV_aut,
-                NO_Interv_NPV = NPV_man,
-                NPV_decision_do = NPV_aut - NPV_man,
-                Cashflow_decision_do = farmers_profit_aut - farmers_profit_man))
-}
-```
 
 ## Monte Carlo Simulation
 

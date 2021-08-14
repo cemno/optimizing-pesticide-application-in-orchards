@@ -1,0 +1,14 @@
+base
+decisionSupport
+DiagrammeR
+DiagrammeRsvg
+ggplot2
+rsvg
+tidyverse
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats

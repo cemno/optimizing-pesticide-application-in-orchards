@@ -292,6 +292,7 @@ the possibility that the new technology could reduce the losses.
 
 \ 
 
+## Input tabel
 
 # Model
 
@@ -312,7 +313,7 @@ variables have an effect on variables in the following years.
 One Example for this is the amount we spray and the plant damage. If the farmer 
 sprayed enough then there won't be any damage, but if he or she estimated the 
 amount incorrectly and sprayed less then needed, then the plant damage in the 
-following year will be effected.
+following year will be effected. <br>
 Something similar can be said about the customers. If we spray a lot then
 the water contamination increases and the biodiversity on the field 
 decreases, this change is being picked up by the customers through the news, 
@@ -322,14 +323,15 @@ Existing plant damage and fewer customers will reduce the harvest and thus
 lessen the fruit sales. The sales and minus the overall costs will create the
 farmers profit, which is the output variable we want to analyze.
 
-Lastly we also included an event representing the government intervening in the 
+Lastly we also included an event, representing the government intervening in the 
 amount we are allowed to spray. This has an impact especially in years the 
-farmer has to spray a lot. Here the impact on the manual sprayer will be bigger 
-as the automated sprayer reduces the overall amount of needed.
-The chance of the government intervening is set low, but is influenced by the 
-water contamination and the biodiversity. We also included a delay between the 
-government decision and the implementation of it. This delay can vary between 
-two and six years, because various 
+farmer has to spray a lot. Here the impact on the manual sprayer will be bigger, 
+as the automated sprayer reduces the overall amount of needed pesticides.
+The chance of the government intervening is initially set low, but is influenced
+by the water contamination and the biodiversity. We also included a delay 
+between the government decision and the implementation of it. This delay can 
+vary between two and six years, because various governmental institutions or
+decisions take less time than others.
 
 ```{r, include=FALSE}
 # Using diagrammeR package
@@ -503,12 +505,14 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 
 
 ```
+
 ## Code {.tabset}
 
-### Full model code
+### Full model code {-}
 
 As a reference we added the whole model code with short comments to make it a
-bit more readable.
+bit more readable, but if you want a more in depth explanation of every step
+in the code, you can consult the Walkthrough chapter.
 
 <!-- <div class = "fold s"> -->
 ```{r}
@@ -785,18 +789,19 @@ ascs_decision_model <- function(x, varnames){
 <!-- <div> -->
 
 
-### Walkthrough  
+### Walkthrough  {-}
 
-In the following chapters we show and explain the code of our model chunk by chunk.
+In the following chapters we show and explain the code of our model chunk by 
+chunk.
 
-#### Input data
+#### Input data {-}
 
 The first step in creating our model is to load in our input variables from the 
 excel file.<br>
 We optionally tidy our file up with `drop_na`, `filter`, `order` and
 write the clean file to a new directory. Now we import the final excel file.<br>
 In the Script we often use the `_man` or `_aut` abbreviation as an 
-suffix to indicate which sprayer variables we are modifying.
+suffix to indicate which sprayer (ASCS  or MSCS) variables we are modifying.
 
 <!-- <blockquote> -->
 <!--   <p><span style="font-family: consolas;"> -->
@@ -842,26 +847,26 @@ ascs_decision_model <- function(x, varnames){
                                 gov_reaction = rep(0,n_years)
                                 )
 ```
-#### For-loop {.tabset}
+#### For-loop {.tabset -}
 
-##### First year
+##### First year{-}
  
-To iterate through each year we set `for`-loop to be `n_years` long.
+To iterate through each year we set the `for`-loop to be `n_years` long.
 Furthermore we kept in mind that `n_years` can vary and kept our model dynamic
 and easily adaptable for other cases. <br>
 
 The next step in the `for`-loop is to overwrite all the iterative variables for 
-the first year (`if (y == 1)`. Here we change the government reaction to a number
-randomly derived from between the `government_reaction_time` boundaries from the
-input table. This delay is used later on and represents the time between the 
-government decision and its implementation. <br>
+the first year (`if (y == 1)`. Here we first change the government reaction to a
+number randomly derived from between the `government_reaction_time` boundaries 
+from the input table. This delay is used later on and represents the time 
+between the government decision and its implementation. <br>
 
 The `chance` that the government intervenes is covered by (pre-)assumptions for
 the first year, it is directly taken from the input table. In later years it
 will be effected by the biodiversity and water contamination.
 
 We also make sure that the government intervention happens only inside the 
-`n_years` boundaries.
+`n_years` boundaries, because it wouldn't have any effect on our model.
 
 ```
   for (y in 1:n_years) {
@@ -910,8 +915,8 @@ estimation is prone to errors, so we chose to multiply the potential plant damag
 with a randomly drawn number from the 90% confidence interval of the borders
 defined in the `farmers_pesticide_quantity_miscalculation` variable.<br>
 The amount of pesticide usage for the automated sprayer is further multiplied by
-the pesticide reduction factor (`pest_red_fac`).
-
+the pesticide reduction factor (`pest_red_fac`). This represents the further
+reduction of pesticide usage through using the ASCS instead of the MSCS.
 
 ```
     auxiliary_table$plant_dmg_pot_man <- vv(potential_plant_damage, potential_plant_damage_CV, n_years)
@@ -930,8 +935,10 @@ years, depending on the pesticide usage.<br>
 The amount that was sprayed is subtracted from potential plant damage to get to 
 the actual plant damage.<br>
 We made an optional check to make sure that the actual plant damage is not
-below zero.
-
+below zero.<br>
+With this we are finished with everything regarding the first year. If you want
+to check the calculations for the second and following years, you need to go 
+back to the beginning of the [For-loop] chapter.
 ```
     auxiliary_table$rel_water_cont_man[y] <- 1 
     auxiliary_table$rel_water_cont_aut[y] <- 1 
@@ -945,7 +952,7 @@ below zero.
     auxiliary_table$actual_plant_dmg_aut[y] <- ifelse(actual_plant_dmg_aut < 0, 0, actual_plant_dmg_aut)
 ``` 
 
-##### Following years
+##### Following years {-}
 
 For the following years (year 2 - `n_years`) a lot of variables are varying.<br>
 
@@ -1074,7 +1081,7 @@ for the following years again.
   }
 ```
 
-#### Output
+#### Output {-}
 
 Many variables are not iterative but still vary:
 <ul>

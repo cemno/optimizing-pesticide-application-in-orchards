@@ -253,9 +253,8 @@ all inputs for our model with a 90% confidence interval.
 
 ## Questionnaire 
 
-In order to get reliable data from experts we decided to do a short 
-questionnaire and hand it out to experts from the “Kompetenzzentrum Obstbau 
-Bodensee”.
+In order to get reliable data we decided to do a short questionnaire and hand it
+out to experts from the “Kompetenzzentrum Obstbau Bodensee”.
 
 Before the Experts were asked the important questions, we needed values to, 
 they had to answer general questions, so called calibrations questions. Find an
@@ -265,30 +264,31 @@ possible overconfidence about their answers.
 
 In our Questionnaire we asked the experts to answer six questions where we
 needed upper and lower boundaries. We asked these questions to get reliable 
-values from experts because there were no values as open source for these 
+values from experts, because there was no open source information for these 
 specific questions.
 
 The first three questions were related to the cost of a new sprayer, how long 
-this one can be used to apply plant protection in orcharding and how much area 
-can be sprayed with one sprayer. To find prices for new sprayers is very 
+this one can be used to apply plant protection agents in orcharding and how much
+area can be sprayed with one sprayer. To find prices for new sprayers is very 
 difficult because the agricultural machinery producers provide them only for
-interested customers. That’s way this question was asked. For the durability of
-sprayers there are no values available because it depends on how much it will be
-used and how. The experts should have a good knowledge about the durability of a
+interested customers, since it is not fully on the market yet.
+That’s way this question was asked. For the durability of sprayers there is
+no available information, because it depends on how much it will be used and 
+how. The experts should have a good knowledge about the durability of a
 sprayer in orcharding. The third question was asked because in orcharding you 
-should be able to spray all trees in specified amount of time if there is an
-important treatment which needs to be done quickly. One sprayer cannot be used
-for a hundred hectare or more like in normal farming.
+should be able to spray all trees in a specified amount of time if there is an
+important treatment which needs to be done quickly. One section controlled
+sprayer can not be used for 100 hectare or more like in normal farming.
 
 The next three questions were related to the cost of plant protection products
-per hectare, the percentages of plant protection which get lost through 
-different influences and about the possibility to reduce these loses with the
-new technique. Plant protection is a costly factor in orcharding and important
-for calculating our model. Therefore, we asked the experts for their estimates.
-The question about the lost percentage due to drift or space between the trees 
-was a difficult question because no values could be found on the internet. The 
-last question was asked to find out what the experts think about the possibility
-that the new technique could reduce the losses.
+per hectare, the percentages of plant protection which gets lost through 
+different influences and about the possibility to reduce these losses with the
+new automated sprayers. Plant protection is a costly factor in orcharding and 
+important for calculating our model. Therefore, we asked the experts for their 
+estimates. The question about the lost percentage due to drift or space between 
+the trees was a difficult question, because no values could be found on the 
+internet. The last question was asked to find out what the experts think about
+the possibility that the new technology could reduce the losses.
 
 \ 
 
@@ -300,18 +300,18 @@ that the new technique could reduce the losses.
 
 The following graph is meant to give a better understanding of our model.
 We included two different sprayers, the automated and the manual sprayer seen on
-the far left of the model. Those effect mainly the amount of needed pesticides
+the far left of the model. Those mainly effect the amount of needed pesticides
 and plant protection agents but also the initial cost.
 Pesticides are the main factor in our model. They effect water contamination,
 biodiversity, plant damage and the cost through the amount applied. \ 
 
 We chose the duration of our model to be 10 years since most farmers replace 
-their sprayers around this time and it had to be partly iterative, since most 
-variables have an effect on the following years.
+their sprayers around this time. The model had to be partly iterative, since most 
+variables have an effect on variables in the following years.
 
 One Example for this is the amount we spray and the plant damage. If the farmer 
 sprayed enough then there won't be any damage, but if he or she estimated the 
-amount incorrectly and sprayed less then needed then the plant damage in the 
+amount incorrectly and sprayed less then needed, then the plant damage in the 
 following year will be effected.
 Something similar can be said about the customers. If we spray a lot then
 the water contamination increases and the biodiversity on the field 
@@ -319,9 +319,8 @@ decreases, this change is being picked up by the customers through the news,
 magazines or first hand if they are residents nearby.
 
 Existing plant damage and fewer customers will reduce the harvest and thus 
-lessen the fruit sales.
-The sales and minus the overall costs will create the farmers profit, 
-the output variable we want to analyze.
+lessen the fruit sales. The sales and minus the overall costs will create the
+farmers profit, which is the output variable we want to analyze.
 
 Lastly we also included an event representing the government intervening in the 
 amount we are allowed to spray. This has an impact especially in years the 

@@ -599,7 +599,7 @@ ascs_decision_model <- function(x, varnames){
       # influence factor from water contamination on biodiversity ## fix per run
       cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
       # pesticide reduction factor when using the automated sprayer
-      pest_red_fac <- pesticide_reduction_auto
+      pest_red_fac <- 1 - pesticide_reduction_auto
       
       # potential plant damage vector for n_years
       # its the same for both decisions 

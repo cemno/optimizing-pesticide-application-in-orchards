@@ -1166,9 +1166,9 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 ```
 
 
-# Results {.tabset}
+# Results {.tabset -}
 
-## Comparison
+## Comparison {-}
 
 <div class = "fold s">
 ```{r}
@@ -1192,24 +1192,42 @@ decision_do <- decisionSupport::plot_distributions(mcSimulation_object = mcSimul
 ```{r echo = FALSE}
 # ggsave(filename = "images/compare_decisions.png", plot = compare_decisions, width = 5, height = 3)
 # ggsave(filename = "images/NPV_distribution.png", plot = NPV_distribution, width = 5, height = 3)
+```
+
+As to be seen in our first graph the outcome distribution is rather large, with values ranging from 0 to up to 10 million euros. This is expected, as the turnover can be quite high in agricultural business. Both distributions seem to be the same, as possible differences might be obscured due the large turnover.
+
+```{r echo = FALSE}
 compare_decisions
+```
+
+The same can be seen in the boxplot diagram. There are some outliers for both distributions, which are to be expected as well, due to the randomness of the data being drawn resulting in some odd combinations, which would be rarely seen in the real world.
+
+```{r echo = FALSE}
 compare_boxplot
+```
+
+To see the actual difference between our manual and automated sprayer we need to subtract the distributions from each other, respectively. This creates the `NPV_decision_do` plot, which shows the improvement of using the automated sprayer. Here we can clearly see the distribution being mostly in the positive domain. The median is around 37k and the mean being shifted up to a value of around 47k.
+
+```{r echo = FALSE}
 decision_do
 ```
 
 
-## Cashflow
+## Cashflow {-}
 <div class = "fold s">
 ```{r}
 cashflow <- plot_cashflow(mcSimulation_object = mcSimulation_results, cashflow_var_name = "Cashflow_decision_do")
 cashflow <- cashflow + scale_x_continuous(breaks = seq(0,10,2),expand = c(0,0))
 ```
 </div>
+
+The cashflow is especially interesting. One can clearly see an offset in profit for the first year, which is easily explained by initial cost difference of the two sprayers. Note that this graph only shows the difference in profit between the sprayers. Over the years the profit is slightly increasing. The fifth to ninety-fifth quantile shows a massive increase starting from the fifth year. It is the delayed intervention response from the government, which has a high and positive impact on the profit for the automated sprayer, as it greatly reduces the profit for the manual sprayer. This is due to the increased plant damage that can't be controlled with more pesticides as the government started to limit these. But as it is barely affecting the twenty-fifth to seventy-fifth quantile a intervention by the government seems rare.
+
 ```{r echo = FALSE}
 cashflow
 ```
 
-## PLS
+## PLS {-}
 <div class = "fold s">
 ```{r}
 ## Projection to Latent Structures (PLS) analysis 
@@ -1219,12 +1237,15 @@ pls <- plot_pls(pls_result, input_table = data.frame(variable = input_table$vari
 
 ```
 </div>
+
+In the Graph of the projection to latent structures analysis we can determine each variable importance in our model. This helps us to understand and discern the variables with the most influence on our model, the direction is given by the positive or negative coefficient. In our case every relevant variable has a positive influence on our NPV, meaning if the variable gets larger the NPV would also get larger. The most important variable by far is the amount of pesticide reduction we can get by using the automated section controlled sprayer. It is the biggest contributor to increasing the NPV and thus our main source of profit over the years. Another variable that is also important is the yield of fruits in tonnes per hectare. This is self-explanatory as one can make more profit if there are more fruits to sell. The other variables have a VIP of around or lower than one, which means there is no extraordinary influence on the NPV in comparison to all other variables.
+
 ```{r echo = FALSE}
 #ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
 pls
 ```
 
-## EVPI
+## EVPI {-}
 <div class = "fold s">
 ```{r}
 ## Value of information (VoI) analysis 
@@ -1232,12 +1253,15 @@ evpi_plot <- plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
 ```
 </div>
+
+The EVPI was non-conclusive. There was no merit in finding more precise information to update the boundaries of our model variables. 
+
 ```{r echo = FALSE}
 pls
 evpi_plot
 ```
 
-## Compound figure {.active}
+## Compound figure {.active -}
 <div class="fold s">
 ```{r}
 compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results, 
@@ -1252,6 +1276,9 @@ compound_fig <- compound_figure(mcSimulation_object = mcSimulation_results,
 
 ```
 </div>
+
+The overview helps to combine the different plots, which is necessary to get a full and holistic understanding of the different implications of the plots. By combining the VIP and the cashflow for example, we can discern that the constant profit is mostly due to the reduced pesticide use. We effectively buy less pesticides while maintaining the same effect thus reducing our costs. Looking at the subtracted outcome distribution one can see the slight distortion towards higher values. This does not effect the bulk of the data, but the fifth to ninety-fifth quantile. The same phenomenon can be seen in the cashflow plot and represents the occasional, government intervention, which regulates the pesticide usage and thus increases the difference by reducing the outcome for the manual section controlled sprayer.
+
 ```{r echo=FALSE, out.width="100%"}
 # ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
 compound_fig
@@ -1311,7 +1338,7 @@ saturation function were these values could be based on.
 
 `To increase ease of use for practical application some simplifications can be 
 implemented. Removing the parts for biodiversity, water contamination, 
-government concerns and customer behavior completely would reduce the model to 
+government concerns and customer behaviour completely would reduce the model to 
 an investment calculator for sprayers working with ranges instead of average 
 values. `
 

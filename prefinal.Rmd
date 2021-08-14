@@ -1,5 +1,5 @@
 ---
-title: "Implementing automated section control sprayers for optimising pesticide application in orchards"
+title: "Implementing automated section control sprayers for optimized pesticide application in orchards"
 author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Jasper Hackling"
 date: "6/1/2021"
 
@@ -30,41 +30,43 @@ knitr::opts_chunk$set(message = FALSE, warnings = FALSE)
 ```
 
 
-# Abstract (Lucas)
+# Abstract 
 
-In this project we are looking a prototype of an automated section-control 
-blower sprayer (ASCS) which is currently being tested at Competence Centre for 
+In this project we are looking at a prototype of an automated section-control 
+sprayer (ASCS) which is currently being tested at Competence Centre for 
 Fruit Production Lake Constance (Kompetenzzentrum Obstbau Bodensee, KOB) in its 
 first season. It is compared on a monetary background to a manual 
-section-control blower sprayer (MSCS) which is the current standard technology 
-for spraying pesticides in orchards.
+section-control sprayer (MSCS) which is the current standard technology 
+for spraying pesticides in orchards. Most of the sprayers are blower sprayers.
 
-The most basic decision to make is whether the reduction of running-costs of the 
+The main calculation to look at is whether the reduction of running-costs of the 
 ASCS through lower pesticide usage compared to the MSCS are higher than the 
 increased initial investment for the more expensive sprayer.
 
 Other factors taken into consideration are the influence the reduction of 
-pesticide application has on the biodiversity and water contamination. These 
+pesticide usage has on the biodiversity and water contamination. These 
 factors influence the likelihood of the government setting a restriction on the 
-maximum amount of pesticide allowed to be applied. In addition, these factors 
+maximum amount of allowed pesticide to be applied. In addition, these factors 
 influence the customer behavior.
 
-The output of the model generated in this project will be a monetary value for 
-the farmer’s profit per hectare, calculated based on the investment costs, 
-running costs, damage to the fruits (apples) - calculated by combining applied
-pesticides (with a potential limit) and influences of the increased or decreased
+The output of the model generated in this project shows a continously higher net
+present value (NPV) for the ASCS after year one. In the first year the profit is
+heavily reduced due to the higher acqusition prize. The NPV is the discounted 
+profit calculated based on the investment costs, running costs, damage to the 
+fruits (apples) - calculated by combining applied pesticides 
+(with a potential limit) and influences of the increased or decreased 
 biodiversity - and the customer behavior.
 
 \ 
 
-# Introduction (Jasper)  
+# Introduction 
 
 Reducing the use of pesticides in agricultural and horticultural production has 
-been an important concern of policymakers, NGO, and also farmers for years. Not 
-only is a reduction economically favourable on a farm level, but more and more 
+been an important concern of policymakers, NGOs and also farmers for years. Not 
+only is a reduction economically favorably on a farm level, but more and more 
 negative impacts of the liberal use of agrochemicals on ecosystems have been 
-reported recently. In orcharding, efforts have been made to make pesticide 
-application more efficient in order to bring down the overall amount applied 
+reported in recent years. In orcharding, efforts have been made to make pesticide 
+application more efficient in order to bring down the overall amount applied, 
 while still securing fruit quality and stable yields. This led to the advent of 
 blower sprayers capable of section control. This feature allows the operator to 
 reduce or completely turn off the application of pesticides on a part of the 
@@ -75,52 +77,54 @@ the treetop into the environment.
 
 While the manually-operated section control sprayer (MSCS) is generally able to 
 reduce pesticide application rates while maintaining the effectiveness of the 
-agent where it is needed, the strain it puts on the operator is exhausting and 
-requires properly trained and experienced personnel. This limits the overall 
-work capacity of one unit. Furthermore, because of the complex handling, errors 
-are likely to occur which diminishes the potential to reduce the ingress of
-agrochemicals into the environment. 
+agent, the strain it puts on the operator is exhausting and requires properly 
+trained and experienced personnel. This limits the overall work capacity of one 
+unit. Furthermore, because of the complex handling, errors are likely to occur
+which diminishes the potential to reduce the ingress of agrochemicals into the
+environment. 
 
 Therefore, a novel technology is currently under development to automate the 
 modulation of the section control feature of orchard sprayers. Light detection 
 and ranging (LiDAR) sensors are mounted to the sprayer to allow a computer to 
 assess the structure of the upcoming trees. This, in turn, enables the machine 
-to appropriately adapt the individual sections to the current requirements.
-Besides the immediate relief for the tractor driver, this technology also allows
-less experienced workers to safely spray pesticide in orchards. Therefore, an 
-automatically-controlled section control sprayer (ASCS) has a higher work 
-capacity than a MSCS, i.e. a larger area can be sprayed in a given amount of 
-time. Apart from that, pesticide reduction can be improved due to the higher 
-precision in modulating the application rate following the principle of “as 
-little as possible, as much as necessary”. 
+to appropriately adapt the individual sections according to the current 
+requirements. Besides the immediate relief for the tractor driver, this 
+technology also allows less experienced workers to operate section controlled 
+sprayers. Therefore, an automatically-controlled section control sprayer (ASCS) 
+has a higher work capacity than a MSCS, i.e. a larger area can be sprayed in a
+given amount of time. Apart from that, pesticide reduction can be improved due
+to the higher precision in modulating the application rate following the 
+principle of “as little as possible, as much as necessary”. 
 
-All in all, the ASCS promises to a more efficient application of pesticide and 
+All in all, the ASCS promises a more efficient application of pesticide and 
 higher work capacity per sprayer, as well as less contamination of the 
 environment while maintaining full effectiveness in terms of plant protection. 
+
+\ 
 
 ## Short introduction to decision analysis
 
 Decision analysis is a research approach aimed at developing rational 
-recommendations to support real-word decisions. When faced with alternative 
+recommendations to support real-word scenarios. When confronted with alternative 
 options in a decision situation, decision makers often face complexity, limited 
-information, and uncertainty
-
-about the factors influencing the system. Decision analysis deploys 
-participatory methods to convene representatives of any stake holder group
-associated with the decision and its consequences (Luedeling and Shepherd 2016).
-The aim is to collect the current state of knowledge from experts and 
-practitioners, while simultaneously creating awareness of the inevitable 
-uncertainties associated with estimations (Lanzanova 2019). By accepting and 
-openly communicating uncertainties, the need to understand all aspects of a 
-system typically felt in science is eliminated. The introduction of Applied 
-Information Economics by Hubbard 2014 advanced the field of decision analysis by
-establishing the use of probability distributions and value ranges instead of 
-precisely measured values as inputs for probabilistic simulations. After these
-simulations have calculated the whole range of possible outcomes of the decision
-situation, knowledge gaps are identified where obtaining additional information 
-would enhance the prediction quality. To start an iterative process of model 
-improvement, measures are taken to improve the input data until the simulation 
-output can confidently support the decision (Hubbard 2014).
+information, and uncertainty about the factors influencing the system. 
+Decision analysis deploys participatory methods to convene representatives of 
+any stakeholder groups associated with the decision and its consequences 
+(Luedeling and Shepherd 2016). The aim is to collect the current state of 
+knowledge from experts and practitioners, while simultaneously creating 
+awareness of the inevitable uncertainties associated with estimations 
+(Lanzanova 2019). 
+By accepting and openly communicating uncertainties, the need to understand all 
+aspects of a system typically prominent in science is eliminated.
+The introduction of Applied Information Economics by Hubbard 2014 advanced the
+field of decision analysis by establishing the use of probability distributions
+and value ranges instead of precisely measured values as inputs for 
+probabilistic simulations. After these simulations have calculated the whole
+range of possible outcomes of the decision situation, knowledge gaps are 
+identified where obtaining additional information would enhance the prediction
+precision. To start an iterative process of model improvement, measures are taken
+to improve the input data until the simulation output can confidently support 
+the decision (Hubbard 2014).
 
 This approach has been applied in a number of different fields, e.g. business 
 decision support (Howard, RA & Abbas, AE. Foundations of Decision Analysis), 
@@ -131,151 +135,121 @@ Techniques in Policy Analysis: Policy Studies Institute), and natural resource
 management (Williams, BK & Johnson, FA. Value of information in natural resource
 management: technical developments and application to pink‐footed geese).
 
+\ 
+
 # Intervention
 
 One of the aforementioned orchard farmers is in the market for a new pesticide 
-sprayer because the one currently is use is approaching the end of its duration 
-of use (technologically outdated, repair costs, tax reasons). As it is the state
+sprayer because the one currently in use is approaching the end of its operational 
+life (technologically outdated, repair costs, tax reasons). As it is the state
 of the art, a section control sprayer is considered to be purchased. The farmer
 faces the choice between i) a typical manually operated section control sprayer
 (MSCS) or ii) an automated section control sprayer (ASCS) that relies on LiDAR
-technology. As non-section control sprayers
+technology. As non-section control sprayer are outdated, such models are not 
+taken into consideration here.
 
-are outdated, such models are not taken into consideration here. The initial 
-investment costs for the ASCS option are higher up front compared to the MSCS 
-option which involved less technical equipment, but several benefits can be 
-expected from the first option which may have direct or indirect economic 
-effects on the operating income of the orchard. In essence, the intervention 
-situation is whether or not the orchard farmer should invest the extra expenses
-on the technically more sophisticated sprayer option (ASCS) instead of opting
-for the standard MSCS.
+The initial investment costs for the ASCS option are higher up front compared 
+to the MSCS option which involved less technical equipment, but several benefits
+can be expected from the automated sprayer, which may have direct or indirect 
+economic effects on the operating income of the orchard. In essence, the 
+intervention situation is whether or not the orchard farmer should invest the 
+extra expenses on the technically more sophisticated sprayer option (ASCS) 
+instead of opting for the standard MSCS.
 
 \ 
 
 # Decision maker
 
-Constituting the core of every decision analysis is the decision maker. This may
-be a single person, but an institution or any other body can be the decision 
-maker in a particular situation. In our case, we identified German orchard 
-farmers for this role, in particular those located in southern Germany where
-fruit production in orchards is widely spread and quite intensive. We define the
-orchard farmer as the farm manager who is in charge of investment decision into
-new equipment. As he or she is typically familiar with the situation on the 
-orchard farm and aware of any small details that play into an investment 
-decision from an operational point of view, the farm manager plays a crucial
-role in our decision model and is among the most important stakeholders. 
+The decision maker is constituting the core of every decision analysis. This may
+be a single person, but it can also be an institution or any other body 
+in special situations. In our case, we identified german orchard farmers for 
+this role, in particular those located in southern germany where fruit 
+production in orchards is widely spread and intensive. We define the
+orchard farmer as the farm manager who is in charge of investment decisions.
+As he or she is typically familiar with the situation on the orchard farm and
+aware of any small details that may play into an investment decision from an 
+operational point of view, the farm manager plays a crucial role in our decision
+model and is among the most important stakeholders. 
 
 \ 
-
 
 # Stakeholders
 
 Several different institutions, groups of people, and other bodies are involved
-in the decision presentation which we present. They may either take part 
-directly in the decision by communication and correspondence among the groups,
-or are directly or indirectly affected by the decision and the consequences that
-ensue. Among them are, most importantly, the orchard farmer taking the 
-investment decision and other farmers in a similar situation. Apart from that,
-we identified as stakeholders the manufactures of orchards sprayers, local water
+in the decision.
+They may either take part directly in the decision by communication and 
+correspondence among the groups, or be indirectly affected by the decision and 
+the consequences that ensue. Among them are, most importantly, the orchard 
+farmer taking the investment decision and other farmers in a similar situation.
+Apart from that we identified the manufactures of orchards sprayers, local water
 suppliers, the Land and federal government, non-government organizations (NGOs),
 consumers and customers, food retailers, agrochemical companies, beekeepers and
-the local biodiversity,
+the local biodiversity as stakeholders.
 
 \ 
 
 # Data acquistion
 
-## Own research
-For our project work we also did research by ourselves to find out about 
-important values and facts, which we used to develop the Questions for the
-Calibration training, for our Questionnaire but we used it as well for our model.
+## Research
 
-For our own research we used different tools to find out the values and facts
-we needed. We used different platforms like Google Scholar to find paper which
-could be related to our topic that we chose. We used also different official
-websites from the German authorities like the Federal Office of Statistics for 
-statistical data or values like how much area is used for orcharding, the 
-Federal Environmental Agency for data about plant protection and the Federal
-Ministry of Finance.
+For our project work we researched important values and facts, which we used to 
+develop the questions for the calibration training, our questionnaire and
+also for our model.
 
-Regarding our topic about Sprayers, we used the websites from agricultural 
-machinery producers but also websites from agricultural information websites. 
+We used different tools to find out the values and facts we needed. We used
+different platforms like google scholar to find paper which related to our topic.
+We also used different official websites from the german authorities like the 
+Federal Office of Statistics for statistical data or values like how much area 
+is used for orcharding, the Federal Environmental Agency for data about plant 
+protection and the Federal Ministry of Finance.
+
+Regarding prices and technology information about sprayers, we used websites
+from agricultural machinery producers but also agricultural information websites. 
 
 \ 
 
 ## Expert knowledge
 
 For the decision-relevant questions, we consulted various stakeholders as experts 
-for our model. We consulted several experimental managers from different apple 
-growing regions in Germany, Leaders and technical assistants from the area of 
-plant health, plant protection and production technology of the Competence Centre 
-for Fruit Production Lake Constance, as well as fruit grower from the Lake 
-Constance region.  
+for our model. We consulted several scientists from different apple growing
+regions in germany, leaders and technical assistants from the area of plant 
+health, plant protection and production technology of the Competence Center 
+for Fruit Production Lake Constance, as well as farmer from the lake constance 
+region.
 
 \ 
 
 ## Calibration training 
 
 For a decision analysis it is important to know how valuable the given estimates
-are because it need to be based on comprehensive and reliable data. Therefore,
-calibration training is applied.
+are, because it should be based on comprehensive and reliable knowledge.
+Therefore, calibration training is applied.
 
-Calibration is a process to find out and document how the deviation of a 
-measuring device is. Due to Calibration training the affective answering
-behavior is reduced and it helps to improve the given estimates. It can also 
-help to know your uncertainties and to
+Calibration is a process to find out and document how strong the deviation of an 
+estimation form the reality is and how certain the aspiring expert was. This 
+documentation is used to point flaws in estimating out and to level the playing 
+field for further discussions. Due to calibration training the affective 
+answering behavior is reduced and it helps to improve the given estimates.
+It also trains you to know your uncertainties and to give good estimates 
+(Whitney and Luedeling et al., 2021).
 
-train to give good estimates (Whitney and Luedeling et al., 2021). In this case 
-experts are used as measuring device for good estimates. The answers are 
-normally linked to various cognitive biases and normally lead to an 
+In this case experts are used as a substitution of measuring devices. The
+answers are normally linked to various cognitive biases and normally lead to an 
 overconfidence of the experts about their estimates (Whitney and Luedeling et 
 al., 2021)
 
 To reduce this, a series of basic questions is used. In the first part of the 
-Calibration training the persons to be calibrated need to answer questions where
-the correct answer must be within a range. In the second part they need to 
-answer yes or no questions and they need to estimate their confidence about the
-given answers. After answering the basic questions, they get the feedback about
-the given answers. This led to a reduction of overconfidence (Whitney and
-Luedeling et al., 2021)
+calibration training the soon-to-be experts need to answer questions where
+the correct answer must be within a certain range. In the second part they need
+to answer yes or no questions and they need to estimate their confidence about
+the given answers beeing correct. After answering the basic questions, they get 
+the feedback about the given answers and their confidence intervals. This leads
+to a reduction of overconfidence. (Whitney and Luedeling et al., 2021)
 
-After the calibration training, they were asked about estimates to all inputs
-for the model with a 90% confidence interval
+After completing our calibration training, they were asked about estimates to
+all inputs for our model with a 90% confidence interval.
 
 \  
-
-## The two alternatives
-
-### Decision alternative 1: Buying an automated section control sprayer for orchards
-
-This decision alternative has one main cost and some advantages for the future 
-and the environment.
-
-* The main cost incurred when buying the automated section control sprayer, 
-because of the sensors which enable the section control sprayer to regulate the 
-application of the pesticides automatically when they are needed.
-
-* This option can have the advantage to decrease the needed plant protection
-which result in some positive effects on the environment like increasing the 
-biodiversity, decreasing the water contamination and decrease the pests and 
-diseases of the apple trees.
-
-The benefits were derived from possibly having a bigger harvest and less losses
-due to pest and diseases. They can also derive from not getting sanctioned by 
-governmental restrictions concerning about too much application of pesticides.
-
-Decision alternative 2: Buying a manual section control sprayer for orchards.
-
-Within this decision alternative the farmer buys a manual section control 
-sprayer where the implementation cost incurred, but less than for the first
-alternative. The farmer must control the application of plant protection by 
-hand and can have the disadvantage of applying more pesticide than needed.
-
-The benefits are derived from the harvest and selling price, but the advantages
-of not getting sanctioned or increasing the biodiversity and the harvest can`t 
-took place.
-
-\ 
 
 ## Questionnaire 
 
@@ -317,6 +291,7 @@ last question was asked to find out what the experts think about the possibility
 that the new technique could reduce the losses.
 
 \ 
+
 
 # Model
 
@@ -599,7 +574,8 @@ ascs_decision_model <- function(x, varnames){
       # influence factor from water contamination on biodiversity ## fix per run
       cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
       # pesticide reduction factor when using the automated sprayer
-      pest_red_fac <- pesticide_reduction_auto
+      ## 1- because it would be negativ in the pls analysis otherwise
+      pest_red_fac <- 1 - pesticide_reduction_auto
       
       # potential plant damage vector for n_years
       # its the same for both decisions 
@@ -913,14 +889,16 @@ In the following part we use the `vv()` function to get values for the influence
 factors. Those include the influence from pesticides on water contamination and 
 biodiversity but also from water contamination on biodiversity.
 Further we import the factor that describes how much reduction can be achieved 
-by using the automated sprayer (`pesticide_reduction_auto`) from the input table.
+by using the automated sprayer (`pesticide_reduction_auto`) from the input 
+table. This value gets subtracted from 1 to get a reduction by multiplying with
+this factor.
 
 ```
     pest_cont_fac <- vv(pesticide_on_water_contamination_factor, var_CV, 1)
     pest_bio_fac <- vv(pesticide_on_biodiversity_factor, var_CV, 1)
     cont_bio_fac <- vv(water_contamination_on_biodiversity_factor, var_CV, 1)
     
-    pest_red_fac <- pesticide_reduction_auto    
+    pest_red_fac <- 1 - pesticide_reduction_auto    
 ```
 
 To get to the actual plant damage we initially define a potential plant damage

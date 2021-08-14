@@ -4,7 +4,7 @@ initial_aut_cost;23000;;37000;posnorm;initial costs automated sprayer;euro;inves
 initial_man_cost;18000;;30000;posnorm;initial costs normal sprayer;euro;investmant costs for a manual section controled sprayer (Euro)
 pesticide_cost;1400;;2200;posnorm;pesticide costs;euro/ha;costs of pesticides (Euro/ha)
 pesticide_quantity;0,7;;1,3;norm;;;relative quantity of pesticide usage (1=717 (Euro/ha) for the manual section controle sprayer
-pesticide_reduction_auto;0,85;;0,95;posnorm;reduction of pesticide quantity;%;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
+pesticide_reduction_auto;0,05;;0,15;posnorm;reduction of pesticide quantity;%;reduction of pesticide usage with the automated section controled sprayer, compared to the manuale one 
 potential_plant_damage;1;;1;const;potential plant damage;status quo;potential damage the plants could take if no spraying is done, influenced by weather, pests, diseases, biodiversity, etc
 plant_damage;;;;;;;damage to the plants after pesticide aplication and influenced by weather, biodiversity,etc
 rel_biodiversity;1;;1;const;biodiversity;constant;relative biodiversity prone to changes

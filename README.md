@@ -11,9 +11,6 @@ We have also established a flow chart to visualize the dynamics of the decision 
 
 <p>For a better visualization of the automated section controlled sprayer in question we have two concept graphics:</p>
 
-
-![How to spray in orchards](images/image.png)
-
 ![Sectioning of the sprayer that can be turned on and off](images/lidar.png)
 
 The final compound figure shows a summary of the results of our decision analysis.

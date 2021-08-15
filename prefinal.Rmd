@@ -46,7 +46,7 @@ knitr::opts_chunk$set(
 
 ```{r add_R_bib, include=FALSE}
 knitr::write_bib(c(.packages(),
-                   'knitr', 'decisionSupport', 'ggplot2', 'DiagrammR', 'tidyverse', 'DiagrammeRsvg', 'rsvg'), 'bib/packages.bib')
+                   'knitr', 'decisionSupport', 'ggplot2', 'DiagrammR', 'tidyverse', 'DiagrammeRsvg', 'rsvg', 'base'), 'bib/packages.bib')
 ```
 ---
 nocite: '@*'
@@ -1464,7 +1464,7 @@ Another factor regarding the governments intervention is the type of interventio
 
 One key aspect of our decision was how much the ASCS is able to reduce the pesticide quantity we need to apply. This is also supported by our [projection to latent structures analysis](#Results), which shows the aforementioned variable as the one with the most influence on our net present value. As we are rather conservative with our estimations and a lot of the other influences are based on multiple variables, this led to the absence of other strong effects by single variables. The only other variable having a variable importance of greater than 1.5 is the yield of tonnes per hectare. It is also directly contributing to our net present value and thus influences it considerably . This is not surprising as the yield is the farmers only modelled income source. 
 
-For our model the `reduction of pesticide quantity` for the ASCS was set to a range of 5 -15 %. This was without reducing the effect of the application. Some of the experts estimated that this reduction would increase if the orchards get more heterogeneous, this tends to be the case in the north eastern regions of Germany. Rough estimates suggest improvments of up to 30 %. Most of the experts we asked about this matter are from the KOB or related facilities. In this south western region of Germany the trees in the orchards are rather homogeneous, because of the humid climate and good soil conditions. To increase the authenticity of the estimations for pesticide reduction on a larger scale, experts from other facilities with different growth conditions and orchard structure should be included. 
+For our model the `reduction of pesticide quantity` for the ASCS was set to a range of 5 -15 %. This was without reducing the effect of the application. Some of the experts estimated that this reduction would increase if the orchards get more heterogeneous, this tends to be the case in the north eastern regions of Germany. Rough estimates suggest improvements of up to 30 %. Most of the experts we asked about this matter are from the KOB or related facilities. In this south western region of Germany the trees in the orchards are rather homogeneous, because of the humid climate and good soil conditions. To increase the authenticity of the estimations for pesticide reduction on a larger scale, experts from other facilities with different growth conditions and orchard structure should be included. 
 
 Erdal Ozkan from the agricultural College of the Ohio State University estimated
 the reduction of pesticide application of a comparable sprayer system he worked 
@@ -1485,21 +1485,13 @@ There were also some problems to implement the desired effect of biodiversity an
 
 # Conclusion
 
-##  Summary  
+The decision analysis in this report highly suggests for farmers to adapt the new automated section control sprayer. The goal to be economical equal or even better than the MSCS was reached. The developed model has some flaws and in hindsight is somewhat too complex for this case, but its core is solid at displaying the fundamental aspects of the underlying decision. 
 
-There are some limitations from the data and time frame for the model of this 
-project. The results are nevertheless relevant for the decision maker, whether 
-to buy an ASCS or a MSCS. The reason for that is that the economically most 
-important factor – reduction of pesticides quantity – is in case of changes 
-likely to change in a way it would further strengthen the results already shown.
-The NPV for the decision were the decision maker buys the ASCS ranges 
-`from       to        with an average of          . `
+The key aspect is clearly the amount of pesticide reduction the ASCS provides and is by itself already a strong enough argument to invest in an ASCS. This margin especially increases after evaluating the experts volume predictions on pesticides in orcharding. The improvements in reduction will be even higher when considering more heterogeneous orchard farms. The government intervention also wasn't strong enough to meaningfully shift the outcome distribution. We can conclude that even without a government intervention the ASCS would be recommended, with a stricter intervention it would be even more promising.
 
-As the results of the model of this project has shown, there is a clear 
-recommendation to invest in an ASCS. The economic advantage compared to the 
-MSCS is going to vary from case to case, but in any case, there is an advantage.  
+To leverage the more complex model it is advised to implement more data for the complex influence factors such as biodiversity, water contamination and its effects on the other variables. One can include larger scale studies for environmental changes, climate data and regional policies. This will also shift the decision maker from the farmer to policy makers, as they influence these parameters on a larger scale. On such a large scale environmental effects, due to less pesticide application, can have a significant effect. 
 
-In addition, the amount of pesticides applied in orchards is going to be 
-decreased. This is going to reduce the stress for the local environment. 
+The approach to model the decision in `R` [@R-base] with the `decisionSupport` package [@R-decisionSupport] helped to easily aggregate the multiple distributions. This removes the need for calculations with averages and helps making a more informed decision based on the sophisticated model. The initial implementation and justification of the additional benefit was hard. But seeing the results and the realisation that defining the decision is the hardest part, such mortal obligations do not concern us anymore.
+
 
 # References

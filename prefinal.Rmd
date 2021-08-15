@@ -1314,7 +1314,7 @@ from a subset of our Monte Carlo simulation.
 mcSimulation_results <- decisionSupport::mcSimulation(
   estimate = as.estimate(input_table),
   model_function = ascs_decision_model,
-  numberOfModelRuns = 5,
+  numberOfModelRuns = 10000,
   functionSyntax = "plainNames"
   )
 

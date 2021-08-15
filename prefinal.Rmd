@@ -4,11 +4,12 @@ author: "Clemens Stephany, Christoph Weinmann, Lucas Hoffmann, Adrian Fülle, Ja
 date: "6/1/2021"
 
 output:
-  html_document:
+  bookdown::html_document2:
     toc: true
     toc_float: true
     collapsed: false
     number_sections: true
+    number_figures: true
 #    theme: readable
 #    code_folding: hide
     css: [layout/css/bootstrap.css, layout/button.css]
@@ -55,8 +56,8 @@ nocite: '@*'
 
 In this project we are looking at a prototype of an automated section-control 
 sprayer (ASCS) which is currently being tested at Competence Centre for 
-Fruit Production Lake Constance (Kompetenzzentrum Obstbau Bodensee, KOB) in its 
-first season. It is compared on a monetary background to a manual 
+Fruit Production Lake Constance (Kompetenzzentrum Obstbau Bodensee, KOB; see fig. \@ref(fig:SCS) ) 
+in its first season. It is compared on a monetary background to a manual 
 section-control sprayer (MSCS) which is the current standard technology 
 for spraying pesticides in orchards. Most of the sprayers are blower sprayers.
 
@@ -68,7 +69,7 @@ Other factors taken into consideration are the influence the reduction of
 pesticide usage has on the biodiversity and water contamination. These 
 factors influence the likelihood of the government setting a restriction on the 
 maximum amount of allowed pesticide to be applied. In addition, these factors 
-influence the customer behaviour.
+influence the customer behavior.
 
 The output of the model generated in this project shows a continuously higher net
 present value (NPV) for the ASCS after year one. In the first year the profit is
@@ -76,7 +77,7 @@ heavily reduced due to the higher acquisition prize. The NPV is the discounted
 profit calculated based on the investment costs, running costs, damage to the 
 fruits (apples) - calculated by combining applied pesticides 
 (with a potential limit) and influences of the increased or decreased 
-biodiversity - and the customer behaviour.
+biodiversity - and the customer behavior.
 
 \ 
 
@@ -84,7 +85,7 @@ biodiversity - and the customer behaviour.
 
 Reducing the use of pesticides in agricultural and horticultural production has 
 been an important concern of policy makers, NGOs and also farmers for years. Not 
-only is a reduction economically favourably on a farm level, but more and more 
+only is a reduction economically favorably on a farm level, but more and more 
 negative impacts of the liberal use of agrochemicals on ecosystems have been 
 reported in recent years. In orcharding, efforts have been made to make pesticide 
 application more efficient in order to bring down the overall amount applied, 
@@ -147,10 +148,16 @@ the decision [@DouglasW].
 This approach has been applied in a number of different fields, e.g. business 
 decision support [@AliE], public health intervention planning [@Keith], 
 policy process support [@Michael], and natural resource management [@ByronK].
-
+\ 
+```{r SCS, echo=FALSE, out.width="100%", fig.cap="In this image you can see the principal of section control sprayer. With the autmated one, which is currently under testing at the KOB, these section can be turned on/off on the fly."}
+knitr::include_graphics("images/lidar.png")
+# cite this figure with \@ref(fig:figure-2.1)
+```
 \ 
 
-# Intervention
+# Decision framework
+
+## Intervention
 
 One of the aforementioned orchard farmers is in the market for a new pesticide 
 sprayer because the one currently in use is approaching the end of its operational 
@@ -171,7 +178,7 @@ instead of opting for the standard MSCS.
 
 \ 
 
-# Decision maker
+## Decision maker
 
 Constituting the core of every decision analysis is the decision maker. This may
 be a single person, but an institution or any other body can also be the 
@@ -187,7 +194,7 @@ stakeholders of the decision.
 
 \ 
 
-# Stakeholders
+## Stakeholders
 
 Several different institutions, groups of people, and other bodies are involved
 in the decision.
@@ -373,7 +380,8 @@ input_table[1:7] %>%
 ## Flow chart
 
 
-The following graph is meant to give a better understanding of our model.
+The following graph, fig. \@ref(fig:flowchart), is meant to give a better 
+understanding of our model.
 We included two different sprayers, the automated and the manual sprayer seen on
 the far left of the model. Those mainly effect the amount of needed pesticides
 and plant protection agents but also the initial cost.
@@ -560,7 +568,7 @@ digraph {
 ```
 </div>
 
-```{r echo=FALSE, out.width="100%", cache=FALSE,fig.cap=""}
+```{r flowchart, echo=FALSE, out.width="100%", cache=FALSE,fig.cap="The flowchart modelling the farmers two decision options. This chart shows the simplified interconnections of our variables. Red indicates a negativ relationship and green a positive."}
 # Plot flow chart 
 model_flow_chart
 
@@ -574,7 +582,8 @@ rsvg_png(charToRaw(export_svg(model_flow_chart)), "images/flow-chart.png")
 ### Walkthrough  {-}
 
 In the following chapters we show and explain the code of our model chunk by 
-chunk. To see the code in its entirety please consult the tab [Full Code](#Code) next to this one.
+chunk. To see the code in its entirety please consult the [Full model code](#fullcode) tab next 
+to this one.
 
 #### Input data {-}
 
@@ -632,7 +641,7 @@ ascs_decision_model <- function(x, varnames){
                                 gov_reaction = rep(0,n_years)
                                 )
 ```
-#### For-loop {.tabset -}
+#### For-loop {.tabset - #For-loop}
 
 ##### First year{-}
  
@@ -966,7 +975,7 @@ the cashflow to further plot and analyze them.
                 Cashflow_decision_do = farmers_profit_aut - farmers_profit_man))
 }
 ```
-### Full model code {-}
+### Full model code {.unnumbered #fullcode}
 
 As a reference we added the whole model code with short comments to make it more readable as a whole.
 
@@ -1318,7 +1327,7 @@ evpi <- multi_EVPI(mc = mcSimulation_table, first_out_var = "Interv_NPV")
 ```
 
 
-# Results {.tabset}
+# Results {.tabset #Results}
 
 ## Comparison {-}
 
@@ -1350,19 +1359,19 @@ decision_do <- decisionSupport::plot_distributions(
 
 As to be seen in our first graph the outcome distribution is rather large, with values ranging from 0 to up to 10 million euros. This is expected, as the turnover can be quite high in agricultural business. Both distributions seem to be the same, as possible differences might be obscured due the large turnover.
 
-```{r echo = FALSE}
+```{r distributions, echo = FALSE, fig.cap="Overlaying the density plots of both outcome distributions to visualize difference in the two decision options. Net present value is shown for both the invervention (automated section control sprayer) and no intervention (manual section control sprayer)"}
 compare_decisions
 ```
 
 The same can be seen in the boxplot diagram. There are some outliers for both distributions, which are to be expected as well, due to the randomness of the data being drawn resulting in some odd combinations, which would be rarely seen in the real world.
 
-```{r echo = FALSE}
+```{r distboxplot, echo = FALSE, fig.cap="Comparing the boxplots of both outcome distributions. Net present value is shown for both the invervention (automated section control sprayer) and no intervention (manual section control sprayer)"}
 compare_boxplot
 ```
 
 To see the actual difference between our manual and automated sprayer we need to subtract the distributions from each other, respectively. This creates the `NPV_decision_do` plot, which shows the improvement of using the automated sprayer. Here we can clearly see the distribution being mostly in the positive domain. The median is around 37k and the mean being shifted up to a value of around 47k.
 
-```{r echo = FALSE}
+```{r comparison, echo = FALSE, fig.cap="Density plot resulting from subtracting the net present value of the MSCS outcome from our intervention, the ASCS outcome."}
 decision_do
 ```
 
@@ -1378,7 +1387,7 @@ cashflow <- cashflow + scale_x_continuous(breaks = seq(0,10,2),expand = c(0,0))
 
 The cashflow is especially interesting. One can clearly see an offset in profit for the first year, which is easily explained by initial cost difference of the two sprayers. Note that this graph only shows the difference in profit between the sprayers. Over the years the profit is slightly increasing. The fifth to ninety-fifth quantile shows a massive increase starting from the fifth year. It is the delayed intervention response from the government, which has a high and positive impact on the profit for the automated sprayer, as it greatly reduces the profit for the manual sprayer. This is due to the increased plant damage that can't be controlled with more pesticides as the government started to limit these. But as it is barely affecting the twenty-fifth to seventy-fifth quantile a intervention by the government seems rare.
 
-```{r echo = FALSE}
+```{r cashflow, echo = FALSE, fig.cap="Visualization of the cashflow, resulting from subtracting the profit of the MSCS from our intervention the ASCS. Shown for every year."}
 cashflow
 ```
 
@@ -1399,7 +1408,7 @@ pls <- plot_pls(pls_result,
 
 In the Graph of the projection to latent structures analysis we can determine each variable importance in our model. This helps us to understand and discern the variables with the most influence on our model, the direction is given by the positive or negative coefficient. In our case every relevant variable has a positive influence on our NPV, meaning if the variable gets larger the NPV would also get larger. The most important variable by far is the amount of pesticide reduction we can get by using the automated section controlled sprayer. It is the biggest contributor to increasing the NPV and thus our main source of profit over the years. Another variable that is also important is the yield of fruits in tonnes per hectare. This is self-explanatory as one can make more profit if there are more fruits to sell. The other variables have a VIP of around or lower than one, which means there is no extraordinary influence on the NPV in comparison to all other variables.
 
-```{r echo = FALSE}
+```{r pls, echo = FALSE, fig.cap="Projection to latent structures analysis to identify variables with the highest importance within the model. Variables from the input table can be seen on the y-axis, the importance on the x-axis."}
 #ggsave(filename = "images/pls.png", plot = pls, width = 6, height = 5)
 pls
 ```
@@ -1415,7 +1424,7 @@ evpi_plot <- plot_evpi(evpi, decision_vars = "NPV_decision_do")
 
 The EVPI was non-conclusive. There was no merit in finding more precise information to update the boundaries of our model variables. 
 
-```{r echo = FALSE}
+```{r evpi, echo = FALSE, fig.cap="The graph shows the maximum amount of money, which could be invested to get perfect information."}
 evpi_plot
 ```
 
@@ -1437,7 +1446,7 @@ compound_fig <- compound_fig + ggtitle("Compound figure ")
 
 The overview helps to combine the different plots, which is necessary to get a full and holistic understanding of the different implications of the plots. By combining the VIP and the cashflow for example, we can discern that the constant profit is mostly due to the reduced pesticide use. We effectively buy less pesticides while maintaining the same effect thus reducing our costs. Looking at the subtracted outcome distribution one can see the slight distortion towards higher values. This does not effect the bulk of the data, but the fifth to ninety-fifth quantile. The same phenomenon can be seen in the cashflow plot and represents the occasional, government intervention, which regulates the pesticide usage and thus increases the difference by reducing the outcome for the manual section controlled sprayer. Based on these results the recommended decision is buying the automated section control sprayer.
 
-```{r echo=FALSE, out.width="100%"}
+```{r compound, echo=FALSE, out.width="100%", fig.cap="Combined figure of the most important results to simplify comparisons. Upper left: Density plot shows difference of outcome distributions between MSCSs and ASCSs net present value.  Upper right: Cashflow showing the difference in profit between the MSCS and the ASCS. Lower left: PLS analysis showing the importance of the input variables. Lower right: Expected value of perfect information gives the price one would be willing to pay in order to gain access to perfect information."}
 # ggsave(filename = "images/compound_figure.png", plot = compound_fig, width = 7, height = 5)
 compound_fig
 
@@ -1470,7 +1479,7 @@ the heterogeneity of the plant area, were the pesticides need to be applied. Sum
 
 Even though the chosen 10 year timespan was already discussed, a note should be made that the model is programmed to run for a longer period as well, but there currently are some other mechanism missing to support a longer time period. The biodiversity for example needs a saturation function over time, to not create a self sustaining feedback loop. But this requires a deep understanding of the underlying ecological process and might be to much to consider for a single farmer. But in our current model the 10 years are also of no concern because of the limited time frame, which prevents such feedback loops with the current parameters.
 
-There were also some problems to implement the desired effect of biodiversity and its feedback on the potential plant damage. Because of the complexity of this matter and the time restrictions of this course we simply used factors to represent relative changes in biodiversity, water contamination and other variables. If necessary, this was supposed be further extended to include larger scale studies for environmental changes, climate data and regional policies. In hindsight this was not necessary to map for such a mostly economical driven decision. The changes in climate and biodiversity are not affected enough by a single farmer, which on the other hand is highly affected by these factors. It is worth to note that such large scale decision analysis is possible and advisable but should be addressed to policy makers but a single farmer. A simple cost-volume-profit analysis with a chance for government intervention should have been enough in our case. On the other hand this was a great opportunity to show a model implemented with the decisionSupport package [@R-decisionSupport] incorporating multiple feedback loops and still performing well calculation wise.
+There were also some problems to implement the desired effect of biodiversity and its feedback on the potential plant damage. Because of the complexity of this matter and the time restrictions of this course we simply used factors to represent relative changes in biodiversity, water contamination and other variables. If necessary, this was supposed be further extended to include larger scale studies for environmental changes, climate data and regional policies. In hindsight this was not necessary to map for such a mostly economical driven decision. The changes in climate and biodiversity are not affected enough by a single farmer, which on the other hand is highly affected by these factors. It is worth to note that such large scale decision analysis is possible and advisable but should be addressed to policy makers but a single farmer. A simple cost-volume-profit analysis with a chance for government intervention should have been enough in our case. On the other hand this was a great opportunity to show a model implemented with the `decisionSupport()` package [@R-decisionSupport] incorporating multiple feedback loops and still performing well calculation wise.
 
 \ 
 
@@ -1485,10 +1494,6 @@ important factor – reduction of pesticides quantity – is in case of changes
 likely to change in a way it would further strengthen the results already shown.
 The NPV for the decision were the decision maker buys the ASCS ranges 
 `from       to        with an average of          . `
-
-\ 
-
-## Recommendation  
 
 As the results of the model of this project has shown, there is a clear 
 recommendation to invest in an ASCS. The economic advantage compared to the 

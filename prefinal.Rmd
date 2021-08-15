@@ -25,6 +25,15 @@ body .main-container {
 <script src="layout/hideOutput.js"></script>
 
 ```{r setup, include=FALSE}
+# devtools::install_github("eikeluedeling/decisionSupport")
+library(decisionSupport)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(ggplot2)
+library(rsvg)
+library(tidyverse)
+library(knitr)
+
 knitr::opts_chunk$set(
 	message = FALSE,
 #	cache = TRUE,
@@ -294,8 +303,67 @@ the possibility that the new technology could reduce the losses.
 
 ## Input tabel
 
+```{r include=FALSE}
+input_table <- read.csv("data/input_data_03.csv",sep = ";",
+                        dec = ",", stringsAsFactors = FALSE)
+input_table <- drop_na(input_table, c("lower","upper"))
+input_table <- filter(input_table, !variable == "initial_aut_cost",
+                      !variable == "pesticide_quantity")
+input_table <- input_table[ order(input_table$distribution,
+                                  input_table$variable), ]
+write.csv(input_table, "data/final/inputs.csv", row.names = FALSE)
+input_table <- read.csv("data/final/inputs.csv", stringsAsFactors = FALSE)
+```
 
+We split the input table in three sections:
+<ul>
+  <li>variables with a `const` distribution</li>
+  <li>variables with a `posnorm` distribution</li>
+  <li>variables with a `tnorm_0_1` distribution</li>
+</ul>
 
+Included in the first section are mostly our relative variables, like the 
+relative biodiversity or water contamination (`rel_biodiversity`, 
+`rel_water_contamination`). These start at a value of `1` in the first year, but
+increase or decrease over time. 
+The only odd one in this section might be `n_years`, which is set to 10, because
+our model is at the moment intended to run for this long. This is still 
+adjustable depending on possible other decisions with varying circumstances.
+
+```{r echo=FALSE, results='asis'}
+input_table[1:7] %>% 
+  filter(distribution == "const") %>% 
+  kable()
+```
+
+\ 
+
+The second section describes our frequentative, so noniterative, variables. 
+Included here are e.g. the initial costs of the sprayers (`initial_man_cost`,
+`initial_upg_cost`), but also percentage values like the achievable pesticide
+reduction, through using the automated sprayer (`pesticide_reduction_auto	`).
+Odd variables might seemingly be the `discount_rate` and the `var_CV`, but both 
+of them belong to the positive-normal distributed section.
+
+```{r echo=FALSE, results='asis'}
+input_table[1:7] %>% 
+  filter(distribution == "posnorm") %>% 
+  kable()
+```
+
+\ 
+
+Mostly influence factors are present in our last section. These describe the
+influence that e.g. the pesticides have on the biodiversity 
+(`pesticide_on_biodiversity_factor`).
+The `government_intervention_chance` is sorted in here as well, as it is also a
+procentual value in the range from 0 to 1.
+
+```{r echo=FALSE, results='asis'}
+input_table[1:7] %>% 
+  filter(distribution == "tnorm_0_1") %>% 
+  kable()
+```
 # Model
 
 ## Flow chart
@@ -335,15 +403,6 @@ between the government decision and the implementation of it. This delay can
 vary between two and six years, because various governmental institutions or
 decisions take less time than others.
 
-```{r, cache=FALSE, include=FALSE}
-# devtools::install_github("eikeluedeling/decisionSupport")
-library(decisionSupport)
-library(DiagrammeR)
-library(DiagrammeRsvg)
-library(ggplot2)
-library(rsvg)
-library(tidyverse)
-```
 
 <div class = "fold s">
 ```{r}

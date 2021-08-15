@@ -17,5 +17,6 @@ We have also established a flow chart to visualize the dynamics of the decision 
 ![Sectioning of the sprayer that can be turned on and off](images/lidar.png)
 
 The final compound figure shows a summary of the results of our decision analysis.
+
 ![Compound figure](images/compoind_figure.png)
 

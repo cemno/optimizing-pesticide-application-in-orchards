@@ -13,7 +13,7 @@ output:
 #    code_folding: hide
     css: [layout/css/bootstrap.css, layout/button.css]
 bibliography:
-  - bib/references.bib
+  - bib/decision_analysis_group_9.bib
 ---
 
 ```{css include=FALSE}
@@ -27,11 +27,14 @@ body .main-container {
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
 	message = FALSE,
-	cache = TRUE,
+#	cache = TRUE,
 	warnings = FALSE
 )
 ```
 
+---
+nocite: '@*'
+---
 
 # Abstract 
 
@@ -113,13 +116,13 @@ options in a decision situation, decision makers often face complexity, limited
 information, and uncertainty about the factors influencing the system. 
 Decision analysis deploys participatory methods to convene representatives of 
 any stakeholder groups associated with the decision and its consequences 
-(Luedeling and Shepherd 2016). The aim is to collect the current state of 
+[@luedeling2016]. The aim is to collect the current state of 
 knowledge from experts and practitioners, while simultaneously creating 
 awareness of the inevitable uncertainties associated with estimations 
-(Lanzanova 2019). 
+[@Denis]. 
 By accepting and openly communicating uncertainties, the need to understand all 
 aspects of a system typically prominent in science is eliminated.
-The introduction of Applied Information Economics by Hubbard 2014 advanced the
+The introduction of Applied Information Economics by [@DouglasW] advanced the
 field of decision analysis by establishing the use of probability distributions
 and value ranges instead of precisely measured values as inputs for 
 probabilistic simulations. After these simulations have calculated the whole
@@ -127,16 +130,11 @@ range of possible outcomes of the decision situation, knowledge gaps are
 identified where obtaining additional information would enhance the prediction
 precision. To start an iterative process of model improvement, measures are taken
 to improve the input data until the simulation output can confidently support 
-the decision (Hubbard 2014).
+the decision [@DouglasW].
 
 This approach has been applied in a number of different fields, e.g. business 
-decision support (Howard, RA & Abbas, AE. Foundations of Decision Analysis), 
-public health intervention planning (Claxton, K, Griffin, S, Koffijberg, H & 
-McKenna, C. How to estimate the health benefits of additional research and 
-changing clinical practice), policy process support (Carley, M. Rational 
-Techniques in Policy Analysis: Policy Studies Institute), and natural resource
-management (Williams, BK & Johnson, FA. Value of information in natural resource
-management: technical developments and application to pink‐footed geese).
+decision support [@AliE], public health intervention planning [@Keith], 
+policy process support [@Michael], and natural resource management [@ByronK].
 
 \ 
 
@@ -163,16 +161,17 @@ instead of opting for the standard MSCS.
 
 # Decision maker
 
-The decision maker is constituting the core of every decision analysis. This may
-be a single person, but it can also be an institution or any other body 
-in special situations. In our case, we identified german orchard farmers for 
-this role, in particular those located in southern germany where fruit 
-production in orchards is widely spread and intensive. We define the
-orchard farmer as the farm manager who is in charge of investment decisions.
-As he or she is typically familiar with the situation on the orchard farm and
-aware of any small details that may play into an investment decision from an 
-operational point of view, the farm manager plays a crucial role in our decision
-model and is among the most important stakeholders. 
+Constituting the core of every decision analysis is the decision maker. This may
+be a single person, but an institution or any other body can also be the 
+decision maker in a particular situation [@luedeling2016]. In our case, we
+identified German orchard farmers for this role, in particular those located in
+southern Germany where fruit production in orchards is widely spread and quite
+intensive. We define the orchard farmer as the farm manager who is in charge of
+investment decision into new equipment. As he or she is typically familiar with
+the situation on the orchard farm and aware of any small details that play into
+an investment decision from an operational point of view, the farm manager plays
+a crucial role in our decision model and is among the most important 
+stakeholders of the decision. 
 
 \ 
 
@@ -233,13 +232,11 @@ estimation form the reality is and how certain the aspiring expert was. This
 documentation is used to point flaws in estimating out and to level the playing 
 field for further discussions. Due to calibration training the affective 
 answering behavior is reduced and it helps to improve the given estimates.
-It also trains you to know your uncertainties and to give good estimates 
-(Whitney and Luedeling et al., 2021).
+It also trains you to know your uncertainties and to give good estimates [@Cory].
 
 In this case experts are used as a substitution of measuring devices. The
 answers are normally linked to various cognitive biases and normally lead to an 
-overconfidence of the experts about their estimates (Whitney and Luedeling et 
-al., 2021)
+overconfidence of the experts about their estimates [@Cory].
 
 To reduce this, a series of basic questions is used. In the first part of the 
 calibration training the soon-to-be experts need to answer questions where
@@ -247,7 +244,7 @@ the correct answer must be within a certain range. In the second part they need
 to answer yes or no questions and they need to estimate their confidence about
 the given answers beeing correct. After answering the basic questions, they get 
 the feedback about the given answers and their confidence intervals. This leads
-to a reduction of overconfidence. (Whitney and Luedeling et al., 2021)
+to a reduction of overconfidence [@Cory]. 
 
 After completing our calibration training, they were asked about estimates to
 all inputs for our model with a 90% confidence interval.
@@ -296,6 +293,8 @@ the possibility that the new technology could reduce the losses.
 \ 
 
 ## Input tabel
+
+
 
 # Model
 
@@ -1395,7 +1394,7 @@ One key aspect of our decision was how much the ASCS is able to reduce the pesti
 
 For our model the `reduction of pesticide quantity` for the ASCS was set to a range of 5 -15 %. This was without reducing the effect of the application. Some of the experts estimated that this reduction would increase if the orchards get more 
 heterogeneous, this tends to be the case in the north eastern regions of 
-Germany. `Roth ?????` estimates up to 30 %. Most of the experts we asked about this matter are from the KOB or related 
+Germany. Rough estimates up to 30 %. Most of the experts we asked about this matter are from the KOB or related 
 facilities. In this south western region of Germany the trees in the
 orchards are rather homogeneous, because of the humid climate and good soil conditions. To increase the authenticity of the estimations for pesticide reduction on a larger scale, experts from other facilities with different growth conditions and 
 orchard structure should be included. 
@@ -1456,3 +1455,5 @@ MSCS is going to vary from case to case, but in any case, there is an advantage.
 
 In addition, the amount of pesticides applied in orchards is going to be 
 decreased. This is going to reduce the stress for the local environment. 
+
+# References

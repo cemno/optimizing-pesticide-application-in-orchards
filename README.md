@@ -18,5 +18,5 @@ We have also established a flow chart to visualize the dynamics of the decision 
 
 The final compound figure shows a summary of the results of our decision analysis.
 
-![Compound figure](images/compoind_figure.png)
+![Compound figure](images/compound_figure.png)
 
